@@ -1268,7 +1268,8 @@ class Projects {
 						<?php endif; ?>
 					</div>
 				</div>
-			</div <?php
+			</div>
+        <?php
 	}
 
 	public static function copy_project($args = null) {

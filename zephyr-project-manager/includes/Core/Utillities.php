@@ -1176,6 +1176,19 @@ class Utillities {
 		return $meta;
 	}
 
+	public static function unDeleteDefaultStatus($status) {
+		$deletedDefaults = self::getDeletedDefaultStatuses();
+
+        foreach ($deletedDefaults as $key => $default) {
+            if ($default == $status) {
+                unset ($deletedDefaults[$key]);
+            }
+        }
+
+		$meta = update_option('zpm/status/deleted_defaults', $deletedDefaults);
+		return $meta;
+	}
+
 	public static function get_status($slug) {
 		$default = [
 			'name' => __('None', 'zephyr-project-manager'),
@@ -1317,6 +1330,11 @@ class Utillities {
 
 		$statuses = Utillities::get_statuses('all');
 		$statuses[$slug] = $status;
+
+		if (in_array($slug, ['in_progress', 'completed', 'not_started', 'in-progress', 'not-started'])) {
+			self::unDeleteDefaultStatus($slug);
+		}
+
 		update_option('zpm_statuses', serialize($statuses));
 
 		$status['slug'] = $slug;

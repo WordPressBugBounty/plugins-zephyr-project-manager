@@ -5,8 +5,8 @@ Plugin URI: https://zephyr-one.com
 Donate link: https://www.paypal.com/donate/?cmd=_donations&business=dylanjkotze@gmail.com&item_name=Zephyr+Project+Manager+Donation&currency_code=USD&source=url
 Tags: project manager, task manager, projects, tasks, collaboration
 Requires at least: 3.2
-Tested up to: 6.6
-Stable tag: 3.3.103
+Tested up to: 6.7
+Stable tag: 3.3.104
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
