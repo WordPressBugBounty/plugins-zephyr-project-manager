@@ -51,6 +51,7 @@ class Zephyr {
 
 	// Returns the version of the basic plugin
 	public static function getPluginVersion() {
+        return ZPM_PLUGIN_VERSION;
 		$plugin_data = Zephyr::getPluginData();
 		return $plugin_data['Version'];
 	}

@@ -152,7 +152,7 @@ class AjaxHandler extends BaseController {
 			'deleteTempFiles'
 		];
 
-		add_action('admin_init', [$this, 'authenticate']);
+//		add_action('admin_init', [$this, 'authenticate']);
 
 		foreach ($this->actions as $action) {
 			$this->add_ajax_function($action);
@@ -160,16 +160,25 @@ class AjaxHandler extends BaseController {
 	}
 
     public function add_ajax_function($function_name) {
-        add_action("wp_ajax_zpm_{$function_name}", [$this, $function_name]);
-        add_action("wp_ajax_nopriv_zpm_{$function_name}", [$this, $function_name]);
+//        add_action("wp_ajax_zpm_{$function_name}", [$this, $function_name]);
+//        add_action("wp_ajax_nopriv_zpm_{$function_name}", [$this, $function_name]);
+	    add_action("wp_ajax_zpm_{$function_name}", function () use ($function_name) {
+		    $this->authenticate($function_name);
+		    call_user_func([$this, $function_name]);
+	    });
+
+	    add_action("wp_ajax_nopriv_zpm_{$function_name}", function () use ($function_name) {
+		    $this->authenticate($function_name);
+		    call_user_func([$this, $function_name]);
+	    });
     }
 
-	public function authenticate() {
-		if (defined('DOING_AJAX') && DOING_AJAX) {
+	public function authenticate($function_name) {
+//		if (defined('DOING_AJAX') && DOING_AJAX) {
 			$action = isset($_POST['action']) ? sanitize_text_field($_POST['action']) : '';
 			$nonce = isset($_POST['zpm_nonce']) ? sanitize_text_field($_POST['zpm_nonce']) : '';
 
-			if (in_array(str_replace('zpm_', '', $action), $this->actions)) {
+//			if (in_array(str_replace('zpm_', '', $action), $this->actions)) {
 				if (!wp_verify_nonce($nonce, 'zpm_nonce')) {
 					$this->error('Invalid nonce.');
 				}
@@ -180,8 +189,8 @@ class AjaxHandler extends BaseController {
 				if (!Utillities::canZephyr($this->userID)) {
 					$this->error('You do not have Zephyr permissions.');
 				}
-			}
-		}
+//			}
+//		}
 	}
 
 	public function error($message) {

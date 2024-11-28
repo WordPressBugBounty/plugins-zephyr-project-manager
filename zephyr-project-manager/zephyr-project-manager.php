@@ -6,7 +6,7 @@
 * Plugin Name:  Zephyr Project Manager
 * Description:  A modern project manager for WordPress to keep track of all your projects from within WordPress.
 * Plugin URI:   https://zephyr-one.com
-* Version:      3.3.104
+* Version:      3.3.105
 * Author:       Dylan James
 * License:      GPLv2 or later
 * Text Domain:  zephyr-project-manager
@@ -40,6 +40,7 @@ define('ZPM_CATEGORY_TABLE', $wpdb->prefix . 'zpm_categories');
 define('ZPM_ACTIVITY_TABLE', $wpdb->prefix . 'zpm_activity');
 define('ZEPHYR_PRO_LINK', 'https://zephyr-one.com/purchase-pro/');
 define('ZPM_REQUIRED_PRO_VERSION', '3.3.0' );
+define('ZPM_PLUGIN_VERSION', '3.3.105');
 
 require_once(ZPM_PLUGIN_PATH . 'includes/functions.php');
 
@@ -100,23 +101,22 @@ function zpm_plugin_loaded() {
         update_option( 'zpm_db_version', $version );
     }
 
-    $locale = apply_filters('plugin_locale', get_locale(), 'zephyr-project-manager');
-    $language = substr($locale, 0, 2);
-
-    if ($language == 'en') {
-        $locale = 'en_EN';
-    }
-
-
     Utillities::check_save_general_settings();
     $tasks = new Tasks();
     $zpm_settings = Utillities::general_settings();
-    $pluginTextdomainLoaded = load_plugin_textdomain('zephyr-project-manager', FALSE, basename(dirname(__FILE__)) . '/languages/');
-    // $theme = load_plugin_textdomain('zephyr-project-manager', FALSE, 'languages/zephyr-project-manager-fr_FR.mo');
+}
 
-    // if ($zpm_settings['label_type'] == 'scrum') {
-    //     $loaded = load_textdomain('zephyr-project-manager', dirname( __FILE__ ) . "/languages/zephyr-project-manager-scrum-{$locale}.mo");
-    // }
+add_action('init', 'zephyr_project_manager_init');
+
+function zephyr_project_manager_init() {
+	$locale = apply_filters('plugin_locale', get_locale(), 'zephyr-project-manager');
+	$language = substr($locale, 0, 2);
+
+	if ($language == 'en') {
+		$locale = 'en_EN';
+	}
+
+	$pluginTextdomainLoaded = load_plugin_textdomain('zephyr-project-manager', FALSE, basename(dirname(__FILE__)) . '/languages/');
 }
 
 function zpm_admin_init() {

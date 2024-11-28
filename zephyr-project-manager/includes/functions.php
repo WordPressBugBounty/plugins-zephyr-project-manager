@@ -272,6 +272,7 @@ Some features include:
 }
 
 function zpm_get_version() {
+    return ZPM_PLUGIN_VERSION;
 	$version = Zephyr::getPluginVersion();
 	return $version;
 }
