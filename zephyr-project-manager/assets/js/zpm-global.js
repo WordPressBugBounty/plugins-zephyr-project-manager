@@ -21,7 +21,7 @@ jQuery(document).ready(function () {
 			var parentList = jQuery('#' + selector);
 
 			parentList.find('.zpm_task_list_row').each(function () {
-				var taskId = $(this).data('task-id');
+				var taskId = jQuery(this).data('task-id');
 				taskIdsOrder.push(taskId);
 			});
 
@@ -44,7 +44,7 @@ jQuery(document).ready(function () {
 			ZephyrProjects.notification(zpm_localized.strings.uploading_files);
 			console.log('zpm/files', res);
 
-			var taskId = $('body').find('#zpm-task-id').val();
+			var taskId = jQuery('body').find('#zpm-task-id').val();
 			var attachments = res;
 
 			if (!jQuery.isArray(attachments)) {
@@ -708,7 +708,7 @@ jQuery(document).ready(function () {
 		e.stopPropagation();
 
 		const $el = jQuery(this);
-		var command = $(this).data('command');
+		var command = jQuery(this).data('command');
 		console.log('doing command ' + command);
 		const $editor = jQuery(this).closest('.zpm_chat_box');
 		$editor.find('textarea').trigger('focus');
@@ -824,8 +824,8 @@ function zpmSortTasksByDueDate(container) {
 	console.log(tasks);
 	
 	tasks.sort(function(a, b) {
-		const dateA = $(a).data('due');
-		const dateB = $(b).data('due');
+		const dateA = jQuery(a).data('due');
+		const dateB = jQuery(b).data('due');
 
 		// Handling tasks without due dates
 		if (dateA === '0000-00-00 00:00:00' && dateB === '0000-00-00 00:00:00') {

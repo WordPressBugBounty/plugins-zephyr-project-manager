@@ -16,7 +16,7 @@ use ZephyrProjectManager\Base\BaseController;
 use ZephyrProjectManager\ZephyrProjectManager;
 
 class EnqueueScripts {
-	public static $version = '11.43.0';
+	public static $version = '11.44.0';
 
 	public static function register() {
 		add_action('admin_enqueue_scripts', array('ZephyrProjectManager\Base\EnqueueScripts', 'enqueue_admin_scripts'));
@@ -81,7 +81,7 @@ class EnqueueScripts {
 		wp_enqueue_script('zephyr-socket-io');
 		wp_enqueue_script('wp-color-picker');
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_register_script('jquery-ui-timepicker', ZPM_PLUGIN_URL . 'assets/js/jquery-timepicker.js', array('jquery', 'jquery-ui-datepicker'));
+		wp_register_script('jquery-ui-timepicker', ZPM_PLUGIN_URL . 'assets/js/jquery-timepicker.js', array('jquery', 'jquery-ui-datepicker', 'moment'));
 		wp_enqueue_script('jquery-ui-timepicker');
 		wp_enqueue_script('fullcalender_js', array('jquery', 'moment'));
 		wp_enqueue_script('chosen_js');

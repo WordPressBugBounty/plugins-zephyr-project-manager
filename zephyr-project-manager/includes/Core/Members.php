@@ -45,7 +45,7 @@ class Members {
 
 	public static function get_team($id) {
 		if ($id === '') return null;
-
+		$id = str_replace('team_', '', $id);
 		$teams = Members::get_teams();
 
 		foreach ($teams as $team) {
@@ -138,7 +138,7 @@ class Members {
 		}
 
 		$currentUserID = get_current_user_id();
-		$currentUserSearch = array_filter($members, function($member) use ($currentUserID) {
+		$currentUserSearch = array_filter($members, function ($member) use ($currentUserID) {
 			if (is_array($member)) {
 				return intval($member['id']) == intval($currentUserID);
 			}
@@ -196,14 +196,14 @@ class Members {
 			$canZephyr = Utillities::canZephyr($user->ID);
 
 			if (!$canZephyr) continue;
-            if (!isset($settings['id'])) continue;
+			if (!isset($settings['id'])) continue;
 
 			if ((isset($settings['can_zephyr']) && $settings['can_zephyr'] == "true") || !isset($settings['can_zephyr'])) {
 				$members[] = $settings;
 			}
 		}
 
-		$currentUserSearch = array_filter($members, function($member) use ($currentUserID) {
+		$currentUserSearch = array_filter($members, function ($member) use ($currentUserID) {
 			return intval($member['id']) == intval($currentUserID);
 		});
 
@@ -211,7 +211,7 @@ class Members {
 			array_unshift($members, Members::get_member($currentUserID));
 		}
 
-		return array_filter($members, function($member) {
+		return array_filter($members, function ($member) {
 			return isset($member['id']);
 		});
 	}
@@ -409,7 +409,7 @@ class Members {
 				</span>
 			<?php endif; ?>
 		</a>
-<?php
+	<?php
 
 		$html = ob_get_clean();
 		return $html;
@@ -420,11 +420,11 @@ class Members {
 		ob_start();
 
 	?>
-		<tr class="zpm-table__row zpm-member-list__row zpm-table__full-link <?php echo $member['can_zephyr'] == 'true' ? 'zpm-user-can-zephyr' : ''; ?>" >
+		<tr class="zpm-table__row zpm-member-list__row zpm-table__full-link <?php echo $member['can_zephyr'] == 'true' ? 'zpm-user-can-zephyr' : ''; ?>">
 			<td>
-			<span class="zpm-table__avatar" style="background-image: url(<?php echo esc_url($member['avatar']); ?>);"></span>
-			<span class="zpm-table__name"><?php echo esc_html($member['name']); ?></span>
-			<span class="zpm-table__label zpm-table__label-email"><?php echo esc_html($member['email']); ?></span>
+				<span class="zpm-table__avatar" style="background-image: url(<?php echo esc_url($member['avatar']); ?>);"></span>
+				<span class="zpm-table__name"><?php echo esc_html($member['name']); ?></span>
+				<span class="zpm-table__label zpm-table__label-email"><?php echo esc_html($member['email']); ?></span>
 			</td>
 
 			<td>
@@ -447,8 +447,8 @@ class Members {
 							<?php endif; ?>
 						</label>
 						<?php if (current_user_can('administrator')): ?>
-					<a href="<?php echo esc_url($edit_url); ?>" class="zpm-button zpm_button zpm_primary zpm-edit-member-button"><?php esc_html_e('Edit', 'zephyr-project-manager'); ?></a>
-				<?php endif; ?>
+							<a href="<?php echo esc_url($edit_url); ?>" class="zpm-button zpm_button zpm_primary zpm-edit-member-button"><?php esc_html_e('Edit', 'zephyr-project-manager'); ?></a>
+						<?php endif; ?>
 					</span>
 				<?php endif; ?>
 			</td>

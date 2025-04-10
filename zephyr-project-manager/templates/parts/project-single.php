@@ -443,7 +443,7 @@ $defaultTab = $general_settings['default_project_tab'];
 					<optgroup label="<?php esc_html_e('Teams', 'zephyr-project-manager'); ?>">
 						<?php foreach ($teams as $team) : ?>
 							<?php $selected = Projects::hasTeam($project, $team['id']) ? 'selected' : ''; ?>
-							<option value="<?php echo esc_attr('team_' . $team['id']); ?>" <?php echo $selected; ?>><?php esc_html_e('Team', 'zephyr-project-manager') . ': ' . esc_html($team['name']); ?></option>
+							<option value="<?php echo esc_attr('team_' . $team['id']); ?>" <?php echo $selected; ?>><?php echo esc_html(__('Team', 'zephyr-project-manager')) . ': ' . esc_html($team['name']); ?></option>
 						<?php endforeach; ?>
 					</optgroup>
 				</select>

@@ -7806,7 +7806,7 @@ a.zpm_team_member {
 	left: 25px;
 	transform: translateY(-50%);
 	position: absolute;
-	z-index: 9999;
+	z-index: 99;
 }
 
 #zpm-zephyr-info:hover {
