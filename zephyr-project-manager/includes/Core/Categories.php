@@ -84,7 +84,7 @@ class Categories {
 	public static function fetch() {
 		global $wpdb;
 		$table_name = ZPM_CATEGORY_TABLE;
-		$categories = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$table_name}"));
+		$categories = $wpdb->get_results("SELECT * FROM {$table_name}");
 		return $categories;
 	}
 

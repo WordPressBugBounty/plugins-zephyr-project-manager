@@ -2624,4 +2624,19 @@ class Utillities {
 			rmdir($folderPath);
 		}
 	}
+
+	public static function updateDatabaseTables() {
+		global $wpdb;
+		
+		// Update milestones table
+		$milestones_table = $wpdb->prefix . 'zpm_milestones';
+		$wpdb->query("ALTER TABLE $milestones_table MODIFY COLUMN `name` TEXT NOT NULL");
+		$wpdb->query("ALTER TABLE $milestones_table MODIFY COLUMN `description` TEXT NOT NULL");
+		$wpdb->query("ALTER TABLE $milestones_table MODIFY COLUMN `tasks` TEXT NOT NULL");
+		$wpdb->query("ALTER TABLE $milestones_table MODIFY COLUMN `projects` TEXT NOT NULL");
+		
+		// Update projects table
+		$projects_table = $wpdb->prefix . 'zpm_projects';
+		$wpdb->query("ALTER TABLE $projects_table MODIFY COLUMN `team` TEXT NOT NULL");
+	}
 }

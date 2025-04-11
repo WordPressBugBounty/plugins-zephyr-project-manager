@@ -6,7 +6,7 @@
  * Plugin Name:  Zephyr Project Manager
  * Description:  A modern project manager for WordPress to keep track of all your projects from within WordPress.
  * Plugin URI:   https://zephyr-one.com
- * Version:      3.3.106
+ * Version:      3.3.200
  * Author:       Dylan James
  * License:      GPLv2 or later
  * Text Domain:  zephyr-project-manager
@@ -39,8 +39,19 @@ define('ZPM_MESSAGES_TABLE', $wpdb->prefix . 'zpm_messages');
 define('ZPM_CATEGORY_TABLE', $wpdb->prefix . 'zpm_categories');
 define('ZPM_ACTIVITY_TABLE', $wpdb->prefix . 'zpm_activity');
 define('ZEPHYR_PRO_LINK', 'https://zephyr-one.com/purchase-pro/');
-define('ZPM_REQUIRED_PRO_VERSION', '3.3.0');
-define('ZPM_PLUGIN_VERSION', '3.3.105');
+define('ZPM_REQUIRED_PRO_VERSION', '3.3.39');
+define('ZPM_PLUGIN_VERSION', '3.3.200');
+define('ZPM_REQUIRED_MAX_PRO_VERSION', '3.4.2');
+
+
+if (class_exists('ZephyrProjectManager\\Pro\\Plugin')) {
+	$plugin = new \ZephyrProjectManager\Pro\Plugin();
+	$version = $plugin->getVersion();
+
+	if (version_compare($version, ZPM_REQUIRED_MAX_PRO_VERSION, '>=')) {
+		return;
+	}
+}
 
 require_once(ZPM_PLUGIN_PATH . 'includes/functions.php');
 

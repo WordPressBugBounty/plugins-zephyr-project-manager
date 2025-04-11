@@ -257,7 +257,7 @@ class BaseController {
 	public static function get_attachments() {
 		global $wpdb;
 		$table_name = ZPM_MESSAGES_TABLE;
-		$attachments = $wpdb->get_results($wpdb->prepare("SELECT id, parent_id, user_id, subject_id, subject, message, type, date_created FROM {$table_name} ORDER BY id DESC"));
+		$attachments = $wpdb->get_results("SELECT id, parent_id, user_id, subject_id, subject, message, type, date_created FROM {$table_name} ORDER BY id DESC");
 		$attachments_array = [];
 
 		foreach($attachments as $attachment) {

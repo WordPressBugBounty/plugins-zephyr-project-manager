@@ -1778,3 +1778,9 @@ input#zpm-new-task-duration {
 #zpm_calendar .fc-time-grid-event {
 	overflow: auto;
 }
+
+.zpm-no-results-hint {
+  padding: 10px;
+  color: #888;
+  margin: 0px;
+}

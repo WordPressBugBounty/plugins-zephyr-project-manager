@@ -5,8 +5,8 @@ Plugin URI: https://zephyr-one.com
 Donate link: https://www.paypal.com/donate/?cmd=_donations&business=dylanjkotze@gmail.com&item_name=Zephyr+Project+Manager+Donation&currency_code=USD&source=url
 Tags: project manager, task manager, projects, tasks, collaboration
 Requires at least: 3.2
-Tested up to: 6.7
-Stable tag: 3.3.106
+Tested up to: 6.8
+Stable tag: 3.3.200
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -151,6 +151,10 @@ For more information and documentation, please visit [the website](https://zephy
 1. See what is going on via the Activity page
 
 == Changelog ==
+= 3.3.200 =
+* Tested with WP 6.8
+* Fixed email sending issue
+
 = 3.3.105 =
 * Fixed vulnerability
 * Updated textdomain loading to fix PHP notice
