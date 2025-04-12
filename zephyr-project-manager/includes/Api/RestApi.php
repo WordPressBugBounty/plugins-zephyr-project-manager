@@ -1,12 +1,13 @@
 <?php
-
 /**
  * @package ZephyrProjectManager
  */
 
 namespace ZephyrProjectManager\Api;
 
-if (!defined('ABSPATH')) die;
+if (!defined('ABSPATH')) {
+	die;
+}
 
 use ZephyrProjectManager\Zephyr;
 use ZephyrProjectManager\Core\Tasks;
@@ -22,945 +23,913 @@ use ZephyrProjectManager\Api\Emails;
 
 class RestApi {
 	function register() {
-		add_action('rest_api_init', function () {
+		add_action('rest_api_init', function() {
 			register_rest_route('zephyr_project_manager/v1', '/tasks', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'tasks'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/subtasks', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'task_subtasks'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/message', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'new_task_message'),
 				'args' => array(
 					'task_id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'subject' => array(
 						'default' => 'task',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => 'message',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'message' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/subtasks/create', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'create_subtask'),
 				'args' => array(
 					'task' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/discussion', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'task_discussion'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/delete', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'delete_task'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/copy', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'copy_task'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/convert', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'convert_task'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/complete', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'complete_task'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'complete' => array(
 						'default' => '0',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/create', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'create_task'),
 				'args' => array(
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'project' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'assignee' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'start' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'end' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'custom_fields' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'categories' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'priority' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'status' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/permissions', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'permissions'),
 				'args' => array(
-					'user_id' => array(
-						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
-							return is_string($param);
-						}
-					)
+					//					'user_id' => array(
+					//						'default' => '',
+					//						'validate_callback' => function($param, $request, $key) {
+					//							return is_string($param);
+					//						}
+					//					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'projects'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/dashboard', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'projects_dashboard'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/milestones', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'milestones'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/create', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'create_project'),
 				'args' => array(
 					'name' => array(
 						'default' => 'Untitled Project',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => 'list',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/update_status', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'update_project_status'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'status' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'color' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/update', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'update_project'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled Project',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'start' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'end' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'categories' => array(
 						'default' => '[]',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/statuses', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'getStatuses'),
 				'args' => array(),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/settings', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'getSettings'),
 				'args' => array(
-					'user_id' => array(
-						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
-							return is_string($param);
-						}
-					),
+					//					'user_id' => array(
+					//						'default' => '-1',
+					//						'validate_callback' => function($param, $request, $key) {
+					//							return is_string($param);
+					//						}
+					//					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/teams', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'getTeams'),
 				'args' => array(),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/discussion', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'project_discussion'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/message', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'new_project_message'),
 				'args' => array(
 					'task_id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => 'message',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'message' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/tasks', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'project_tasks'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/delete', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'delete_project'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/copy', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'copy_project'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/add_to_dashboard', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'add_project_to_dashboard'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/projects/remove_from_dashboard', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'remove_project_from_dashboard'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/users', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_users'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/authenticate', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'authenticate'),
 				'args' => array(
 					'username' => array(
 						'default' => 'username',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'password' => array(
 						'default' => 'password',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_id' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_name' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'os' => array(
 						'default' => 'android',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'one_signal_user_id' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
+			register_rest_route('zephyr_project_manager/v1', '/get_authenticated', array(
+				'methods' => ['GET', 'POST'],
+				'callback' => array($this, 'get_authenticated'),
+				'args' => array(),
+				'permission_callback' => function($data) {
+					return RestApi::verify($data);
+				}
+			));
 			register_rest_route('zephyr_project_manager/v1', '/authenticate_app', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'authenticateApp'),
 				'args' => array(
 					'username' => array(
 						'default' => 'username',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'password' => array(
 						'default' => 'password',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_id' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_name' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'os' => array(
 						'default' => 'android',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'one_signal_user_id' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/categories', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'categories'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/tasks/update', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'update_task'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'start' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'end' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'project' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'assignee' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'status' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'priority' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'categories' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'custom_fields' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/statistics', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'general_statistics'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/categories/create', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'create_category'),
 				'args' => array(
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'color' => array(
 						'default' => '#eeeeee',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/categories/update', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'update_category'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'color' => array(
 						'default' => '#eeeeee',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/categories/delete', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'delete_category'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/templates', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_templates'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/custom_fields', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_custom_fields'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/custom_fields/create', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'create_custom_field'),
 				'args' => array(
 					'name' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'default_value' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'field_values' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'required' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/custom_fields/update', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'update_custom_field'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'default_value' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'field_values' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'required' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/files/upload', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'uploadFile'),
@@ -975,93 +944,89 @@ class RestApi {
 						'default' => '',
 					],
 				],
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/custom_fields/delete', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'delete_custom_field'),
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/general/save_settings', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'save_settings'),
 				'args' => array(
-					'user_id' => array(
-						'default' => '-1',
-						'validate_callback' => function ($param, $request, $key) {
-							return is_string($param);
-						}
-					),
+					//					'user_id' => array(
+					//						'default' => '-1',
+					//						'validate_callback' => function($param, $request, $key) {
+					//							return is_string($param);
+					//						}
+					//					),
 					'name' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'email' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'avatar' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'notify_all' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'notify_tasks' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'notify_weekly' => array(
 						'default' => '',
-						'validate_callback' => function ($param, $request, $key) {
+						'validate_callback' => function($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/general/status', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'check_status'),
-				'permission_callback' => function ($data) {
+				'permission_callback' => function($data) {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/activity', array(
 				'methods' => 'GET',
 				'callback' => array($this, 'getActivities'),
@@ -1069,7 +1034,6 @@ class RestApi {
 					return RestApi::verify($data);
 				}
 			));
-
 			register_rest_route('zephyr_project_manager/v1', '/activity/log', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'logActivity'),
@@ -1114,8 +1078,9 @@ class RestApi {
 
 	public static function verify($data) {
 		global $zpmSettings;
-
-		if ($zpmSettings['rest_api_disable_authentication']) return true;
+		if ($zpmSettings['rest_api_disable_authentication']) {
+			return true;
+		}
 
 		return wp_validate_application_password(false);
 	}
@@ -1126,11 +1091,11 @@ class RestApi {
 
 	public function check_status($data) {
 		$response = array(
-			'installed' 	   => true,
-			'is_pro' 		   => BaseController::is_pro(),
-			'code'			   => 'basic_installed',
+			'installed' => true,
+			'is_pro' => BaseController::is_pro(),
+			'code' => 'basic_installed',
 			'is_valid_version' => true,
-			'site_url'		   => get_site_url()
+			'site_url' => get_site_url()
 		);
 
 		return $response;
@@ -1141,7 +1106,6 @@ class RestApi {
 		$password = $data['password'];
 		$one_signal_user_id = $data['one_signal_user_id'];
 		$user = get_user_by('login', $username);
-
 		if ($user && wp_check_password($password, $user->data->user_pass, $user->ID)) {
 			if ($data['device_id'] !== '') {
 				$devices = maybe_unserialize(get_option('zpm_devices', array()));
@@ -1151,37 +1115,35 @@ class RestApi {
 						'id' => $data['device_id'],
 						'name' => $data['device_name'],
 						'linked_to' => $user->ID,
-						'os'	=> $data['os'],
+						'os' => $data['os'],
 					);
-
 					if ($one_signal_user_id !== "" && !empty($one_signal_user_id)) {
 						$devices[$data['device_id']]['one_signal_user_id'] = $one_signal_user_id;
 					}
 				}
 				update_option('zpm_devices', serialize($devices));
 			}
-
 			$project_manager_user = BaseController::get_project_manager_user($user->ID);
 			$user_settings = Utillities::get_user_settings($user->ID);
 			$user_results = [
-				'user_id' 		 => $user->data->ID,
-				'user_name' 	 => $user->data->display_name,
-				'user_email' 	 => $user->data->user_email,
-				'login_name' 	 => $user->data->user_login,
+				'user_id' => $user->data->ID,
+				'user_name' => $user->data->display_name,
+				'user_email' => $user->data->user_email,
+				'login_name' => $user->data->user_login,
 				'login_password' => $user->data->user_pass,
-				'user_data'		 => $project_manager_user,
-				'status'		 => true,
-				'can_zephyr'	 => $user_settings['can_zephyr'],
-				'is_admin'		 => user_can($user->data->ID, 'administrator'),
-				'is_pro'		 => BaseController::is_pro(),
-				'site_url'		 => get_site_url()
+				'user_data' => $project_manager_user,
+				'status' => true,
+				'can_zephyr' => $user_settings['can_zephyr'],
+				'is_admin' => user_can($user->data->ID, 'administrator'),
+				'is_pro' => BaseController::is_pro(),
+				'site_url' => get_site_url()
 			];
+
 			return $user_results;
 		} else {
 			$response = [
 				'status' => false
 			];
-
 			if (!get_user_by('login', $username)) {
 				$response['error'] = "invalid_username";
 			} else {
@@ -1192,34 +1154,64 @@ class RestApi {
 		}
 	}
 
+	public function get_authenticated($data) {
+		preg_match('/Basic\s+(.*)$/i', $data->get_header('authorization'), $matches);
+
+		return [
+			'post' => $_POST,
+			'get' => $_GET,
+			'data' => $data,
+			'headers' => $data->get_headers(),
+			'auth' => $data->get_header('authorization'),
+			'user' => $this->getAuthenticatedUser($data)
+			// 'user_id' => $this->getAuthenticatedUser()
+		];
+	}
+
+	public function getAuthenticatedUser($data) {
+		$header = $data->get_header('authorization');
+		if (preg_match('/Basic\s+(.*)$/i', $header, $matches)) {
+			$decoded = base64_decode($matches[1]);
+			$split = explode(':', $decoded);
+			$auth = wp_authenticate_application_password(null, $split[0], $split[1]);
+			$user = wp_authenticate_application_password(null, $split[0], $split[1]);
+			if (property_exists($user, 'ID')) {
+				wp_set_current_user($user->ID);
+
+				return $user->ID;
+			}
+		}
+
+		return get_current_user_id();
+	}
+
 	public function authenticateApp($data) {
 		$username = $data['username'];
 		$password = $data['password'];
 		$user = wp_authenticate_application_password(null, $username, $password);
-
 		if (is_a($user, 'WP_User')) {
 			$project_manager_user = BaseController::get_project_manager_user($user->ID);
 			$user_settings = Utillities::get_user_settings($user->ID);
-			$this->setUser($user->ID);
+			$GLOBALS['wp_rest_auth_user'] = $user;
 			$user_results = [
-				'user_id' 		 => $user->data->ID,
-				'user_name' 	 => $user->data->display_name,
-				'user_email' 	 => $user->data->user_email,
-				'login_name' 	 => $user->data->user_login,
+				'user_id' => $user->data->ID,
+				'user_name' => $user->data->display_name,
+				'user_email' => $user->data->user_email,
+				'login_name' => $user->data->user_login,
 				'login_password' => $user->data->user_pass,
-				'user_data'		 => $project_manager_user,
-				'status'		 => true,
-				'can_zephyr'	 => $user_settings['can_zephyr'],
-				'is_admin'		 => user_can($user->data->ID, 'administrator'),
-				'is_pro'		 => BaseController::is_pro(),
-				'site_url'		 => get_site_url()
+				'user_data' => $project_manager_user,
+				'status' => true,
+				'can_zephyr' => $user_settings['can_zephyr'],
+				'is_admin' => user_can($user->data->ID, 'administrator'),
+				'is_pro' => BaseController::is_pro(),
+				'site_url' => get_site_url()
 			];
+
 			return $user_results;
 		} else {
 			$response = [
 				'status' => false
 			];
-
 			if (is_a($user, 'WP_Error')) {
 				$response['error'] = $user->get_error_message();
 			}
@@ -1229,8 +1221,7 @@ class RestApi {
 	}
 
 	public function permissions($data) {
-		$userId = $data['user_id'];
-		wp_set_current_user($userId);
+		$userId = $this->getAuthenticatedUser($data);
 		$generalSettings = Utillities::general_settings();
 		$permissions = [];
 		$permissions['create_tasks'] = Utillities::can_create_tasks($userId);
@@ -1240,17 +1231,14 @@ class RestApi {
 		$permissions['delete_tasks'] = Utillities::canDeleteTasks($userId);
 		$permissions['view_members'] = $generalSettings['view_members'];
 		$permissions['add_custom_fields'] = user_can($userId, 'zpm_add_custom_fields');
-
 		if (user_can($userId, 'administrator')) {
 			$permissions['view_members'] = true;
 		}
-
 		$isZPMUser = Utillities::user_has_role($userId, 'zpm_user');
 		$isZPMFrontendUser = Utillities::user_has_role($userId, 'zpm_frontend_user');
 		$isZPMManager = Utillities::user_has_role($userId, 'zpm_manager');
 		$isZPMAdmin = Utillities::user_has_role($userId, 'zpm_administrator');
 		$isAdmin = user_can($userId, 'administrator');
-
 		$pages = array(
 			'dashboard',
 			'projects',
@@ -1262,28 +1250,24 @@ class RestApi {
 			'calendar',
 			'files'
 		);
-
 		$permissions['pages'] = [];
-
 		if ($isZPMAdmin || $isZPMManager || $isAdmin) {
 			$permissions['pages'][] = 'custom_fields';
 			$permissions['pages'][] = 'categories';
 		}
-
 		foreach ($pages as $page) {
 			if (Utillities::can_access_page($page, $userId)) {
 				$permissions['pages'][] = $page;
 			}
 		}
+
 		return $permissions;
 	}
 
 	public function projects_dashboard($data) {
 		$dashboard_projects = array();
-		$userID = $data->get_param('user_id');
-		wp_set_current_user($userID);
+		$userID = $this->getAuthenticatedUser($data);
 		$dashboard_project_ids = Projects::get_dashboard_projects(false, $userID);
-
 		foreach ($dashboard_project_ids as $project_id) {
 			$project = Projects::get_project($project_id);
 			if (!is_object($project)) {
@@ -1295,11 +1279,13 @@ class RestApi {
 			$project->pending_tasks = $project->total_tasks - $project->completed_tasks;
 			$dashboard_projects[] = $project;
 		}
+
 		return $dashboard_projects;
 	}
-	
+
 	public function task_subtasks($data) {
 		$tasks = Tasks::get_subtasks($data['id']);
+
 		return $tasks;
 	}
 
@@ -1312,12 +1298,14 @@ class RestApi {
 		];
 		$new_task = Tasks::create($data);
 		$subtask = Tasks::get_task($new_task);
+
 		return $subtask;
 	}
 
 	public function create_category($data) {
 		$category_id = Categories::create($data);
 		$category = Categories::get_category($category_id);
+
 		return $category;
 	}
 
@@ -1328,18 +1316,19 @@ class RestApi {
 		);
 		$category_id = Categories::update($data['id'], $args);
 		$category = Categories::get_category($data['id']);
+
 		return $category;
 	}
 
 	public function delete_category($data) {
 		Categories::delete($data['id']);
+
 		return $data;
 	}
 
 	public function task_discussion($data) {
 		$comments = Tasks::get_comments($data['id']);
 		$array = [];
-
 		foreach ($comments as $comment) {
 			$attachments = Tasks::get_comment_attachments($comment->id);
 			$user = BaseController::get_project_manager_user($comment->user_id);
@@ -1347,25 +1336,19 @@ class RestApi {
 			$comment->message = html_entity_decode($comment->message);
 			$comment->username = $user['name'];
 			$attachments_array = [];
-
 			foreach ($attachments as $attachment) {
 				$this_attachment = wp_get_attachment_url(unserialize($attachment->message));
 				array_push($attachments_array, $this_attachment);
 			}
-
 			$comment->attachments = $attachments_array;
-
 			array_push($array, $comment);
 		}
+
 		return $array;
 	}
 
 	public function projects($data) {
-		// $projects = Projects::get_projects();
-		$userID = $data->has_param('user_id') ? $data->get_param('user_id') : null;
-		$this->setUser($userID);
-		$projects = Projects::get_projects(null, null, null, false, $userID);
-
+		$projects = Projects::get_projects(null, null, null, false, $this->getAuthenticatedUser($data));
 		foreach ($projects as $project) {
 			$project->categories = unserialize($project->categories);
 			$project->total_tasks = Tasks::get_project_task_count($project->id);
@@ -1379,7 +1362,6 @@ class RestApi {
 	public function project_discussion($data) {
 		$comments = Projects::get_comments($data['id']);
 		$array = [];
-
 		foreach ($comments as $comment) {
 			$attachments = Projects::get_comment_attachments($comment->id);
 			$user = BaseController::get_project_manager_user($comment->user_id);
@@ -1387,31 +1369,32 @@ class RestApi {
 			$comment->message = html_entity_decode($comment->message);
 			$comment->username = $user['name'];
 			$attachments_array = [];
-
 			foreach ($attachments as $attachment) {
 				$this_attachment = wp_get_attachment_url(unserialize($attachment->message));
 				array_push($attachments_array, $this_attachment);
 			}
-
 			$comment->attachments = $attachments_array;
-
 			array_push($array, $comment);
 		}
+
 		return $array;
 	}
 
 	public function project_tasks($data) {
 		$projects = Tasks::get_project_tasks($data['id']);
+
 		return $projects;
 	}
 
 	public function complete_task($data) {
 		Tasks::complete($data['id'], $data['complete']);
+
 		return $data;
 	}
 
 	public function get_users($data) {
 		$users = Utillities::get_users();
+
 		return $users;
 	}
 
@@ -1421,23 +1404,22 @@ class RestApi {
 		foreach ((array) $categories as $category) {
 			$results[] = $category;
 		}
+
 		return $results;
 	}
 
 	// Tasks
 	public function tasks($data) {
 		$tasks = Tasks::get_tasks();
-
 		if (Zephyr::isPro()) {
 			foreach ($tasks as $task) {
 				$array = [];
 				$task->custom_fields = unserialize($task->custom_fields);
-
 				foreach ((array) $task->custom_fields as $custom_field) {
 					$field = isset($custom_field['id']) ? CustomFields::get_custom_field($custom_field['id']) : false;
-
-					if (!is_object($field)) continue;
-
+					if (!is_object($field)) {
+						continue;
+					}
 					$custom_field['label'] = $field->name;
 					$custom_field['field_values'] = isset($custom_field['field_values']) ? maybe_unserialize($custom_field['field_values']) : array();
 					array_push($array, $custom_field);
@@ -1446,16 +1428,13 @@ class RestApi {
 				$task->description = Utillities::getMentions($task->description);
 			}
 		}
-
 		$results = [];
-
 		foreach ($tasks as $task) {
 			if ($data->has_param('user_id')) {
 				if (!Utillities::can_view_task($task, $data->get_param('user_id'))) {
 					continue;
 				}
 			}
-
 			$results[] = $task;
 		}
 
@@ -1476,11 +1455,9 @@ class RestApi {
 		$end = $end_date !== '' ? date('Y-m-d H:i:s', strtotime($end_date)) : $end_date;
 		$custom_fields = $data->get_param('custom_fields') !== "" ? json_decode(sanitize_text_field($data->get_param('custom_fields')), true) : array();
 		$categories = $data->get_param('categories') !== "" ? json_decode(sanitize_text_field($data->get_param('categories')), true) : [];
-
 		foreach ($custom_fields as $key => $value) {
 			$custom_fields[$key]["field_values"] = serialize($custom_fields[$key]["field_values"]);
 		}
-
 		$new_task_data = [
 			'name' => $name,
 			'description' => $description,
@@ -1489,37 +1466,42 @@ class RestApi {
 			'date_start' => $start,
 			'date_due' => $end
 		];
-
-		if (!empty($user_id)) $new_task_data['user_id'] = $user_id;
-		if (!empty($status)) $new_task_data['status'] = $status;
-		if (!empty($priority)) $new_task_data['priority'] = $priority;
-		if (!empty($categories)) $new_task_data['categories'] = implode(',', $categories);
-
+		if (!empty($user_id)) {
+			$new_task_data['user_id'] = $user_id;
+		}
+		if (!empty($status)) {
+			$new_task_data['status'] = $status;
+		}
+		if (!empty($priority)) {
+			$new_task_data['priority'] = $priority;
+		}
+		if (!empty($categories)) {
+			$new_task_data['categories'] = implode(',', $categories);
+		}
 		$new_task = Tasks::create($new_task_data);
 		$task = Tasks::get_task($new_task);
-
 		do_action('zpm_new_task', $task);
 		do_action('zpm_task_created', $task);
 		$task->sending_email = "true";
 		$emails = Emails::assignedTaskEmail($task);
 		// 		$task->custom_fields = unserialize( $task->custom_fields );
-
 		// 		foreach ($task->custom_fields as $key => $value) {
 		// 			$task->custom_fields[$key]["field_values"] = unserialize( $task->custom_fields[$key]["field_values"] );
 		// 		}
-
 		return $task;
 	}
 
 	public function copy_task($data) {
 		$id = $data['id'];
 		$new_task = Tasks::copy($id);
+
 		return Tasks::get_task($new_task);
 	}
 
 	public function convert_task($data) {
 		$id = $data['id'];
 		$new_project = Tasks::convert($id);
+
 		return $new_project;
 	}
 
@@ -1529,6 +1511,7 @@ class RestApi {
 		$response = [
 			'id' => $task_id
 		];
+
 		return $response;
 	}
 
@@ -1549,84 +1532,63 @@ class RestApi {
 		$hasCategories = isset($post['categories']);
 		$id = $data['id'];
 		$task_data = array();
-
 		if ($hasName) {
 			$task_data['name'] = $data['name'];
 		}
-
 		if ($hasDescription) {
 			$task_data['description'] = $data['description'];
 		}
-
 		if ($hasStartDate) {
 			$task_data['date_start'] = $data['start'] !== '' ? date('Y-m-d H:i:s', strtotime($data['start'])) : $data['start'];
 		}
-
 		if ($hasDueDate) {
 			$task_data['date_due'] = $data['end'] !== '' ? date('Y-m-d H:i:s', strtotime($data['end'])) : $data['end'];
 		}
-
 		if ($hasAssignee) {
 			$task_data['assignee'] = $data['assignee'];
 		}
-
 		if ($hasProject) {
 			$task_data['project'] = $data['project'];
 		}
-
 		if ($hasStatus) {
 			$task_data['status'] = sanitize_text_field($data->get_param('status'));
 		}
-
 		if ($hasPriority) {
 			$task_data['priority'] = sanitize_text_field($data->get_param('priority'));
 		}
-
 		if ($hasUserID) {
 			$task_data['user_id'] = sanitize_text_field($data->get_param('user_id'));
 		}
-
 		if ($hasCategories) {
 			$categories = $data->get_param('categories') !== "" ? json_decode(sanitize_text_field($data->get_param('categories')), true) : [];
 			$task_data['categories'] = implode(',', $categories);
 		}
-
 		if ($hasCustomFields) {
 			$custom_fields = $data['custom_fields'] !== "" ? json_decode($data['custom_fields'], true) : array();
-
 			foreach ($custom_fields as $key => $value) {
 				$custom_fields[$key]["field_values"] = serialize($custom_fields[$key]["field_values"]);
 			}
-
 			$task_data['custom_fields'] = serialize($custom_fields);
 		}
-
 		$prevTask = Tasks::get_task($id);
-
-
-
 		Tasks::update($id, $task_data);
-
 		$task = Tasks::get_task($id);
-
 		if ($hasAssignee) {
 			if ($prevTask->assignee !== $task_data['assignee'] && !empty($settings['assignee']) && $settings['assignee'] !== '-1') {
 				Emails::assignedTaskEmail($task);
 			}
 		}
-
 		if ($hasStatus) {
 			if ($prevTask->status !== $task_data['status']) {
 				do_action('zpm_task_status_changed', $id, $task_data['status']);
 				do_action('zpm/task/status_changed', $task, $task_data['status']);
-
 				if ($task_data['status'] == 'completed') {
 					do_action('zpm_task_completed', $task);
 				}
 			}
 		}
-
 		do_action('zpm_task_updated', $task);
+
 		return $task_data;
 	}
 
@@ -1641,12 +1603,10 @@ class RestApi {
 		$message->username = $user['name'];
 		$attachments = Tasks::get_comment_attachments($message->id);
 		$attachments_array = [];
-
 		foreach ($attachments as $attachment) {
 			$this_attachment = wp_get_attachment_url(unserialize($attachment->message));
 			array_push($attachments_array, $this_attachment);
 		}
-
 		$message->attachments = $attachments_array;
 		$response = array(
 			'html' => $html,
@@ -1659,7 +1619,6 @@ class RestApi {
 
 	public function new_project_message($data) {
 		$project_id = $data['project_id'];
-
 		$message_id = Projects::send_comment($project_id, $data);
 		$message = Projects::get_comment($message_id);
 		$user = BaseController::get_project_manager_user($message->user_id);
@@ -1668,12 +1627,10 @@ class RestApi {
 		$message->username = $user['name'];
 		$attachments = Projects::get_comment_attachments($message->id);
 		$attachments_array = [];
-
 		foreach ($attachments as $attachment) {
 			$this_attachment = wp_get_attachment_url(unserialize($attachment->message));
 			array_push($attachments_array, $this_attachment);
 		}
-
 		$message->attachments = $attachments_array;
 		$html = Projects::new_comment($message);
 		$response = array(
@@ -1686,8 +1643,7 @@ class RestApi {
 	}
 
 	public function general_statistics($data) {
-		$userID = $data->has_param('user_id') ? $data->get_param('user_id') : null;
-		wp_set_current_user($userID);
+		$userID = $this->getAuthenticatedUser($data);
 		$overdue_tasks = Tasks::get_overdue_tasks();
 		$allProjects = Projects::get_projects(null, null, null, false, $userID);
 		$total_projects = count($allProjects);
@@ -1699,19 +1655,17 @@ class RestApi {
 		$percent_completed_projects = ($total_projects !== 0) ? floor($completed_projects / $total_projects * 100) : '100';
 		$dashboard_projects = array();
 		$dashboard_project_ids = Projects::get_dashboard_projects(false);
-
 		foreach ($dashboard_project_ids as $project_id) {
 			$project = Projects::get_project($project_id);
-
-			if (!is_object($project)) continue;
-
+			if (!is_object($project)) {
+				continue;
+			}
 			$project->id = $project_id;
 			$project->total_tasks = Tasks::get_project_task_count($project_id);
 			$project->completed_tasks = Tasks::get_project_completed_tasks($project_id);
 			$project->pending_tasks = $project->total_tasks - $project->completed_tasks;
 			$dashboard_projects[] = $project;
 		}
-
 		$statistics = [
 			'total_projects' => $total_projects,
 			'completed_projects' => $completed_projects,
@@ -1722,6 +1676,7 @@ class RestApi {
 			'overdue_tasks' => $overdue_tasks,
 			'dashboard_projects' => $dashboard_projects
 		];
+
 		return $statistics;
 	}
 
@@ -1741,6 +1696,7 @@ class RestApi {
 		$project->total_tasks = Tasks::get_project_task_count($project->id);
 		$project->completed_tasks = Tasks::get_project_completed_tasks($project->id);
 		$project->pending_tasks = $project->total_tasks - $project->completed_tasks;
+
 		return $project;
 	}
 
@@ -1755,15 +1711,14 @@ class RestApi {
 			'date_start' => $date_start,
 			'date_due' => $date_due
 		];
-
 		Projects::update($data['id'], $project_data);
-
 		$project = Projects::get_project($data['id']);
 		$project->categories = unserialize($project->categories);
 		$project->total_tasks = Tasks::get_project_task_count($project->id);
 		$project->completed_tasks = Tasks::get_project_completed_tasks($project->id);
 		$project->pending_tasks = $project->total_tasks - $project->completed_tasks;
 		$project->dates = $data['start'];
+
 		return $project;
 	}
 
@@ -1779,18 +1734,16 @@ class RestApi {
 		$notify_all = isset($data['notify_all']) && $data['notify_all'] == "true" ? 1 : '0';
 		$notify_tasks = isset($data['notify_tasks']) && $data['notify_tasks'] == "true" ? 1 : '0';
 		$notify_updates = isset($data['notify_weekly']) && $data['notify_weekly'] == "true" ? 1 : '0';
-
 		$settings = array(
-			'user_id' 		  => $user_id,
+			'user_id' => $user_id,
 			'profile_picture' => $avatar,
-			'name' 			  => $name,
-			'description' 	  => $description,
-			'email' 		  => $email,
+			'name' => $name,
+			'description' => $description,
+			'email' => $email,
 			'notify_activity' => $notify_all,
-			'notify_tasks' 	  => $notify_tasks,
-			'notify_updates'  => $notify_updates
+			'notify_tasks' => $notify_tasks,
+			'notify_updates' => $notify_updates
 		);
-
 		update_option('zpm_user_' . $user_id . '_settings', $settings);
 
 		return $settings;
@@ -1800,11 +1753,11 @@ class RestApi {
 	public function get_custom_fields($data) {
 		if (zpmIsPro()) {
 			$custom_fields = CustomFields::get_custom_fields();
-
 			foreach ($custom_fields as $key => $field) {
 				$custom_fields[$key]->default_value = maybe_unserialize($field->default_value);
 				$custom_fields[$key]->field_values = maybe_unserialize($field->field_values);
 			}
+
 			return $custom_fields;
 		} else {
 			return [];
@@ -1814,41 +1767,41 @@ class RestApi {
 	// Create a custom field
 	public function create_custom_field($data) {
 		$data = array(
-			'name'          => $data['name'],
-			'type'          => $data['type'],
-			'field_values'  => $data['field_values'],
+			'name' => $data['name'],
+			'type' => $data['type'],
+			'field_values' => $data['field_values'],
 			'default_value' => $data['default_value'],
-			'required'      => $data['required']
+			'required' => $data['required']
 		);
-
 		$custom_field_id = CustomFields::create($data);
 		$custom_field = CustomFields::get_custom_field($custom_field_id);
 		$custom_field->default_value = unserialize($custom_field->default_value);
 		$custom_field->field_values = unserialize($custom_field->default_value);
+
 		return $custom_field;
 	}
 
 	public function update_custom_field($data) {
 		$args = array(
-			'name'          => $data['name'],
-			'type'          => $data['type'],
-			'field_values'  => $data['field_values'],
+			'name' => $data['name'],
+			'type' => $data['type'],
+			'field_values' => $data['field_values'],
 			'default_value' => $data['default_value'],
-			'required'      => $data['required']
+			'required' => $data['required']
 		);
-
 		$args['field_values'] = json_decode($args['field_values']);
-
 		CustomFields::update($data['id'], $args);
 		$custom_field = CustomFields::get_custom_field($data['id']);
 		//$custom_field->default_value = unserialize( $custom_field->default_value );
 		$custom_field->field_values = unserialize($custom_field->field_values);
+
 		return $custom_field;
 	}
 
 	// Deletes a custom field
 	public function delete_custom_field($data) {
 		CustomFields::delete_field($data['id']);
+
 		return $data;
 	}
 
@@ -1862,12 +1815,12 @@ class RestApi {
 				'description',
 			),
 		];
-
 		$project = Projects::copy_project($args);
 		$project->categories = unserialize($project->categories);
 		$project->total_tasks = Tasks::get_project_task_count($project->id);
 		$project->completed_tasks = Tasks::get_project_completed_tasks($project->id);
 		$project->pending_tasks = $project->total_tasks - $project->completed_tasks;
+
 		return $project;
 	}
 
@@ -1890,7 +1843,6 @@ class RestApi {
 	public function getStatuses() {
 		$statuses = Utillities::get_statuses('status');
 		$results = [];
-
 		foreach ($statuses as $slug => $status) {
 			$status['slug'] = $slug;
 			$results[] = $status;
@@ -1900,15 +1852,17 @@ class RestApi {
 	}
 
 	public function getSettings($data) {
-		$userId = $data['user_id'];
+		$userId = $this->getAuthenticatedUser($data);
 		$settings = Utillities::getLocalizedData();
 		$settings['can_create_tasks'] = Utillities::can_create_tasks($userId);
 		$settings['can_create_projects'] = Utillities::can_create_projects($userId);
+
 		return $settings;
 	}
 
 	public function getTeams($data) {
 		$teams = Members::get_teams();
+
 		return $teams;
 	}
 
@@ -1916,27 +1870,28 @@ class RestApi {
 		$offset = intval($data->get_param('offset'));
 		$limit = intval($data->get_param('limit'));
 		$args = [];
-
 		if (!empty($offset) && !empty($limit)) {
 			$args = [
 				'offset' => $offset * $limit,
 				'limit' => $limit
 			];
 		}
-
 		$activities = array_map(function($activity) {
 			$member = Members::get_member($activity->user_id);
 			$username = isset($member['name']) ? $member['name'] : '';
+
 			return (object) wp_parse_args($activity, [
 				'username' => $username
 			]);
 		}, Activity::get_activities($args));
+
 		return $this->response($activities);
 	}
 
 	public function logActivity($data) {
 		$date = date('Y-m-d H:i:s');
 		$activity = Activity::log_activity($data->get_param('user_id'), $data->get_param('subject_id'), $data->get_param('message'), $data->get_param('message'), $data->get_param('subject'), $data->get_param('action'), $date);
+
 		return $this->response($activity);
 	}
 
@@ -1944,43 +1899,45 @@ class RestApi {
 		return $this->response([]);
 	}
 
-	public function setUser($userID) {
-		if (!is_null($userID)) {
-			wp_set_current_user($userID);
-		}
-	}
-
+	// public function getAuthenticatedUser() {
+	// 	if (!empty($GLOBALS['wp_rest_auth_user'])) {
+	// 		return $GLOBALS['wp_rest_auth_user']->ID;
+	// 	}
+	// 	if (function_exists('wp_get_application_password_token_user')) {
+	// 		$user = \wp_get_application_password_token_user();
+	// 		if (!empty($user) && !is_wp_error($user)) {
+	// 			return $user->ID;
+	// 		}
+	// 	}
+	// 	return wp_get_current_user_id();
+	// }
 	public function milestones($data) {
 		$results = [];
 		$milestones = Milestones::get_milestones();
 		$createdBy = $data->get_param('created_by');
-  
 		foreach ($milestones as $milestone) {
-		  $tasks = [];
-		  $projects = [];
-  
-		  if (!empty($createdBy)) {
-			if (intval($createdBy) !== intval($milestone->user_id)) continue;
-		  }
-  
-		  foreach ($milestone->tasks as $taskId) {
-			$tasks[] = Tasks::get_task($taskId);
-		  }
-  
-		  $milestone->tasks = $tasks;
-  
-		  foreach ($milestone->projects as $projectId) {
-			$projects[] = Projects::get_project($projectId);
-		  }
-  
-		  $milestone->projects = $projects;
-		  $results[] = $milestone;
+			$tasks = [];
+			$projects = [];
+			if (!empty($createdBy)) {
+				if (intval($createdBy) !== intval($milestone->user_id)) {
+					continue;
+				}
+			}
+			foreach ($milestone->tasks as $taskId) {
+				$tasks[] = Tasks::get_task($taskId);
+			}
+			$milestone->tasks = $tasks;
+			foreach ($milestone->projects as $projectId) {
+				$projects[] = Projects::get_project($projectId);
+			}
+			$milestone->projects = $projects;
+			$results[] = $milestone;
 		}
-  
-		return $results;
-	  }
 
-	  public function uploadFile($data) {
+		return $results;
+	}
+
+	public function uploadFile($data) {
 		$subject = $data->get_param('subject');
 		$subjectID = $data->get_param('subject_id');
 		$userID = $data->get_param('user_id');
@@ -2002,8 +1959,6 @@ class RestApi {
 			$response['response'] = "ERROR";
 			$response['error'] = $uploaded_file['error'];
 		}
-
-
 		$url = stripslashes($uploaded_file['url']);
 		//$id = attachment_url_to_postid($url);
 		$messageID = $subject == 'task' ? Tasks::sendComment($subjectID, $url, $subject, $userID, 'attachment') : Projects::sendComment($subjectID, $url, $subject, $userID, 'attachment');
@@ -2012,6 +1967,7 @@ class RestApi {
 		$message->message = maybe_unserialize($message->message);
 		$message->message = html_entity_decode($message->message);
 		$message = $this->formatComment($message);
+
 		return $this->response($message);
 	}
 
@@ -2028,8 +1984,8 @@ class RestApi {
 			$this_attachment = wp_get_attachment_url(unserialize($attachment->message));
 			array_push($attachments_array, $this_attachment);
 		}
-
 		$comment->attachments = $attachments_array;
+
 		return $comment;
 	}
 }
