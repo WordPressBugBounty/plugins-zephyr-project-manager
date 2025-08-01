@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/donate/?cmd=_donations&business=dylanjkotze@
 Tags: project manager, task manager, projects, tasks, collaboration
 Requires at least: 3.2
 Tested up to: 6.8
-Stable tag: 3.3.201
+Stable tag: 3.3.202
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -151,6 +151,9 @@ For more information and documentation, please visit [the website](https://zephy
 1. See what is going on via the Activity page
 
 == Changelog ==
+= 3.3.202 =
+* Fixed REST API vulnerability
+
 = 3.3.201 =
 * Fixed possible REST API vulnerability
 

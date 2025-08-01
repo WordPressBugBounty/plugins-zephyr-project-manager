@@ -784,8 +784,8 @@ class Utillities {
 	 * Checks if a user can view a task.
 	 * @param int|\stdClass $task The task ID or object.
 	 */
-	public static function canViewTask($task): bool {
-		return Utillities::can_view_task($task);
+	public static function canViewTask($task, $userID = null): bool {
+		return Utillities::can_view_task($task, $userID);
 	}
 
 
@@ -793,8 +793,8 @@ class Utillities {
      * Checks if a user can view a project.
 	 * @param int|\stdClass $project The project ID or object.
 	 */
-	public static function canViewProject($project): bool {
-		return Projects::has_project_access($project);
+	public static function canViewProject($project, $userId = null): bool {
+		return Projects::has_project_access($project, $userId);
 	}
 
 	public static function can_view_file($message) {
@@ -1668,8 +1668,8 @@ class Utillities {
 		return false;
 	}
 
-	public static function canEditProject($project) {
-		$userId = get_current_user_id();
+	public static function canEditProject($project, $userId = null) {
+		$userId = $userId ?? get_current_user_id();
 		$project = is_numeric($project) ? Projects::get_project($project) : $project;
 		$projectInstance = new Project($project);
 
@@ -1716,8 +1716,8 @@ class Utillities {
 		return false;
 	}
 
-	public static function canEditTask($task = null) {
-		$userId = get_current_user_id();
+	public static function canEditTask($task = null, $userId = null) {
+		$userId = $userId ?? get_current_user_id();
         if (is_numeric($task)) $task = Tasks::get_task($task);
 
 		if (current_user_can('zpm_all_zephyr_capabilities') || current_user_can('administrator')) {
@@ -2089,8 +2089,9 @@ class Utillities {
 	}
 
 	public static function hasPerm($permission, $userID = null) {
-		if (current_user_can('zpm_all_zephyr_capabilities')) return true;
-		if (is_null($userID)) $userID = get_current_user_id();
+		$userID = $userID ?? get_current_user_id();
+
+		if (user_can($userID, 'zpm_all_zephyr_capabilities')) return true;
 		if (strpos($permission, 'zpm_') !== 0) $permission = "zpm_{$permission}";
 		if (user_can($userID, $permission)) return true;
 		return false;
@@ -2121,8 +2122,9 @@ class Utillities {
 		return false;
 	}
 
-	public static function canUploadFiles() {
+	public static function canUploadFiles($userId = null) {
 		$settings = Utillities::general_settings();
+		$userId = $userId ?? get_current_user_id();
 
 		if ($settings['disable_files_globally']) return false;
 
@@ -2130,7 +2132,7 @@ class Utillities {
 			return false;
 		}
 
-		if (current_user_can('administrator') || current_user_can('zpm_upload_files') || current_user_can('zpm_all_zephyr_capabilities')) {
+		if (user_can($userId, 'administrator') || user_can($userId, 'zpm_upload_files') || user_can($userId, 'zpm_all_zephyr_capabilities')) {
 			return true;
 		}
 

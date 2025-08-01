@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
 
 use ZephyrProjectManager\Zephyr;
 use ZephyrProjectManager\Core\Tasks;
+use ZephyrProjectManager\Core\Message;
 use ZephyrProjectManager\Core\Projects;
 use ZephyrProjectManager\Core\Activity;
 use ZephyrProjectManager\Core\Members;
@@ -20,6 +21,7 @@ use ZephyrProjectManager\Base\BaseController;
 use ZephyrProjectManager\Pro\CustomFields;
 use ZephyrProjectManager\Pro\Milestones;
 use ZephyrProjectManager\Api\Emails;
+use ZephyrProjectManager\Core\Controllers\MessageController;
 
 class RestApi {
 	function register() {
@@ -1078,6 +1080,7 @@ class RestApi {
 
 	public static function verify($data) {
 		global $zpmSettings;
+
 		if ($zpmSettings['rest_api_disable_authentication']) {
 			return true;
 		}
@@ -1268,11 +1271,14 @@ class RestApi {
 		$dashboard_projects = array();
 		$userID = $this->getAuthenticatedUser($data);
 		$dashboard_project_ids = Projects::get_dashboard_projects(false, $userID);
+
 		foreach ($dashboard_project_ids as $project_id) {
 			$project = Projects::get_project($project_id);
+
 			if (!is_object($project)) {
 				continue;
 			}
+
 			$project->id = $project_id;
 			$project->total_tasks = Tasks::get_project_task_count($project_id);
 			$project->completed_tasks = Tasks::get_project_completed_tasks($project_id);
@@ -1285,11 +1291,15 @@ class RestApi {
 
 	public function task_subtasks($data) {
 		$tasks = Tasks::get_subtasks($data['id']);
-
-		return $tasks;
+		$userId = $this->getAuthenticatedUser($data);
+		return apply_filters($tasks, function($task) use ($userId) {
+			return Utillities::canViewTask($task, $userId);
+		});
 	}
 
 	public function create_subtask($data) {
+		if (!Utillities::can_create_tasks()) return $this->unauthorized("You don't have permission to create tasks.");
+
 		$parent_id = $data['task'];
 		$name = sanitize_text_field($data['name']);
 		$data = [
@@ -1303,32 +1313,47 @@ class RestApi {
 	}
 
 	public function create_category($data) {
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::hasPerm('create_categories', $userId)) return $this->unauthorized("You don't have permission to create categories.");
+
 		$category_id = Categories::create($data);
 		$category = Categories::get_category($category_id);
-
 		return $category;
 	}
 
 	public function update_category($data) {
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::hasPerm('create_categories', $userId)) return $this->unauthorized("You don't have permission to update categories.");
+
 		$args = array(
 			'name' => $data['name'],
 			'description' => $data['description']
 		);
 		$category_id = Categories::update($data['id'], $args);
 		$category = Categories::get_category($data['id']);
-
 		return $category;
 	}
 
 	public function delete_category($data) {
-		Categories::delete($data['id']);
+		$userId = $this->getAuthenticatedUser($data);
 
+		if (!Utillities::hasPerm('create_categories', $userId)) return $this->unauthorized("You don't have permission to delete categories.");
+
+		Categories::delete($data['id']);
 		return $data;
 	}
 
 	public function task_discussion($data) {
+		$id = $data['id'];
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::canViewTask($id, $userId)) return $this->unauthorized("You don't have access to this task.");
+
 		$comments = Tasks::get_comments($data['id']);
 		$array = [];
+
 		foreach ($comments as $comment) {
 			$attachments = Tasks::get_comment_attachments($comment->id);
 			$user = BaseController::get_project_manager_user($comment->user_id);
@@ -1349,6 +1374,7 @@ class RestApi {
 
 	public function projects($data) {
 		$projects = Projects::get_projects(null, null, null, false, $this->getAuthenticatedUser($data));
+
 		foreach ($projects as $project) {
 			$project->categories = unserialize($project->categories);
 			$project->total_tasks = Tasks::get_project_task_count($project->id);
@@ -1360,8 +1386,14 @@ class RestApi {
 	}
 
 	public function project_discussion($data) {
+		$projectId = $data['id'];
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::canViewProject($projectId, $userId)) return $this->unauthorized("You don't have access to this project.");
+
 		$comments = Projects::get_comments($data['id']);
 		$array = [];
+
 		foreach ($comments as $comment) {
 			$attachments = Projects::get_comment_attachments($comment->id);
 			$user = BaseController::get_project_manager_user($comment->user_id);
@@ -1381,26 +1413,31 @@ class RestApi {
 	}
 
 	public function project_tasks($data) {
-		$projects = Tasks::get_project_tasks($data['id']);
-
-		return $projects;
+		$tasks = Tasks::get_project_tasks($data['id']);
+		$userId = $this->getAuthenticatedUser($data);
+		return array_filter($tasks, function ($project) use ($userId) {
+			return Utillities::canViewTask($project, $userId);
+		});
 	}
 
 	public function complete_task($data) {
-		Tasks::complete($data['id'], $data['complete']);
+		$canComplete = apply_filters('zpm_can_complete_task', true, Tasks::get_task($data['id']));
 
+		if (!$canComplete) return $this->unauthorized("You don't have permission to complete tasks.");
+
+		Tasks::complete($data['id'], $data['complete']);
 		return $data;
 	}
 
 	public function get_users($data) {
 		$users = Utillities::get_users();
-
 		return $users;
 	}
 
 	public function categories($data) {
 		$results = [];
 		$categories = (array) Categories::get_categories();
+
 		foreach ((array) $categories as $category) {
 			$results[] = $category;
 		}
@@ -1411,6 +1448,8 @@ class RestApi {
 	// Tasks
 	public function tasks($data) {
 		$tasks = Tasks::get_tasks();
+		$userId = $this->getAuthenticatedUser($data);
+
 		if (Zephyr::isPro()) {
 			foreach ($tasks as $task) {
 				$array = [];
@@ -1429,11 +1468,10 @@ class RestApi {
 			}
 		}
 		$results = [];
+
 		foreach ($tasks as $task) {
-			if ($data->has_param('user_id')) {
-				if (!Utillities::can_view_task($task, $data->get_param('user_id'))) {
+				if (!Utillities::can_view_task($task, $userId)) {
 					continue;
-				}
 			}
 			$results[] = $task;
 		}
@@ -1442,6 +1480,8 @@ class RestApi {
 	}
 
 	public function create_task($data) {
+		if (!Utillities::can_create_tasks()) return $this->unauthorized("You don't have permission to create tasks.");
+
 		$name = sanitize_text_field($data->get_param('name'));
 		$description = sanitize_textarea_field($data->get_param('description'));
 		$project = sanitize_text_field($data->get_param('project'));
@@ -1492,6 +1532,8 @@ class RestApi {
 	}
 
 	public function copy_task($data) {
+		if (!Utillities::can_create_tasks()) return $this->unauthorized("You don't have permission to copy tasks.");
+
 		$id = $data['id'];
 		$new_task = Tasks::copy($id);
 
@@ -1499,6 +1541,8 @@ class RestApi {
 	}
 
 	public function convert_task($data) {
+		if (!Utillities::canEditTask($data['id'], $this->getAuthenticatedUser($data))) return $this->unauthorized("You don't have permission to edit tasks.");
+
 		$id = $data['id'];
 		$new_project = Tasks::convert($id);
 
@@ -1506,6 +1550,8 @@ class RestApi {
 	}
 
 	public function delete_task($data) {
+		if (!Utillities::canDeleteTask($this->getAuthenticatedUser($data), $data['id'])) return $this->unauthorized("You don't have permission to delete tasks.");
+
 		$task_id = $data['id'];
 		Tasks::delete($task_id);
 		$response = [
@@ -1516,6 +1562,8 @@ class RestApi {
 	}
 
 	public function update_task($data) {
+		if (!Utillities::canEditTask($data['id'], $this->getAuthenticatedUser($data))) return $this->unauthorized("You don't have permission to edit tasks.");
+
 		$post = $data->get_body_params();
 		$json = $data->get_json_params();
 		$post = wp_parse_args($post, $json);
@@ -1594,6 +1642,10 @@ class RestApi {
 
 	public function new_task_message($data) {
 		$task_id = $data['task_id'];
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::canViewTask($task_id, $userId)) return $this->unauthorized("You don't have access to this task.");
+
 		$message_id = Tasks::send_comment($task_id, $data);
 		$message = Tasks::get_comment($message_id);
 		$html = Tasks::new_comment($message);
@@ -1619,6 +1671,10 @@ class RestApi {
 
 	public function new_project_message($data) {
 		$project_id = $data['project_id'];
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::canViewProject($project_id, $userId)) return $this->unauthorized("You don't have access to this project.");
+
 		$message_id = Projects::send_comment($project_id, $data);
 		$message = Projects::get_comment($message_id);
 		$user = BaseController::get_project_manager_user($message->user_id);
@@ -1681,6 +1737,8 @@ class RestApi {
 	}
 
 	public function create_project($data) {
+		if (!Utillities::can_create_projects()) return $this->unauthorized("You don't have permission to create projects.");
+
 		$name = sanitize_text_field($data['name']);
 		$description = sanitize_textarea_field($data['description']);
 		$type = $data['type'];
@@ -1701,6 +1759,8 @@ class RestApi {
 	}
 
 	public function update_project($data) {
+		if (!Utillities::canEditProject($data['id'], $this->getAuthenticatedUser($data))) return $this->unauthorized("You don't have permission to update this project.");
+
 		$categories = $data['categories'] !== "" ? json_decode($data['categories'], true) : array();
 		$date_start = $data['start'] !== '' ? date('Y-m-d H:i:s', strtotime($data['start'])) : '';
 		$date_due = $data['end'] !== '' ? date('Y-m-d H:i:s', strtotime($data['end'])) : '';
@@ -1723,7 +1783,9 @@ class RestApi {
 	}
 
 	public function save_settings($data) {
-		$user_id = isset($data['user_id']) ? $data['user_id'] : '';
+		if (!user_can($this->getAuthenticatedUser($data), 'manage_options')) return $this->unauthorized("You don't have permission to save settings.");
+
+		$user_id = $data['user_id'] ?? '';
 		$current_user = get_user_by('ID', $user_id);
 		$user_name = $current_user->data->display_name;
 		$user_email = $current_user->data->user_email;
@@ -1745,7 +1807,6 @@ class RestApi {
 			'notify_updates' => $notify_updates
 		);
 		update_option('zpm_user_' . $user_id . '_settings', $settings);
-
 		return $settings;
 	}
 
@@ -1806,6 +1867,8 @@ class RestApi {
 	}
 
 	public function copy_project($data) {
+		if (!Utillities::can_create_projects()) return $this->unauthorized("You don't have permission to copy projects.");
+
 		$original = Projects::get_project($data['id']);
 		$args = [
 			'project_id' => $data['id'],
@@ -1825,24 +1888,36 @@ class RestApi {
 	}
 
 	public function delete_project($data) {
+		if (!Utillities::canDeleteProject($this->getAuthenticatedUser($data), $data['id'])) return $this->unauthorized("You don't have permission to delete this project.");
+
 		Projects::delete_project($data['id']);
 	}
 
 	public function add_project_to_dashboard($data) {
+		$id = $data['id'];
+		$userId = $this->getAuthenticatedUser($data);
+
+		if (!Utillities::canViewProject($id, $userId)) return $this->unauthorized("You don't have access to this project.");
+
 		Projects::add_to_dashboard($data['id']);
 	}
 
 	public function remove_project_from_dashboard($data) {
+		if (!Utillities::canDeleteProject($this->getAuthenticatedUser($data), $data['id'])) return $this->unauthorized("You don't have permission to remove this project.");
+
 		Projects::remove_from_dashboard($data['id']);
 	}
 
 	public function update_project_status($data) {
+		if (!Utillities::canEditProject($data['id'], $this->getAuthenticatedUser($data))) return $this->unauthorized("You don't have permission to update this project.");
+
 		Projects::update_project_status($data['id'], $data['status'], $data['color']);
 	}
 
 	public function getStatuses() {
 		$statuses = Utillities::get_statuses('status');
 		$results = [];
+
 		foreach ($statuses as $slug => $status) {
 			$status['slug'] = $slug;
 			$results[] = $status;
@@ -1856,13 +1931,11 @@ class RestApi {
 		$settings = Utillities::getLocalizedData();
 		$settings['can_create_tasks'] = Utillities::can_create_tasks($userId);
 		$settings['can_create_projects'] = Utillities::can_create_projects($userId);
-
 		return $settings;
 	}
 
 	public function getTeams($data) {
 		$teams = Members::get_teams();
-
 		return $teams;
 	}
 
@@ -1912,24 +1985,32 @@ class RestApi {
 	// 	return wp_get_current_user_id();
 	// }
 	public function milestones($data) {
+		if (!Milestones::canViewMilestones()) return $this->unauthorized("You don't have permission to view milestones.");
+
 		$results = [];
 		$milestones = Milestones::get_milestones();
 		$createdBy = $data->get_param('created_by');
+
 		foreach ($milestones as $milestone) {
 			$tasks = [];
 			$projects = [];
+
 			if (!empty($createdBy)) {
 				if (intval($createdBy) !== intval($milestone->user_id)) {
 					continue;
 				}
 			}
+
 			foreach ($milestone->tasks as $taskId) {
 				$tasks[] = Tasks::get_task($taskId);
 			}
+
 			$milestone->tasks = $tasks;
+
 			foreach ($milestone->projects as $projectId) {
 				$projects[] = Projects::get_project($projectId);
 			}
+
 			$milestone->projects = $projects;
 			$results[] = $milestone;
 		}
@@ -1938,6 +2019,8 @@ class RestApi {
 	}
 
 	public function uploadFile($data) {
+		if (!Utillities::canUploadFiles($this->getAuthenticatedUser($data))) return $this->unauthorized("You don't have permission to create categories.");
+
 		$subject = $data->get_param('subject');
 		$subjectID = $data->get_param('subject_id');
 		$userID = $data->get_param('user_id');
@@ -1987,5 +2070,9 @@ class RestApi {
 		$comment->attachments = $attachments_array;
 
 		return $comment;
+	}
+
+	private function unauthorized(string $string) {
+		return wp_send_json_error($string, 401);
 	}
 }

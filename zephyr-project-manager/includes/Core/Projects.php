@@ -659,22 +659,25 @@ class Projects {
 		return $html;
 	}
 
-	public static function has_project_access($project) {
+	public static function has_project_access($project, $userId = null) {
+		$userId = $userId ?? get_current_user_id();
+
 		if (is_numeric($project)) {
 			$project = Projects::get_project($project);
 		}
 		if (!is_object($project)) {
 			return false;
 		}
-		$userId = get_current_user_id();
-		if (current_user_can('zpm_all_zephyr_capabilities')) {
+
+		if (user_can($userId, 'zpm_all_zephyr_capabilities')) {
 			return true;
 		}
-		if (current_user_can('administrator')) {
+		if (user_can($userId, 'administrator')) {
 			return true;
 		}
-		$canViewProjects = current_user_can('zpm_view_projects');
-		$canViewAssignedProjects = current_user_can('zpm_view_assigned_projects');
+		$canViewProjects = user_can($userId, 'zpm_view_projects');
+		$canViewAssignedProjects = user_can($userId, 'zpm_view_assigned_projects');
+
 		if ($canViewProjects) {
 			return true;
 		}

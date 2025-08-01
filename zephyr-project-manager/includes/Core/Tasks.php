@@ -679,9 +679,11 @@ class Tasks {
 		// }
 		$tasks = $wpdb->get_results($wpdb->prepare($query, $project_id));
 		$final = $tasks;
+
 		if (!is_null($showSubtasks) && $showSubtasks == true) {
 			foreach ($tasks as $task) {
 				$subtasks = Tasks::get_subtasks($task->id);
+
 				foreach ($subtasks as $subtask) {
 					$final[] = $subtask;
 				}
