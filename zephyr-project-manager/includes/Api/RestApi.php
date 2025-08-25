@@ -1292,7 +1292,7 @@ class RestApi {
 	public function task_subtasks($data) {
 		$tasks = Tasks::get_subtasks($data['id']);
 		$userId = $this->getAuthenticatedUser($data);
-		return apply_filters($tasks, function($task) use ($userId) {
+		return array_filter($tasks, function($task) use ($userId) {
 			return Utillities::canViewTask($task, $userId);
 		});
 	}
