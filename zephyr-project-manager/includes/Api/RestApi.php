@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package ZephyrProjectManager
  */
@@ -25,11 +26,11 @@ use ZephyrProjectManager\Core\Controllers\MessageController;
 
 class RestApi {
 	function register() {
-		add_action('rest_api_init', function() {
+		add_action('rest_api_init', function () {
 			register_rest_route('zephyr_project_manager/v1', '/tasks', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'tasks'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -39,12 +40,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -54,36 +55,36 @@ class RestApi {
 				'args' => array(
 					'task_id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'subject' => array(
 						'default' => 'task',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => 'message',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'message' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -93,18 +94,18 @@ class RestApi {
 				'args' => array(
 					'task' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -114,12 +115,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -129,12 +130,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -144,12 +145,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -159,12 +160,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -174,18 +175,18 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'complete' => array(
 						'default' => '0',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -195,72 +196,72 @@ class RestApi {
 				'args' => array(
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'project' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'assignee' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'start' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'end' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'custom_fields' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'categories' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'priority' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'status' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -275,28 +276,28 @@ class RestApi {
 					//						}
 					//					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/projects', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'projects'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/projects/dashboard', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'projects_dashboard'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/milestones', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'milestones'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -306,30 +307,30 @@ class RestApi {
 				'args' => array(
 					'name' => array(
 						'default' => 'Untitled Project',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => 'list',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -339,24 +340,24 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'status' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'color' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -366,42 +367,42 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled Project',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'start' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'end' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'categories' => array(
 						'default' => '[]',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -409,7 +410,7 @@ class RestApi {
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'getStatuses'),
 				'args' => array(),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -424,7 +425,7 @@ class RestApi {
 					//						}
 					//					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -432,7 +433,7 @@ class RestApi {
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'getTeams'),
 				'args' => array(),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -442,12 +443,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -457,30 +458,30 @@ class RestApi {
 				'args' => array(
 					'task_id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => 'message',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'message' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -490,12 +491,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -505,12 +506,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -520,12 +521,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -535,12 +536,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -550,19 +551,19 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/users', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_users'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -572,42 +573,42 @@ class RestApi {
 				'args' => array(
 					'username' => array(
 						'default' => 'username',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'password' => array(
 						'default' => 'password',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_id' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_name' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'os' => array(
 						'default' => 'android',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'one_signal_user_id' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -615,7 +616,7 @@ class RestApi {
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_authenticated'),
 				'args' => array(),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -625,49 +626,49 @@ class RestApi {
 				'args' => array(
 					'username' => array(
 						'default' => 'username',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'password' => array(
 						'default' => 'password',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_id' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'device_name' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'os' => array(
 						'default' => 'android',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'one_signal_user_id' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/categories', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'categories'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -677,85 +678,85 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'start' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'end' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'project' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'assignee' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'status' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'priority' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'user_id' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'categories' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'custom_fields' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/statistics', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'general_statistics'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -765,24 +766,24 @@ class RestApi {
 				'args' => array(
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'color' => array(
 						'default' => '#eeeeee',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -792,30 +793,30 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => 'Untitled',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'color' => array(
 						'default' => '#eeeeee',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -825,26 +826,26 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/templates', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_templates'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/custom_fields', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'get_custom_fields'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -854,36 +855,36 @@ class RestApi {
 				'args' => array(
 					'name' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'default_value' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'field_values' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'required' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -893,42 +894,42 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'name' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'type' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'default_value' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'field_values' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'required' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -946,7 +947,7 @@ class RestApi {
 						'default' => '',
 					],
 				],
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -956,12 +957,12 @@ class RestApi {
 				'args' => array(
 					'id' => array(
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -977,62 +978,62 @@ class RestApi {
 					//					),
 					'name' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'email' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'description' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'avatar' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'notify_all' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'notify_tasks' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					),
 					'notify_weekly' => array(
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					)
 				),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/general/status', array(
 				'methods' => ['GET', 'POST'],
 				'callback' => array($this, 'check_status'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
 			register_rest_route('zephyr_project_manager/v1', '/activity', array(
 				'methods' => 'GET',
 				'callback' => array($this, 'getActivities'),
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -1042,36 +1043,36 @@ class RestApi {
 				'args' => [
 					'user_id' => [
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					],
 					'subject_id' => [
 						'default' => '-1',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					],
 					'subject' => [
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					],
 					'message' => [
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					],
 					'action' => [
 						'default' => '',
-						'validate_callback' => function($param, $request, $key) {
+						'validate_callback' => function ($param, $request, $key) {
 							return is_string($param);
 						}
 					]
 				],
-				'permission_callback' => function($data) {
+				'permission_callback' => function ($data) {
 					return RestApi::verify($data);
 				}
 			));
@@ -1258,8 +1259,9 @@ class RestApi {
 			$permissions['pages'][] = 'custom_fields';
 			$permissions['pages'][] = 'categories';
 		}
+
 		foreach ($pages as $page) {
-			if (Utillities::can_access_page($page, $userId)) {
+			if (!zpmIsPro() || Utillities::can_access_page($page, $userId)) {
 				$permissions['pages'][] = $page;
 			}
 		}
@@ -1292,7 +1294,7 @@ class RestApi {
 	public function task_subtasks($data) {
 		$tasks = Tasks::get_subtasks($data['id']);
 		$userId = $this->getAuthenticatedUser($data);
-		return array_filter($tasks, function($task) use ($userId) {
+		return array_filter($tasks, function ($task) use ($userId) {
 			return Utillities::canViewTask($task, $userId);
 		});
 	}
@@ -1470,8 +1472,8 @@ class RestApi {
 		$results = [];
 
 		foreach ($tasks as $task) {
-				if (!Utillities::can_view_task($task, $userId)) {
-					continue;
+			if (!Utillities::can_view_task($task, $userId)) {
+				continue;
 			}
 			$results[] = $task;
 		}
@@ -1949,7 +1951,7 @@ class RestApi {
 				'limit' => $limit
 			];
 		}
-		$activities = array_map(function($activity) {
+		$activities = array_map(function ($activity) {
 			$member = Members::get_member($activity->user_id);
 			$username = isset($member['name']) ? $member['name'] : '';
 

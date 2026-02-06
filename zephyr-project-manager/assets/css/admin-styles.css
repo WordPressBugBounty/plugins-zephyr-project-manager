@@ -9242,10 +9242,6 @@ textarea.zpm-form__field:hover {
 	color: #eee;
 	margin-top: 25px;
 }
-/* 
-#zpm_calendar .fc-time {
-	display: none !important;
-} */
 
 #zpm-new-project-priority .zpm-priority-name {
 	text-align: center;

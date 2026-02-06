@@ -1665,6 +1665,10 @@ class Utillities {
 			return false;
 		}
 
+		if (!Zephyr::isPro()) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -2609,6 +2613,47 @@ class Utillities {
 		}
 
 		return $fullPath . $filename;
+	}
+
+	public static function validateAndSanitizeFilePath($filename) {
+		$sanitized_filename = sanitize_file_name($filename);
+		$upload_dir = wp_upload_dir();
+		$expected_dir = $upload_dir['basedir'] . '/zephyr-project-manager/temp/';
+		$full_path = $expected_dir . $sanitized_filename;
+		$real_path = realpath($full_path);
+
+		if ($real_path !== false) {
+			$real_expected_dir = realpath($expected_dir);
+
+			if (strpos($real_path, $real_expected_dir) !== 0) {
+				return false;
+			}
+		} else {
+			$parent_dir = dirname($full_path);
+			$real_parent = realpath($parent_dir);
+			$real_expected_dir = realpath($expected_dir);
+
+			if ($real_parent === false || $real_parent !== $real_expected_dir) {
+				return false;
+			}
+		}
+
+		if (preg_match('/^[a-z]+:\/\//i', $filename) || preg_match('/^[a-z]+:\/\//i', $sanitized_filename)) {
+			return false;
+		}
+
+		if (strpos($sanitized_filename, '/') !== false || strpos($sanitized_filename, '\\') !== false) {
+			return false;
+		}
+
+		$allowed_extensions = ['csv', 'json'];
+		$file_extension = strtolower(pathinfo($sanitized_filename, PATHINFO_EXTENSION));
+
+		if (!in_array($file_extension, $allowed_extensions)) {
+			return false;
+		}
+
+		return $full_path;
 	}
 
 	public static function deleteTempFiles() {

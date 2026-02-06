@@ -672,7 +672,7 @@ $ = jQuery;
 
 
 	function initializeCalendar() {
-		ZephyrProjects.initialize_calendar();
+		ZephyrProjects.initialize_calendar('.zpm-shortcode__calendar');
 		return;
 		var tasks = [];
 		var firstDay = typeof zpm_localized.settings.first_day !== "undefined" ? zpm_localized.settings.first_day : 1;

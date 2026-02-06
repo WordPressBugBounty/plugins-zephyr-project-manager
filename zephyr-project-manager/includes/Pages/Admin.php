@@ -58,6 +58,7 @@ class Admin extends BaseController {
 
 		add_action('admin_print_scripts', array($this, 'hide_unrelated_notices'));
 		add_action('admin_menu', array($this, 'check_access_level'));
+		add_action('network_admin_menu', array($this, 'check_access_level'));
 
 		$this->addShortcodes();
 

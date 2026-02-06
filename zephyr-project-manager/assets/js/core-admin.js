@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
 	function zpmInit() {
 		var task_loading_ajax = null;
 		if (ZephyrProjects.isCalendarPage()) {
-			ZephyrProjects.initialize_calendar();
+			ZephyrProjects.initialize_calendar('#zpm_calendar');
 		}
 		var dateFormat = ZephyrProjects.getDateFormat();
 		var timeFormat = 'HH:mm';

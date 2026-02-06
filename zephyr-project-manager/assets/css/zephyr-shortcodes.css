@@ -7,7 +7,7 @@
   border: 1px solid #eee;
   border-bottom: none !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07), 0 3px 3px rgba(0, 0, 0, 0.01);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   position: relative;
   border-radius: 3px;
@@ -90,7 +90,6 @@
   width: 100%;
   height: 5px;
   background: #f9f9f9;
-
 }
 
 .zpm-shortcode-progress-bar {
@@ -144,7 +143,6 @@
   vertical-align: middle;
 }
 
-
 .zpm-task-card__completed_label {
   border: 1px solid #eee;
   padding: 2px 8px;
@@ -153,10 +151,8 @@
   border-radius: 3px;
 }
 
-
-
 .zpm-task-card-type {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 /** Calendar **/
@@ -165,7 +161,7 @@
   border-radius: 1px solid #fff !important;
   background: #14aaf5 !important;
   color: #fff !important;
-  transition: all .15s ease !important;
+  transition: all 0.15s ease !important;
 }
 
 #zpm_calendar .fc-button:active,
@@ -194,7 +190,7 @@
   background: #14aaf5 !important;
   border: none !important;
   padding: 4px 7px !important;
-  transition: all .15s ease !important;
+  transition: all 0.15s ease !important;
   cursor: pointer;
 }
 
@@ -224,11 +220,11 @@
 
 #zpm_calendar .fc-day-grid-event.completed {
   background-color: #0bda71 !important;
-  transition: all .15s ease !important;
+  transition: all 0.15s ease !important;
 }
 
 #zpm_calendar .fc-day-grid-event.completed:hover {
-  background-color: #43E392 !important;
+  background-color: #43e392 !important;
 }
 
 #zpm_calendar .fc-event-container a:hover,
@@ -238,27 +234,27 @@
   outline: none;
   border: none;
   color: #fff;
-  box-shadow: 0px 0px 0px 2px rgba(0, 10, 255, .3);
+  box-shadow: 0px 0px 0px 2px rgba(0, 10, 255, 0.3);
 }
 
 #zpm_calendar .fc-event-container a.completed {
-  box-shadow: 0px 0px 0px 0px rgba(0, 255, 50, .3);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  box-shadow: 0px 0px 0px 0px rgba(0, 255, 50, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 #zpm_calendar .fc-event-container a.completed:hover,
 #zpm_calendar .fc-event-container a.completed:active,
 #zpm_calendar .fc-event-container a.completed:focus,
 #zpm_calendar .fc-event-container a:visited {
-  box-shadow: 0px 0px 0px 2px rgba(0, 255, 50, .3);
+  box-shadow: 0px 0px 0px 2px rgba(0, 255, 50, 0.3);
 }
 
 #zpm_calendar a {
   text-decoration: none !important;
 }
 
-#zpm_calendar .fc-right>button,
-#zpm_calendar .fc-button-group>button {
+#zpm_calendar .fc-right > button,
+#zpm_calendar .fc-button-group > button {
   font-size: 15px;
   border: none;
 }
@@ -322,7 +318,7 @@
   width: 100%;
   height: 100%;
   background: #14aaf5;
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .zpm_file_item:hover .zpm_file_actions {
@@ -376,7 +372,7 @@
 .zpm_filter_file {
   padding: 10px 15px;
   margin: 0;
-  transition: background .12s ease-in-out, color .12s ease-in-out;
+  transition: background 0.12s ease-in-out, color 0.12s ease-in-out;
 }
 
 .zpm_filter_file:hover {
@@ -392,7 +388,7 @@
   box-sizing: border-box;
   border-radius: 2px;
   cursor: pointer;
-  transition: all .15s ease-in-out;
+  transition: all 0.15s ease-in-out;
 }
 
 .zpm_file_item {
@@ -404,7 +400,7 @@
   box-sizing: border-box;
   border-radius: 2px;
   cursor: pointer;
-  transition: all .15s ease-in-out;
+  transition: all 0.15s ease-in-out;
 }
 
 .zpm_file_item:hover {
@@ -547,11 +543,9 @@
   right: 0;
 }
 
-
-
 /** Project Shortcode **/
 .zpm-project-shortcode__description {
-  opacity: .5
+  opacity: 0.5;
 }
 
 .zpm-project-shortcode__task {
@@ -611,7 +605,7 @@
   height: 100%;
   background: #333;
   z-index: 9999;
-  opacity: .2;
+  opacity: 0.2;
 }
 
 .zpm-shortcode-modal h2 {
@@ -670,14 +664,14 @@
   display: none;
 }
 
-.zpm-shortcode-modal #zpm_new_task_assignee+div,
-.zpm-shortcode-modal #zpm_new_task_project+div,
-.zpm-shortcode-modal #zpm-new-task-team-selection+div,
-.zpm-shortcode-modal #zpm-new-task__status+div,
-.zpm-shortcode-modal #zpm_edit_task_assignee+div,
-.zpm-shortcode-modal #zpm_edit_task_project+div,
-.zpm-shortcode-modal #zpm-edit-task-team-selection+div,
-.zpm-shortcode-modal #zpm-edit-task__status+div {
+.zpm-shortcode-modal #zpm_new_task_assignee + div,
+.zpm-shortcode-modal #zpm_new_task_project + div,
+.zpm-shortcode-modal #zpm-new-task-team-selection + div,
+.zpm-shortcode-modal #zpm-new-task__status + div,
+.zpm-shortcode-modal #zpm_edit_task_assignee + div,
+.zpm-shortcode-modal #zpm_edit_task_project + div,
+.zpm-shortcode-modal #zpm-edit-task-team-selection + div,
+.zpm-shortcode-modal #zpm-edit-task__status + div {
   width: 100% !important;
 }
 
@@ -712,7 +706,6 @@
   outline: none;
 }
 
-
 .zpm-shortcode-modal input.zpm-form__field:active,
 .zpm-shortcode-modal input.zpm-form__field:focus,
 .zpm-shortcode-modal input.zpm-form__field:hover,
@@ -727,14 +720,17 @@
   color: transparent;
 }
 
-.zpm-shortcode-modal .zpm-form__field:placeholder-shown~.zpm-form__label {
+.zpm-shortcode-modal .zpm-form__field:placeholder-shown ~ .zpm-form__label {
   font-size: 15px;
   cursor: text;
   top: 20px;
 }
 
 .zpm-shortcode-modal .zpm-form__label,
-.zpm-shortcode-modal .zpm-form__field:focus~.zpm-shortcode-modal .zpm-form__label {
+.zpm-shortcode-modal
+  .zpm-form__field:focus
+  ~ .zpm-shortcode-modal
+  .zpm-form__label {
   position: absolute;
   top: 0;
   display: block;
@@ -743,7 +739,10 @@
   color: var(--zpm-label-color);
 }
 
-.zpm-shortcode-modal .zpm-form__field:focus~.zpm-shortcode-modal .zpm-form__label {
+.zpm-shortcode-modal
+  .zpm-form__field:focus
+  ~ .zpm-shortcode-modal
+  .zpm-form__label {
   color: #14aaf5;
 }
 
@@ -797,7 +796,7 @@
   right: 10px;
   top: 10px;
   display: none;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .zpm-task-card {
@@ -814,7 +813,6 @@
 #zpm_edit_task__recurrence_select_chosen {
   width: 100% !important;
 }
-
 
 #zpm_new_task__recurrence_daily_chosen,
 #zpm_edit_task__recurrence_daily_chosen {
@@ -839,7 +837,7 @@
 .zpm-shortcode-task__delete {
   display: block;
   opacity: 0;
-  transition: all .12s ease-in-out;
+  transition: all 0.12s ease-in-out;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
@@ -853,7 +851,7 @@
 
 .zpm-shortcode-task-list[data-type="list"] {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.07) !important;
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .zpm-complete-shortcode-task {
@@ -874,7 +872,7 @@
   position: absolute;
   left: 20px;
   bottom: 20px;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .zpm-shortcode-task__comments:hover {
@@ -885,7 +883,7 @@
   position: absolute;
   left: 20px;
   bottom: 20px;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .zpm-shortcode-task__comments:hover {
@@ -932,7 +930,6 @@
   color: #ccc;
 }
 
-
 .zpm_comment_time_diff:before {
   content: "";
   display: inline-block;
@@ -973,7 +970,6 @@
   padding-bottom: 50px;
   font-size: 13px;
   max-height: 90%;
-
 }
 
 #zpm-shortcode-modal__task-comments .zpm_task_comments {
@@ -1016,7 +1012,7 @@
 }
 
 .zpm-shortcode-task-comments__input-zone #zpm-send-comment:hover {
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .zpm-shortcode-task-comments__input-zone #zpm-send-comment {
@@ -1029,7 +1025,7 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  opacity: .4;
+  opacity: 0.4;
 }
 
 .zpm_comment_user_text {
@@ -1058,7 +1054,7 @@
   top: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 #zpm-add-new-dropdown {
@@ -1067,7 +1063,7 @@
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07), 0 3px 3px rgba(0, 0, 0, 0.01);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: none;
   position: absolute;
   z-index: 99999999999;
@@ -1109,7 +1105,6 @@
 
 #zpm-shortcode-modal__new-project #zpm-new-project-priority,
 #zpm-shortcode-modal__new-project .zpm_col_container,
-
 #zpm-shortcode-modal__new-project .zpm-new-project__field,
 #zpm-shortcode-modal__new-project .zpm_close_modal {
   display: none;
@@ -1184,46 +1179,61 @@
   min-width: 100%;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div {
+.zpm-shortcode-background ~ #ui-datepicker-div {
   background: #fff;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-calendar * {
+.zpm-shortcode-background ~ #ui-datepicker-div .ui-datepicker-calendar * {
   color: #333;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-calendar tr td a {
+.zpm-shortcode-background ~ #ui-datepicker-div .ui-datepicker-calendar tr td a {
   padding: 10px;
   display: block;
   text-align: center;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-calendar thead th {
+.zpm-shortcode-background
+  ~ #ui-datepicker-div
+  .ui-datepicker-calendar
+  thead
+  th {
   padding: 15px;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-calendar thead th * {
+.zpm-shortcode-background
+  ~ #ui-datepicker-div
+  .ui-datepicker-calendar
+  thead
+  th
+  * {
   color: #fff !important;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-title * {
+.zpm-shortcode-background ~ #ui-datepicker-div .ui-datepicker-title * {
   color: #fff !important;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-header {
+.zpm-shortcode-background ~ #ui-datepicker-div .ui-datepicker-header {
   padding: 10px;
   position: relative;
   padding-top: 35px;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
+.zpm-shortcode-background
+  ~ #ui-datepicker-div
+  .ui-datepicker-header
+  .ui-datepicker-next {
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
 }
 
-.zpm-shortcode-background~#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev {
+.zpm-shortcode-background
+  ~ #ui-datepicker-div
+  .ui-datepicker-header
+  .ui-datepicker-prev {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -1253,32 +1263,30 @@
 
 #zpm-shortcode-modal__new-project .zpm_col_container,
 #zpm-shortcode-modal__new-project .zpm-new-project__field {
-	display: block;
+  display: block;
 }
 #zpm-shortcode-modal__new-project .zpm_col_container {
-	display: none;
+  display: none;
 }
 #zpm-shortcode-modal__new-project {
-	box-sizing: border-box;
-	min-width: 600px;
+  box-sizing: border-box;
+  min-width: 600px;
 }
 #zpm-shortcode-modal__new-project #zpm_project_modal {
-	min-width: unset;
-	box-sizing: border-box;
+  min-width: unset;
+  box-sizing: border-box;
 }
 #zpm-shortcode-modal__new-project #zpm_project_modal * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 #zpm-shortcode-modal__new-project #zpm_modal_add_project {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 #zpm-shortcode-modal__new-project h3 {
-	margin: 0;
-	font-size: 18px;
-	margin-bottom: 10px;
+  margin: 0;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
-
-
 
 #file-uploader-type {
   height: auto;
@@ -1380,7 +1388,7 @@ input#zpm-new-task-duration {
   padding: 10px;
 }
 
-.zpm-file-uploader-icon-input:checked+.zpm-file-uploader-icon {
+.zpm-file-uploader-icon-input:checked + .zpm-file-uploader-icon {
   border: 1px solid var(--zpm-primary-color);
 }
 
@@ -1388,12 +1396,31 @@ input#zpm-new-task-duration {
   color: #fff;
   display: inline-flex;
   font-size: 0.7rem;
-  padding: .35rem .5rem;
+  padding: 0.35rem 0.5rem;
   border-radius: 5px;
   line-height: 0.75rem;
   margin-bottom: 10px;
 }
 
 .zpm-project-shortcode__task-subtasks {
-	margin-left: 10px;
+  margin-left: 10px;
+}
+
+#zpm_calendar .fc-time-grid-container .fc-event {
+  margin-top: -5px;
+  margin-bottom: 9px;
+  margin-right: -6px;
+  box-sizing: border-box !important;
+}
+
+#zpm_calendar .fc-event-container .fc-event .fc-time {
+  display: none !important;
+}
+
+.zpm-calendar__description:empty {
+  display: none;
+}
+
+#zpm_calendar .fc-time-grid-event {
+  overflow: auto;
 }

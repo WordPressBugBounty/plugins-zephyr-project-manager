@@ -1,10 +1,11 @@
 <?php
+
 /**
  * @package ZephyrProjectManager
  * Plugin Name:  Zephyr Project Manager
  * Description:  A modern project manager for WordPress to keep track of all your projects from within WordPress.
  * Plugin URI:   https://zephyr-one.com
- * Version:      3.3.203
+ * Version:      3.3.204
  * Author:       Dylan James
  * License:      GPLv2 or later
  * Text Domain:  zephyr-project-manager
@@ -13,9 +14,11 @@
 if (!defined('ABSPATH')) {
 	die;
 }
+
 if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 	require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
+
 global $wpdb;
 global $zpm_settings;
 global $zpmMessages;
@@ -51,12 +54,13 @@ require_once(ZPM_PLUGIN_PATH . 'includes/functions.php');
 global $zpmSettings;
 $zpmMessages = new MessageController();
 $zpmSettings = Utillities::general_settings();
+
 function activate_project_manager_plugin($networkwide) {
 	if (is_multisite() && $networkwide) {
-		global $wpdb;
-		$blogIDs = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
-		foreach ((array) $blogIDs as $blog_id) {
-			switch_to_blog($blog_id);
+		// Get all sites in the network
+		$sites = get_sites(array('number' => 0));
+		foreach ($sites as $site) {
+			switch_to_blog($site->blog_id);
 			Activate::activate();
 			if (function_exists('zephyr_project_manager_activate_pro')) {
 				zephyr_project_manager_activate_pro();
@@ -72,11 +76,27 @@ function activate_project_manager_plugin($networkwide) {
 }
 
 register_activation_hook(__FILE__, 'activate_project_manager_plugin');
+
 function deactivate_project_manager_plugin() {
 	Deactivate::deactivate();
 }
 
 register_deactivation_hook(__FILE__, 'deactivate_project_manager_plugin');
+
+// When a new site is created in multisite, activate the plugin on it
+function activate_project_manager_new_site($site) {
+	if (is_plugin_active_for_network(ZPM_PLUGIN)) {
+		switch_to_blog($site->blog_id);
+		Activate::activate();
+		if (function_exists('zephyr_project_manager_activate_pro')) {
+			zephyr_project_manager_activate_pro();
+		}
+		restore_current_blog();
+	}
+}
+
+add_action('wp_initialize_site', 'activate_project_manager_new_site', 900);
+
 function zpm_plugin_loaded() {
 	global $zpm_settings;
 	$version = zpm_get_version();
@@ -91,6 +111,7 @@ function zpm_plugin_loaded() {
 }
 
 add_action('init', 'zephyr_project_manager_init');
+
 function zephyr_project_manager_init() {
 	$locale = apply_filters('plugin_locale', get_locale(), 'zephyr-project-manager');
 	$language = substr($locale, 0, 2);
@@ -110,6 +131,7 @@ if (class_exists('ZephyrProjectManager\\Init')) {
 	//     Activate::activate();
 	// }
 }
+
 function zpm_admin_init() {
 	if (isset($_POST['zpm_save_general_settings'])) {
 		check_admin_referer('zpm_save_general_settings');
@@ -125,16 +147,20 @@ function zpm_admin_init() {
 add_action('plugins_loaded', 'zpm_plugin_loaded');
 add_action('admin_init', 'zpm_admin_init');
 add_filter('admin_body_class', 'zpm_body_classes');
+
 if (!zpm_is_required_pro_version()) {
 	add_action('admin_notices', 'zpm_incompatible_pro_version');
 }
+
 function zpm_incompatible_pro_version() {
-	?>
-    <div class="notice notice-error">
+?>
+	<div class="notice notice-error">
 		<?php /* translators: Pro version requirement message. %s: Required Pro version number */ ?>
-        <p><?php echo esc_html(sprintf(esc_html('Zephyr Project Manager PRO version %s or higher is required. To continue using all the Pro features and avoid any incompatibility, please update it by going to Plugins > Zephyr Project Manager Pro and clicking the Update button.', 'zephyr-project-manager'), esc_html(ZPM_REQUIRED_PRO_VERSION))) ?></p>
-    </div>
-	<?php
+		<p>
+			<?php echo esc_html(sprintf(esc_html('Zephyr Project Manager PRO version %s or higher is required. To continue using all the Pro features and avoid any incompatibility, please update it by going to Plugins > Zephyr Project Manager Pro and clicking the Update button.', 'zephyr-project-manager'), esc_html(ZPM_REQUIRED_PRO_VERSION))) ?>
+		</p>
+	</div>
+<?php
 }
 
 function zpm_body_classes($classes) {
@@ -158,7 +184,9 @@ function zpm_logged_in_redirect() {
 }
 
 add_action('admin_menu', 'zpm_logged_in_redirect');
+add_action('network_admin_menu', 'zpm_logged_in_redirect');
 add_filter('zpm/user/data', 'zpm_filter_user_data', 10, 2);
+
 function zpm_filter_user_data($user, $id) {
 	if (function_exists('bp_core_get_user_displayname')) {
 		$data = get_user_by('ID', $id);

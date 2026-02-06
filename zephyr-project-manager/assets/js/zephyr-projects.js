@@ -537,9 +537,12 @@ var zpmTaskCompleteRequests = {};
 	/**
 	* Initializes the calender and adds all tasks
 	*/
-	ZephyrProjects.initialize_calendar = function () {
+	ZephyrProjects.initialize_calendar = function (selector) {
 		var tasks = [];
 		var firstDay = typeof zpm_localized.settings.first_day !== "undefined" ? zpm_localized.settings.first_day : 1;
+		var calendarSelector = selector || '#zpm_calendar';
+		var isShortcode = calendarSelector === '.zpm-shortcode__calendar';
+		var filterPrefix = isShortcode ? '.zpm-shortcode-calendar-filters ' : '';
 
 		ZephyrProjects.getCalendarItems(function (data) {
 			$.each(data, function (key, val) {
@@ -653,6 +656,18 @@ var zpmTaskCompleteRequests = {};
 				}
 			});
 
+			// Remove duplicate events based on id, start, and end dates
+			var uniqueTasks = [];
+			var taskKeys = {};
+
+			tasks.forEach(function(task) {
+				var taskKey = task.id + '_' + task.start + '_' + task.end;
+				if (!taskKeys[taskKey]) {
+					taskKeys[taskKey] = true;
+					uniqueTasks.push(task);
+				}
+			});
+
 			var options = {
 				header: {
 					right: 'month, agendaWeek, today prev,next'
@@ -662,10 +677,10 @@ var zpmTaskCompleteRequests = {};
 				dayNamesShort: zpm_localized.strings.day_names_short,
 				firstDay: firstDay,
 				buttonText: zpm_localized.strings.button_text,
-				events: tasks,
+				events: uniqueTasks,
 				eventOverlap: true,
 				allDaySlot: false,
-				minTime: '00:00:00', // Start time of visible time slots
+				minTime: '00:00:00',
                 maxTime: '24:00:00',
 				defaultView: ZephyrProjects.isMobile() ? 'basicDay' : 'month',
 				editable: zpm_localized.permissions.editTasks,
@@ -683,10 +698,10 @@ var zpmTaskCompleteRequests = {};
 				// 	return { domNodes: arrayOfDomNodes }
 				// },
 				eventRender: function (event, element, view) {
-					var project = $('#zpm-calendar__filter-project').val();
-					var team = $('#zpm-calendar__filter-team').val();
-					var assignee = $('#zpm-calendar__filter-assignee').val();
-					var status = $('#zpm-calendar__filter-completed').val();
+					var project = $(filterPrefix + '#zpm-calendar__filter-project').val();
+					var team = $(filterPrefix + '#zpm-calendar__filter-team').val();
+					var assignee = $(filterPrefix + '#zpm-calendar__filter-assignee').val();
+					var status = $(filterPrefix + '#zpm-calendar__filter-completed').val();
 
 					if (project !== "all") {
 						if (event.project_id !== project) {
@@ -803,7 +818,7 @@ var zpmTaskCompleteRequests = {};
 				}
 			};
 
-			zpm_calendar = $('#zpm_calendar').fullCalendar(options);
+			zpm_calendar = $(calendarSelector).fullCalendar(options);
 			// options.plugins = [ 'dayGrid' ];
 			// options.headerToolbar = { center: 'dayGridMonth,timeGridWeek' }
 			// options.initialView = 'dayGridMonth';
@@ -812,7 +827,7 @@ var zpmTaskCompleteRequests = {};
 
 
 
-			$('body').find('#zpm_calendar .zpm_task_loader').remove();
+			$('body').find(calendarSelector + ' .zpm_task_loader').remove();
 
 			if (ZephyrProjects.isCalendarPage()) {
 				jQuery('.fc-month-button').text(zpm_localized.strings.month);

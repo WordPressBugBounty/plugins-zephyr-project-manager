@@ -152,45 +152,45 @@ class AjaxHandler extends BaseController {
 			'deleteTempFiles'
 		];
 
-//		add_action('admin_init', [$this, 'authenticate']);
+		//		add_action('admin_init', [$this, 'authenticate']);
 
 		foreach ($this->actions as $action) {
 			$this->add_ajax_function($action);
 		}
 	}
 
-    public function add_ajax_function($function_name) {
-//        add_action("wp_ajax_zpm_{$function_name}", [$this, $function_name]);
-//        add_action("wp_ajax_nopriv_zpm_{$function_name}", [$this, $function_name]);
-	    add_action("wp_ajax_zpm_{$function_name}", function () use ($function_name) {
-		    $this->authenticate($function_name);
-		    call_user_func([$this, $function_name]);
-	    });
+	public function add_ajax_function($function_name) {
+		//        add_action("wp_ajax_zpm_{$function_name}", [$this, $function_name]);
+		//        add_action("wp_ajax_nopriv_zpm_{$function_name}", [$this, $function_name]);
+		add_action("wp_ajax_zpm_{$function_name}", function () use ($function_name) {
+			$this->authenticate($function_name);
+			call_user_func([$this, $function_name]);
+		});
 
-	    add_action("wp_ajax_nopriv_zpm_{$function_name}", function () use ($function_name) {
-		    $this->authenticate($function_name);
-		    call_user_func([$this, $function_name]);
-	    });
-    }
+		add_action("wp_ajax_nopriv_zpm_{$function_name}", function () use ($function_name) {
+			$this->authenticate($function_name);
+			call_user_func([$this, $function_name]);
+		});
+	}
 
 	public function authenticate($function_name) {
-//		if (defined('DOING_AJAX') && DOING_AJAX) {
-			$action = isset($_POST['action']) ? sanitize_text_field($_POST['action']) : '';
-			$nonce = isset($_POST['zpm_nonce']) ? sanitize_text_field($_POST['zpm_nonce']) : '';
+		//		if (defined('DOING_AJAX') && DOING_AJAX) {
+		$action = isset($_POST['action']) ? sanitize_text_field($_POST['action']) : '';
+		$nonce = isset($_POST['zpm_nonce']) ? sanitize_text_field($_POST['zpm_nonce']) : '';
 
-//			if (in_array(str_replace('zpm_', '', $action), $this->actions)) {
-				if (!wp_verify_nonce($nonce, 'zpm_nonce')) {
-					$this->error('Invalid nonce.');
-				}
+		//			if (in_array(str_replace('zpm_', '', $action), $this->actions)) {
+		if (!wp_verify_nonce($nonce, 'zpm_nonce')) {
+			$this->error('Invalid nonce.');
+		}
 
-				$this->userID = get_current_user_id();
-				$this->member = Members::get_member($this->userID);
+		$this->userID = get_current_user_id();
+		$this->member = Members::get_member($this->userID);
 
-				if (!Utillities::canZephyr($this->userID)) {
-					$this->error('You do not have Zephyr permissions.');
-				}
-//			}
-//		}
+		if (!Utillities::canZephyr($this->userID)) {
+			$this->error('You do not have Zephyr permissions.');
+		}
+		//			}
+		//		}
 	}
 
 	public function error($message) {
@@ -200,7 +200,7 @@ class AjaxHandler extends BaseController {
 		wp_die();
 	}
 
-    public function unauthorized() {
+	public function unauthorized() {
 		wp_send_json_error(401);
 		wp_die();
 	}
@@ -233,7 +233,7 @@ class AjaxHandler extends BaseController {
 	public function getTaskComments() {
 		$task_id = isset($_POST['id']) ? intval(sanitize_text_field($_POST['id'])) : -1;
 
-        if (!Utillities::can_view_task($task_id)) $this->unauthorized();
+		if (!Utillities::can_view_task($task_id)) $this->unauthorized();
 
 		$task_data = Tasks::get_task($task_id);
 		$task = new Task($task_data);
@@ -241,12 +241,12 @@ class AjaxHandler extends BaseController {
 			'data' => $task_data
 		];
 		ob_start(); ?>
-			<div class="zpm_task_comments" data-task-id="<?php echo esc_attr($task->id); ?>">
-				<?php $comments = $task->getComments(); ?>
-				<?php foreach ($comments as $comment) : ?>
-					<?php echo wp_kses_post($comment->html()); ?>
-				<?php endforeach; ?>
-			</div>
+		<div class="zpm_task_comments" data-task-id="<?php echo esc_attr($task->id); ?>">
+			<?php $comments = $task->getComments(); ?>
+			<?php foreach ($comments as $comment) : ?>
+				<?php echo wp_kses_post($comment->html()); ?>
+			<?php endforeach; ?>
+		</div>
 		<?php
 		$data['html'] = ob_get_clean();
 		echo json_encode($data);
@@ -284,7 +284,7 @@ class AjaxHandler extends BaseController {
 		$results = [];
 		$taskId = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '';
 
-        if (!Utillities::can_view_task($taskId)) $this->unauthorized();
+		if (!Utillities::can_view_task($taskId)) $this->unauthorized();
 
 		if (!empty($taskId)) {
 			$results = Tasks::get_subtasks($taskId);
@@ -458,12 +458,12 @@ class AjaxHandler extends BaseController {
 	public function uploadTaskFile() {
 		global $wpdb;
 
-        if (!Utillities::canUploadFiles()) $this->unauthorized();
+		if (!Utillities::canUploadFiles()) $this->unauthorized();
 
 		$userId = isset($_POST['user_id']) ? intval(sanitize_text_field($_POST['user_id'])) : get_current_user_id();
 		$taskId = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '';
 
-        if (!Utillities::canEditTask($taskId)) $this->unauthorized();
+		if (!Utillities::canEditTask($taskId)) $this->unauthorized();
 
 		$fileId = isset($_POST['file_id']) ? intval(sanitize_text_field($_POST['file_id'])) : '';
 		$parentId = isset($_POST['parent_id']) ? intval(sanitize_text_field($_POST['parent_id'])) : 0;
@@ -479,7 +479,7 @@ class AjaxHandler extends BaseController {
 		$Project = new Projects();
 		$data = array();
 
-        if (!Utillities::can_create_projects()) $this->unauthorized();
+		if (!Utillities::can_create_projects()) $this->unauthorized();
 
 		if (isset($_POST['project_name'])) {
 			$data['name'] = stripslashes(sanitize_text_field($_POST['project_name']));
@@ -546,7 +546,7 @@ class AjaxHandler extends BaseController {
 	public function remove_project() {
 		$projectID = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::canDeleteProject(get_current_user_id(), $projectID)) $this->unauthorized();
+		if (!Utillities::canDeleteProject(get_current_user_id(), $projectID)) $this->unauthorized();
 
 		$project = Projects::get_project($projectID);
 		$archiveTasks = $this->getPostVar('archiveTasks', false);
@@ -564,7 +564,7 @@ class AjaxHandler extends BaseController {
 	public function archiveProject() {
 		$id = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::canDeleteProject(get_current_user_id(), $id)) $this->unauthorized();
+		if (!Utillities::canDeleteProject(get_current_user_id(), $id)) $this->unauthorized();
 
 		$archived = isset($_POST['archived']) ? boolval($_POST['archived']) : true;
 		$args = [
@@ -578,7 +578,7 @@ class AjaxHandler extends BaseController {
 	public function archiveTask() {
 		$id = isset($_POST['id']) ? intval(sanitize_text_field($_POST['id'])) : -1;
 
-        if (!Utillities::canDeleteTask(get_current_user_id(), $id)) $this->unauthorized();
+		if (!Utillities::canDeleteTask(get_current_user_id(), $id)) $this->unauthorized();
 
 		$archived = isset($_POST['archived']) ? zpm_sanitize_bool($_POST['archived']) : true;
 		$args = [
@@ -594,7 +594,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_PROJECTS_TABLE;
 		$projectId = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::canEditProject($projectId)) $this->unauthorized();
+		if (!Utillities::canEditProject($projectId)) $this->unauthorized();
 
 		$old_project = Projects::get_project($projectId);
 		$old_name = stripslashes(esc_html($old_project->name));
@@ -703,7 +703,7 @@ class AjaxHandler extends BaseController {
 		$settings = array();
 		$task_id = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '-1';
 
-        if (!Utillities::canEditTask($task_id)) $this->unauthorized();
+		if (!Utillities::canEditTask($task_id)) $this->unauthorized();
 
 		$task = Tasks::get_task($task_id);
 
@@ -742,7 +742,7 @@ class AjaxHandler extends BaseController {
 		$settings = array();
 		$task_id = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '-1';
 
-        if (!Utillities::canEditTask($task_id)) $this->unauthorized();
+		if (!Utillities::canEditTask($task_id)) $this->unauthorized();
 
 		if (isset($_POST['datetime'])) {
 			$format = 'Y-m-d H:i:s';
@@ -765,7 +765,7 @@ class AjaxHandler extends BaseController {
 		$settings = array();
 		$task_id = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '-1';
 
-        if (!Utillities::canEditTask($task_id)) $this->unauthorized();
+		if (!Utillities::canEditTask($task_id)) $this->unauthorized();
 
 		if (isset($_POST['datetime'])) {
 			$format = 'Y-m-d H:i:s';
@@ -787,7 +787,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_PROJECTS_TABLE;
 		$projectID = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::canEditProject($projectID)) $this->unauthorized();
+		if (!Utillities::canEditProject($projectID)) $this->unauthorized();
 
 		$type = isset($_POST['type']) ? sanitize_text_field($_POST['type']) : 'list';
 		$project = Projects::get_project($projectID);
@@ -809,7 +809,7 @@ class AjaxHandler extends BaseController {
 		global $wpdb;
 		$project_id = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::canEditProject($project_id)) $this->unauthorized();
+		if (!Utillities::canEditProject($project_id)) $this->unauthorized();
 
 		$status = isset($_POST['status']) ? sanitize_textarea_field($_POST['status']) : '';
 		$status_color = isset($_POST['status_color']) ? sanitize_text_field($_POST['status_color']) : '';
@@ -833,7 +833,7 @@ class AjaxHandler extends BaseController {
 		global $wpdb;
 		$projectID = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::canEditProject($projectID)) $this->unauthorized();
+		if (!Utillities::canEditProject($projectID)) $this->unauthorized();
 
 		$project = Projects::get_project($projectID);
 		$previousMembers = Projects::getMembers($project);
@@ -853,7 +853,7 @@ class AjaxHandler extends BaseController {
 	public function export_project() {
 		$projectID = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Projects::has_project_access($projectID)) $this->unauthorized();
+		if (!Projects::has_project_access($projectID)) $this->unauthorized();
 
 		$project = Projects::get_project($projectID);
 
@@ -867,7 +867,7 @@ class AjaxHandler extends BaseController {
 			fwrite($handle, $formattedData);
 			fclose($handle);
 			$filename = Utillities::getUploadUrl($name);
-			
+
 			$response = array(
 				'file_name' => $name,
 				'file_url'  => $filename
@@ -964,7 +964,7 @@ class AjaxHandler extends BaseController {
 	public function print_project() {
 		$projectId = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Projects::has_project_access($projectId)) $this->unauthorized();
+		if (!Projects::has_project_access($projectId)) $this->unauthorized();
 
 		$project = Projects::get_project($projectId);
 		$project_tasks = Tasks::get_project_tasks($projectId);
@@ -984,7 +984,7 @@ class AjaxHandler extends BaseController {
 	public function project_progress() {
 		$project_id = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Projects::has_project_access($project_id)) $this->unauthorized();
+		if (!Projects::has_project_access($project_id)) $this->unauthorized();
 
 		$task_count = Tasks::get_project_task_count($project_id);
 		$completed_tasks = Tasks::get_project_completed_tasks($project_id);
@@ -1000,7 +1000,7 @@ class AjaxHandler extends BaseController {
 	public function project_task_progress() {
 		$projectId = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Projects::has_project_access($projectId)) $this->unauthorized();
+		if (!Projects::has_project_access($projectId)) $this->unauthorized();
 
 		$tasks = Tasks::get_project_tasks($projectId);
 		$task_count = count($tasks);
@@ -1079,56 +1079,56 @@ class AjaxHandler extends BaseController {
 
 		ob_start();
 		?>
-			<span id="zpm_project_modal_dates" class="zpm_project_overview_section">
-				<span id="zpm_project_modal_start_date">
-					<label class="zpm_label"><?php esc_html_e('Start Date', 'zephyr-project-manager'); ?>:</label>
-					<span class="zpm_project_date"><?php echo esc_html($start_date); ?></span>
-				</span>
-
-				<span id="zpm_project_modal_due_date">
-					<label class="zpm_label"><?php esc_html_e('Due Date', 'zephyr-project-manager'); ?>:</label>
-					<span class="zpm_project_date"><?php echo esc_html($due_date); ?></span>
-				</span>
-				</span>
-
-				<div id="zpm_project_progress">
-					<span class="zpm_project_stat">
-						<div class="zpm_stat_number"><?php echo esc_html($completed_tasks); ?></div>
-						<div><?php esc_html_e('Completed Tasks', 'zephyr-project-manager'); ?></div>
-					</span>
-					<span class="zpm_project_stat">
-						<div class="zpm_stat_number"><?php echo esc_html($active_tasks); ?></div>
-						<div><?php esc_html_e('Active Tasks', 'zephyr-project-manager'); ?></div>
-					</span>
-					<span class="zpm_project_stat">
-						<div class="zpm_stat_number"><?php echo esc_html($message_count); ?></div>
-						<div><?php esc_html_e('Message', 'zephyr-project-manager'); ?></div>
-					</span>
-				</div>
-
-				<span id="zpm_project_modal_description" class="zpm_project_overview_section">
-					<label class="zpm_label"><?php esc_html_e('Description', 'zephyr-project-manager'); ?>:</label>
-					<p class="zpm_description"><?php echo wp_kses_post($project->description); ?></p>
-					<?php if ($project->description == "") : ?>
-						<p class="zpm-soft-error"><?php esc_html_e('None', 'zephyr-project-manager'); ?></p>
-					<?php endif; ?>
-				</span>
-
-				<?php do_action('zpm_project_preview_fields', $project); ?>
-
-				<span id="zpm_project_modal_categories" class="zpm_project_overview_section">
-				<label class="zpm_label"><?php esc_html_e('Categories', 'zephyr-project-manager'); ?>:</label>
-
-				<?php if (is_array($categories) && sizeof($categories)) : ?>
-					<?php foreach ($categories as $category) : ?>
-						<?php $category = Categories::get_category($category); ?>
-						<span class="zpm_project_category"><?php echo esc_html($category->name); ?></span>
-					<?php endforeach; ?>
-				<?php else : ?>
-					<p class="zpm-soft-error"><?php esc_html_e('No categories assigned', 'zephyr-project-manager'); ?></p>
-				<?php endif; ?>
+		<span id="zpm_project_modal_dates" class="zpm_project_overview_section">
+			<span id="zpm_project_modal_start_date">
+				<label class="zpm_label"><?php esc_html_e('Start Date', 'zephyr-project-manager'); ?>:</label>
+				<span class="zpm_project_date"><?php echo esc_html($start_date); ?></span>
 			</span>
-		<?php
+
+			<span id="zpm_project_modal_due_date">
+				<label class="zpm_label"><?php esc_html_e('Due Date', 'zephyr-project-manager'); ?>:</label>
+				<span class="zpm_project_date"><?php echo esc_html($due_date); ?></span>
+			</span>
+		</span>
+
+		<div id="zpm_project_progress">
+			<span class="zpm_project_stat">
+				<div class="zpm_stat_number"><?php echo esc_html($completed_tasks); ?></div>
+				<div><?php esc_html_e('Completed Tasks', 'zephyr-project-manager'); ?></div>
+			</span>
+			<span class="zpm_project_stat">
+				<div class="zpm_stat_number"><?php echo esc_html($active_tasks); ?></div>
+				<div><?php esc_html_e('Active Tasks', 'zephyr-project-manager'); ?></div>
+			</span>
+			<span class="zpm_project_stat">
+				<div class="zpm_stat_number"><?php echo esc_html($message_count); ?></div>
+				<div><?php esc_html_e('Message', 'zephyr-project-manager'); ?></div>
+			</span>
+		</div>
+
+		<span id="zpm_project_modal_description" class="zpm_project_overview_section">
+			<label class="zpm_label"><?php esc_html_e('Description', 'zephyr-project-manager'); ?>:</label>
+			<p class="zpm_description"><?php echo wp_kses_post($project->description); ?></p>
+			<?php if ($project->description == "") : ?>
+				<p class="zpm-soft-error"><?php esc_html_e('None', 'zephyr-project-manager'); ?></p>
+			<?php endif; ?>
+		</span>
+
+		<?php do_action('zpm_project_preview_fields', $project); ?>
+
+		<span id="zpm_project_modal_categories" class="zpm_project_overview_section">
+			<label class="zpm_label"><?php esc_html_e('Categories', 'zephyr-project-manager'); ?>:</label>
+
+			<?php if (is_array($categories) && sizeof($categories)) : ?>
+				<?php foreach ($categories as $category) : ?>
+					<?php $category = Categories::get_category($category); ?>
+					<span class="zpm_project_category"><?php echo esc_html($category->name); ?></span>
+				<?php endforeach; ?>
+			<?php else : ?>
+				<p class="zpm-soft-error"><?php esc_html_e('No categories assigned', 'zephyr-project-manager'); ?></p>
+			<?php endif; ?>
+		</span>
+	<?php
 
 		$overview_html = ob_get_clean();
 		$project->overview_html = $overview_html;
@@ -1172,9 +1172,9 @@ class AjaxHandler extends BaseController {
 	public function copy_project() {
 		$project_id = (isset($_POST['project_id'])) ? intval(sanitize_text_field($_POST['project_id'])) : -1;
 
-        if (!Utillities::can_create_projects() || !Projects::has_project_access($project_id)) $this->unauthorized();
+		if (!Utillities::can_create_projects() || !Projects::has_project_access($project_id)) $this->unauthorized();
 
-        $copy_options = (isset($_POST['copy_options'])) ? zpm_sanitize_array($_POST['copy_options']) : [];
+		$copy_options = (isset($_POST['copy_options'])) ? zpm_sanitize_array($_POST['copy_options']) : [];
 		$name = isset($_POST['project_name']) ? sanitize_text_field($_POST['project_name']) : '';
 		$args = [
 			'project_id' => $project_id,
@@ -1192,7 +1192,7 @@ class AjaxHandler extends BaseController {
 	public function add_project_to_dashboard() {
 		$project_id = isset($_POST['project_id']) ? intval(sanitize_text_field($_POST['project_id'])) : false;
 
-        if (!Utillities::canViewProject($project_id)) $this->unauthorized();
+		if (!Utillities::canViewProject($project_id)) $this->unauthorized();
 
 		if ($project_id) {
 			Projects::add_to_dashboard($project_id);
@@ -1224,7 +1224,7 @@ class AjaxHandler extends BaseController {
 	public function new_task() {
 		global $wpdb;
 
-        if (!Utillities::can_create_tasks()) $this->unauthorized();
+		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$manager = ZephyrProjectManager();
 		$generalSettings = Utillities::general_settings();
@@ -1425,7 +1425,7 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function createQuickTask() {
-        if (!Utillities::can_create_tasks()) $this->unauthorized();
+		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$data = $this->getParam('data', []);
 		$newTaskID = Tasks::create($data);
@@ -1436,7 +1436,7 @@ class AjaxHandler extends BaseController {
 	public function view_task() {
 		$task_id = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '-1';
 
-        if (!Utillities::can_view_task($task_id, get_current_user_id())) $this->unauthorized();
+		if (!Utillities::can_view_task($task_id, get_current_user_id())) $this->unauthorized();
 
 		ob_start();
 		Tasks::view_task_modal($task_id);
@@ -1449,7 +1449,7 @@ class AjaxHandler extends BaseController {
 		global $wpdb;
 		$table_name = ZPM_TASKS_TABLE;
 
-        if (!Utillities::can_create_tasks()) $this->unauthorized();
+		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$task_id = (isset($_POST['task_id'])) ? intval(sanitize_text_field($_POST['task_id'])) : '';
 		$task = Tasks::get_task($task_id);
@@ -1462,7 +1462,7 @@ class AjaxHandler extends BaseController {
 		$date_start = in_array('start_date', $copy_options) ? $task->date_start : $date;
 		$date_due = in_array('due_date', $copy_options) ? $task->date_due : '';
 		$project_id = isset($_POST['project']) ? sanitize_text_field($_POST['project']) : $task->project;
-		$frontend = isset($_POST['frontend']) ? (boolean) $_POST['frontend'] : false;
+		$frontend = isset($_POST['frontend']) ? (bool) $_POST['frontend'] : false;
 
 		$settings = array(
 			'user_id' 		 => $user_id,
@@ -1515,7 +1515,7 @@ class AjaxHandler extends BaseController {
 		$taskID = intval(sanitize_text_field($_POST['task_id']));
 		$task = Tasks::get_task($taskID);
 
-        if (!Utillities::can_view_task($taskID, get_current_user_id())) $this->unauthorized();
+		if (!Utillities::can_view_task($taskID, get_current_user_id())) $this->unauthorized();
 
 		if (isset($_POST['export_to']) && $_POST['export_to'] == 'json') {
 			$data = array($task);
@@ -1567,9 +1567,9 @@ class AjaxHandler extends BaseController {
 	public function export_tasks() {
 		$tasks = Tasks::getAllTasks();
 
-        foreach ($tasks as $key => $task) {
-            if (!Utillities::can_view_task($task)) unset($tasks[$key]);
-        }
+		foreach ($tasks as $key => $task) {
+			if (!Utillities::can_view_task($task)) unset($tasks[$key]);
+		}
 
 		if (isset($_POST['export_to']) && $_POST['export_to'] == 'json') {
 			$formattedData = json_encode($tasks);
@@ -1610,7 +1610,7 @@ class AjaxHandler extends BaseController {
 	public function upload_tasks() {
 		global $wpdb;
 
-        if (!Utillities::can_create_tasks()) $this->unauthorized();
+		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$html = '';
 		$filename = sanitize_text_field($_POST['zpm_file']);
@@ -1651,7 +1651,7 @@ class AjaxHandler extends BaseController {
 					if (!Tasks::task_exists($data[0])) {
 						$wpdb->insert($table_name, $task);
 						$task = Tasks::get_task($wpdb->insert_id);
-						
+
 						if ($row > 1) {
 							$html .= Tasks::new_task_row($task);
 						}
@@ -1719,7 +1719,7 @@ class AjaxHandler extends BaseController {
 	public function convert_to_project() {
 		global $wpdb;
 
-        if (!Utillities::can_create_projects()) $this->unauthorized();
+		if (!Utillities::can_create_projects()) $this->unauthorized();
 
 		$task_id = (isset($_POST['task_id'])) ? intval(sanitize_text_field($_POST['task_id'])) : -1;
 		$task = Tasks::get_task($task_id);
@@ -1770,7 +1770,7 @@ class AjaxHandler extends BaseController {
 		$completed = isset($_POST['completed']) ? sanitize_text_field($_POST['completed']) : '0';
 		$task_id = isset($_POST['id']) ? intval(sanitize_text_field($_POST['id'])) : -1;
 
-        if (!Utillities::canEditTask($task_id)) $this->unauthorized();
+		if (!Utillities::canEditTask($task_id)) $this->unauthorized();
 
 		$settings = array(
 			'completed' 		=> $completed,
@@ -1895,7 +1895,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_TASKS_TABLE;
 		$taskID = intval(sanitize_text_field($_POST['task_id']));
 
-        if (!Utillities::canDeleteTask(get_current_user_id(), $taskID)) $this->unauthorized();
+		if (!Utillities::canDeleteTask(get_current_user_id(), $taskID)) $this->unauthorized();
 
 		$task = Tasks::get_task($taskID);
 		$settings = array(
@@ -1914,7 +1914,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_TASKS_TABLE;
 		$task_id = isset($_POST['task_id']) ? intval(sanitize_text_field($_POST['task_id'])) : '';
 
-        if (!Utillities::canEditTask($task_id)) $this->unauthorized();
+		if (!Utillities::canEditTask($task_id)) $this->unauthorized();
 
 		$old_task = Tasks::get_task($task_id);
 		$assignees = (isset($_POST['task_assignee'])) ? $_POST['task_assignee'] : [];
@@ -2159,7 +2159,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_TASKS_TABLE;
 		$task_id = intval(sanitize_text_field($_POST['task_id']));
 
-        if (Utillities::canEditTask($task_id)) $this->unauthorized();
+		if (Utillities::canEditTask($task_id)) $this->unauthorized();
 
 		$action = sanitize_text_field($_POST['subtask_action']);
 
@@ -2251,7 +2251,7 @@ class AjaxHandler extends BaseController {
 		$task_id = intval(sanitize_text_field($_POST['task_id']));
 		$task_data = Tasks::get_task($task_id);
 
-        if (!Utillities::can_view_task($task_data)) $this->unauthorized();
+		if (!Utillities::can_view_task($task_data)) $this->unauthorized();
 
 		$followed_tasks = get_option('zpm_followed_tasks_' . $user_id, false);
 		$followed_tasks = unserialize($followed_tasks);
@@ -2319,7 +2319,7 @@ class AjaxHandler extends BaseController {
 
 		$html = '';
 
-		$frontend = isset($_POST['frontend']) ? (boolean) $_POST['frontend'] : false;
+		$frontend = isset($_POST['frontend']) ? (bool) $_POST['frontend'] : false;
 		foreach ($tasks as $task) {
 			$new_row = Tasks::new_task_row($task);
 			if (!$frontend) {
@@ -2382,7 +2382,7 @@ class AjaxHandler extends BaseController {
 		}
 
 		$html = '';
-		$frontend = isset($_POST['frontend']) ? (boolean) $_POST['frontend'] : false;
+		$frontend = isset($_POST['frontend']) ? (bool) $_POST['frontend'] : false;
 		$tasks = Tasks::sortTasks($tasks, $sorting);
 
 		foreach ($tasks as $task) {
@@ -2452,7 +2452,7 @@ class AjaxHandler extends BaseController {
 		$html = '';
 
 		foreach ($projects as $project) {
-            if (!Utillities::canViewProject($project)) continue;
+			if (!Utillities::canViewProject($project)) continue;
 
 			$html .= Projects::new_project_cell($project);
 		}
@@ -2473,7 +2473,7 @@ class AjaxHandler extends BaseController {
 		global $wpdb;
 		$table_name = ZPM_CATEGORY_TABLE;
 
-        if (!Utillities::canZephyr(get_current_user_id())) $this->unauthorized();
+		if (!Utillities::canZephyr(get_current_user_id())) $this->unauthorized();
 
 		$settings = array();
 		$settings['name'] = (isset($_POST['category_name'])) ? sanitize_text_field($_POST['category_name']) : '';
@@ -2543,7 +2543,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_MESSAGES_TABLE;
 		$commentID = isset($_POST['comment_id']) ? intval(sanitize_text_field($_POST['comment_id'])) : -1;
 
-        if (!MessageController::canDeleteMessage($commentID)) $this->unauthorized();
+		if (!MessageController::canDeleteMessage($commentID)) $this->unauthorized();
 
 		$settings = array(
 			'id' => $commentID
@@ -2576,7 +2576,7 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function update_user_access() {
-        if (!Members::canEditMemberAccess()) $this->unauthorized();
+		if (!Members::canEditMemberAccess()) $this->unauthorized();
 
 		$userId = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : '';
 		$access = isset($_POST['access']) && $_POST['access'] == 'true' ? boolval($_POST['access']) : false;
@@ -2594,7 +2594,7 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function add_team() {
-        if (!Utillities::canCreateTeams()) $this->unauthorized();
+		if (!Utillities::canCreateTeams()) $this->unauthorized();
 
 		$name = sanitize_text_field($_POST['name']);
 		$description = sanitize_text_field($_POST['description']);
@@ -2640,7 +2640,7 @@ class AjaxHandler extends BaseController {
 		$tasks = Tasks::getAvailableTasks();
 
 		foreach ($tasks as $task) {
-            if (!Utillities::canViewTask($task)) continue;
+			if (!Utillities::canViewTask($task)) continue;
 
 			$project = Projects::get_project($task->project);
 			$task->project_data = $project;
@@ -2694,9 +2694,9 @@ class AjaxHandler extends BaseController {
 		$rangeEnd = isset($options['end']) ? sanitize_text_field($options['end']) : '';
 		$results = Tasks::getTasksDateRange($rangeStart, $rangeEnd);
 
-        foreach ($results as $key => $result) {
-            if (!Utillities::canViewTask($result)) unset($results[$key]);
-        }
+		foreach ($results as $key => $result) {
+			if (!Utillities::canViewTask($result)) unset($results[$key]);
+		}
 
 		echo json_encode($results);
 		die();
@@ -2729,13 +2729,13 @@ class AjaxHandler extends BaseController {
 		$status = Utillities::create_status($name, $color, $type);
 		$type = empty($type) ? 'priority' : $type;
 		ob_start();
-		?>
-			<div class="zpm-<?php echo esc_attr($type); ?>-list__item" data-status-slug="<?php echo esc_attr($status['slug']); ?>">
-				<span class="zpm-<?php echo esc_attr($type); ?>-list__item-color" style="background: <?php echo esc_attr($status['color']); ?>"></span>
-				<span class="zpm-<?php echo esc_attr($type); ?>-list__item-name"><?php echo esc_html($status['name']); ?></span>
-				<span class="zpm-delete-<?php echo esc_attr($type); ?> lnr lnr-cross" data-id="<?php echo esc_attr($status['slug']); ?>"></span>
-			</div>
-		<?php
+	?>
+		<div class="zpm-<?php echo esc_attr($type); ?>-list__item" data-status-slug="<?php echo esc_attr($status['slug']); ?>">
+			<span class="zpm-<?php echo esc_attr($type); ?>-list__item-color" style="background: <?php echo esc_attr($status['color']); ?>"></span>
+			<span class="zpm-<?php echo esc_attr($type); ?>-list__item-name"><?php echo esc_html($status['name']); ?></span>
+			<span class="zpm-delete-<?php echo esc_attr($type); ?> lnr lnr-cross" data-id="<?php echo esc_attr($status['slug']); ?>"></span>
+		</div>
+	<?php
 		$html = ob_get_clean();
 		echo json_encode(array('result' => 'success', 'html' => $html));
 		die();
@@ -2751,12 +2751,12 @@ class AjaxHandler extends BaseController {
 		$status = Utillities::update_status($slug, $name, $color, $type);
 		ob_start();
 
-		?>
-			<div class="zpm-status-list__item" data-<?php echo esc_attr($type); ?>-slug="<?php echo esc_attr($status['slug']); ?>">
-				<span class="zpm-<?php echo esc_attr($type); ?>-list__item-color" style="background: <?php echo esc_attr($status['color']); ?>"></span>
-				<span class="zpm-<?php echo esc_attr($type); ?>-list__item-name"><?php echo esc_html($status['name']); ?></span>
-				<span class="zpm-delete-<?php echo esc_attr($type); ?> lnr lnr-cross" data-id="<?php echo esc_attr($status['slug']); ?>"></span>
-			</div>
+	?>
+		<div class="zpm-status-list__item" data-<?php echo esc_attr($type); ?>-slug="<?php echo esc_attr($status['slug']); ?>">
+			<span class="zpm-<?php echo esc_attr($type); ?>-list__item-color" style="background: <?php echo esc_attr($status['color']); ?>"></span>
+			<span class="zpm-<?php echo esc_attr($type); ?>-list__item-name"><?php echo esc_html($status['name']); ?></span>
+			<span class="zpm-delete-<?php echo esc_attr($type); ?> lnr lnr-cross" data-id="<?php echo esc_attr($status['slug']); ?>"></span>
+		</div>
 		<?php
 		$html = ob_get_clean();
 		echo json_encode(array('result' => 'success', 'html' => $html));
@@ -2764,7 +2764,7 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function delete_status() {
-        if (!Utillities::canZephyr(get_current_user_id())) $this->unauthorized();
+		if (!Utillities::canZephyr(get_current_user_id())) $this->unauthorized();
 
 		$slug = isset($_POST['slug']) ? sanitize_text_field($_POST['slug']) : '';
 		$type = isset($_POST['type']) ? sanitize_text_field($_POST['type']) : 'priority';
@@ -2790,7 +2790,7 @@ class AjaxHandler extends BaseController {
 	public function complete_project() {
 		$id = isset($_POST['id']) ? zpm_sanitize_int($_POST['id']) : -1;
 
-        if (!Utillities::canEditProject($id)) $this->unauthorized();
+		if (!Utillities::canEditProject($id)) $this->unauthorized();
 
 		$completed = isset($_POST['completed']) ? zpm_sanitize_bool($_POST['completed']) : 0;
 		Projects::mark_complete($id, $completed);
@@ -2801,7 +2801,7 @@ class AjaxHandler extends BaseController {
 	public function view_project() {
 		$project_id = isset($_POST['project_id']) ? zpm_sanitize_int($_POST['project_id']) : -1;
 
-        if (!Projects::has_project_access($project_id)) $this->unauthorized();
+		if (!Projects::has_project_access($project_id)) $this->unauthorized();
 
 		ob_start();
 		Projects::view_project_modal($project_id);
@@ -2833,79 +2833,79 @@ class AjaxHandler extends BaseController {
 
 		foreach ($users as $user) : ?>
 			<?php
-				$role = '';
-				$user_id = $user->data->ID;
+			$role = '';
+			$user_id = $user->data->ID;
 
-			    if (!Members::canViewMember($user_id)) continue;
+			if (!Members::canViewMember($user_id)) continue;
 
-				$user_settings_option = get_option('zpm_user_' . $user->data->ID . '_settings');
-				$avatar = isset($user_settings_option['profile_picture']) ? $user_settings_option['profile_picture'] : get_avatar_url($user->data->ID);
-				$can_zephyr = isset($user_settings_option['can_zephyr']) ? $user_settings_option['can_zephyr'] : "true";
-				$description = isset($user_settings_option['description']) ? $user_settings_option['description'] : '';
-				$user_projects = Projects::get_user_projects($user->data->ID);
-				$user_tasks = Tasks::get_user_tasks($user->data->ID);
-				$completed_tasks = Tasks::get_user_completed_tasks($user->data->ID);
-				$remaining_tasks = Tasks::get_user_completed_tasks($user->data->ID, '0');
+			$user_settings_option = get_option('zpm_user_' . $user->data->ID . '_settings');
+			$avatar = isset($user_settings_option['profile_picture']) ? $user_settings_option['profile_picture'] : get_avatar_url($user->data->ID);
+			$can_zephyr = isset($user_settings_option['can_zephyr']) ? $user_settings_option['can_zephyr'] : "true";
+			$description = isset($user_settings_option['description']) ? $user_settings_option['description'] : '';
+			$user_projects = Projects::get_user_projects($user->data->ID);
+			$user_tasks = Tasks::get_user_tasks($user->data->ID);
+			$completed_tasks = Tasks::get_user_completed_tasks($user->data->ID);
+			$remaining_tasks = Tasks::get_user_completed_tasks($user->data->ID, '0');
 
-				$percent_complete = (sizeof($user_tasks) !== 0) ? (sizeof($completed_tasks) / sizeof($user_tasks)) * 100 : '0';
+			$percent_complete = (sizeof($user_tasks) !== 0) ? (sizeof($completed_tasks) / sizeof($user_tasks)) * 100 : '0';
 
-				if (in_array('zpm_user', $user->roles)) {
-					$role = 'ZPM User';
-				} elseif (in_array('zpm_client_user', $user->roles)) {
-					$role = 'ZPM Client User';
-				} elseif (in_array('zpm_manager', $user->roles) || in_array('administrator', $user->roles)) {
-					$role = 'ZPM Manager';
-				}
-				?>
+			if (in_array('zpm_user', $user->roles)) {
+				$role = 'ZPM User';
+			} elseif (in_array('zpm_client_user', $user->roles)) {
+				$role = 'ZPM Client User';
+			} elseif (in_array('zpm_manager', $user->roles) || in_array('administrator', $user->roles)) {
+				$role = 'ZPM Manager';
+			}
+			?>
 
-				<?php $edit_url = admin_url('/admin.php?page=zephyr_project_manager_teams_members') . '&action=edit_member&user_id=' . $user->data->ID; ?>
+			<?php $edit_url = admin_url('/admin.php?page=zephyr_project_manager_teams_members') . '&action=edit_member&user_id=' . $user->data->ID; ?>
 
-				<a class="zpm_team_member <?php echo $can_zephyr == "true" ? 'zpm-user-can-zephyr' : ''; ?>" <?php echo current_user_can('administrator') ? "href='" . esc_url($edit_url) . "'" : ''; ?>>
-					<div class="zpm_member_details" data-ripple="rgba(0,0,0,0.1)">
+			<a class="zpm_team_member <?php echo $can_zephyr == "true" ? 'zpm-user-can-zephyr' : ''; ?>" <?php echo current_user_can('administrator') ? "href='" . esc_url($edit_url) . "'" : ''; ?>>
+				<div class="zpm_member_details" data-ripple="rgba(0,0,0,0.1)">
 
-						<span class="zpm_avatar_image" style="background-image: url(<?php echo esc_url($avatar); ?>);"></span>
-						<span class="zpm_member_name"><?php echo esc_html($user->data->display_name); ?></span>
-						<span class="zpm_member_email"><?php echo esc_html($user->data->user_email); ?></span>
-						<p class="zpm_member_bio"><?php echo wp_kses_post($description); ?></p>
+					<span class="zpm_avatar_image" style="background-image: url(<?php echo esc_url($avatar); ?>);"></span>
+					<span class="zpm_member_name"><?php echo esc_html($user->data->display_name); ?></span>
+					<span class="zpm_member_email"><?php echo esc_html($user->data->user_email); ?></span>
+					<p class="zpm_member_bio"><?php echo wp_kses_post($description); ?></p>
 
-						<?php if (current_user_can('administrator')) : ?>
-							<!-- Adcurrent_user_can('administrator')min Controls -->
-							<div class="zpm-access-controls">
-								<label for="zpm-can-zephyr-<?php echo esc_attr($user_id); ?>" class="zpm_checkbox_label">
-									<input type="checkbox" id="zpm-can-zephyr-<?php echo esc_attr($user_id); ?>" name="zpm_can_zephyr" class="zpm-can-zephyr zpm_toggle invisible" value="1" data-user-id="<?php echo esc_attr($user->data->ID); ?>" <?php echo $can_zephyr == "true" ? 'checked' : ''; ?>>
+					<?php if (current_user_can('administrator')) : ?>
+						<!-- Adcurrent_user_can('administrator')min Controls -->
+						<div class="zpm-access-controls">
+							<label for="zpm-can-zephyr-<?php echo esc_attr($user_id); ?>" class="zpm_checkbox_label">
+								<input type="checkbox" id="zpm-can-zephyr-<?php echo esc_attr($user_id); ?>" name="zpm_can_zephyr" class="zpm-can-zephyr zpm_toggle invisible" value="1" data-user-id="<?php echo esc_attr($user->data->ID); ?>" <?php echo $can_zephyr == "true" ? 'checked' : ''; ?>>
 
-									<div class="zpm_main_checkbox">
-										<svg width="20px" height="20px" viewBox="0 0 20 20">
-											<path d="M3,1 L17,1 L17,1 C18.1045695,1 19,1.8954305 19,3 L19,17 L19,17 C19,18.1045695 18.1045695,19 17,19 L3,19 L3,19 C1.8954305,19 1,18.1045695 1,17 L1,3 L1,3 C1,1.8954305 1.8954305,1 3,1 Z"></path>
-											<polyline points="4 11 8 15 16 6"></polyline>
-										</svg>
-									</div>
-									<?php esc_html_e('Allow Access', 'zephyr-project-manager'); ?>
-								</label>
-							</div>
-						<?php endif; ?>
+								<div class="zpm_main_checkbox">
+									<svg width="20px" height="20px" viewBox="0 0 20 20">
+										<path d="M3,1 L17,1 L17,1 C18.1045695,1 19,1.8954305 19,3 L19,17 L19,17 C19,18.1045695 18.1045695,19 17,19 L3,19 L3,19 C1.8954305,19 1,18.1045695 1,17 L1,3 L1,3 C1,1.8954305 1.8954305,1 3,1 Z"></path>
+										<polyline points="4 11 8 15 16 6"></polyline>
+									</svg>
+								</div>
+								<?php esc_html_e('Allow Access', 'zephyr-project-manager'); ?>
+							</label>
+						</div>
+					<?php endif; ?>
 
-						<div class="zpm_member_stats">
-							<div class="zpm_member_stat">
-								<h5 class="zpm_member_stat_number"><?php echo esc_html(sizeof($user_projects)); ?></h5>
-								<p class="zpm_member_stat_label"><?php esc_html_e('Projects', 'zephyr-project-manager'); ?></p>
-							</div>
-							<div class="zpm_member_stat">
-								<h5 class="zpm_member_stat_number"><?php echo esc_html(sizeof($completed_tasks)); ?></h5>
-								<p class="zpm_member_stat_label"><?php esc_html_e('Completed Tasks', 'zephyr-project-manager'); ?></p>
-							</div>
-							<div class="zpm_member_stat">
-								<h5 class="zpm_member_stat_number"><?php echo esc_html(sizeof($remaining_tasks)); ?></h5>
-								<p class="zpm_member_stat_label"><?php esc_html_e('Remaining Tasks', 'zephyr-project-manager'); ?></p>
-							</div>
-							<div class="zpm_member_progress">
-								<span class="zpm_member_progress_bar" style="width: <?php echo esc_attr($percent_complete); ?>%"></span>
-							</div>
+					<div class="zpm_member_stats">
+						<div class="zpm_member_stat">
+							<h5 class="zpm_member_stat_number"><?php echo esc_html(sizeof($user_projects)); ?></h5>
+							<p class="zpm_member_stat_label"><?php esc_html_e('Projects', 'zephyr-project-manager'); ?></p>
+						</div>
+						<div class="zpm_member_stat">
+							<h5 class="zpm_member_stat_number"><?php echo esc_html(sizeof($completed_tasks)); ?></h5>
+							<p class="zpm_member_stat_label"><?php esc_html_e('Completed Tasks', 'zephyr-project-manager'); ?></p>
+						</div>
+						<div class="zpm_member_stat">
+							<h5 class="zpm_member_stat_number"><?php echo esc_html(sizeof($remaining_tasks)); ?></h5>
+							<p class="zpm_member_stat_label"><?php esc_html_e('Remaining Tasks', 'zephyr-project-manager'); ?></p>
+						</div>
+						<div class="zpm_member_progress">
+							<span class="zpm_member_progress_bar" style="width: <?php echo esc_attr($percent_complete); ?>%"></span>
 						</div>
 					</div>
-				</a>
-			<?php endforeach; ?>
-		<?php
+				</div>
+			</a>
+		<?php endforeach; ?>
+	<?php
 
 		$html = ob_get_clean();
 		echo json_encode(array(
@@ -2917,7 +2917,7 @@ class AjaxHandler extends BaseController {
 	public function get_user_progress() {
 		$user_id = isset($_POST['user_id']) ? zpm_sanitize_int($_POST['user_id']) : -1;
 
-        if (!Members::canViewMember($user_id)) $this->unauthorized();
+		if (!Members::canViewMember($user_id)) $this->unauthorized();
 
 		$project_id = isset($_POST['project_id']) ? zpm_sanitize_int($_POST['project_id']) : -1;
 		$user_completed_tasks = [];
@@ -2950,7 +2950,7 @@ class AjaxHandler extends BaseController {
 			<div class="zpm-member-progress__stat zpm-member-stat__percentage"><?php esc_html_e('Percentage Complete', 'zephyr-project-manager'); ?>: <span class="zpm-stat-val"><?php echo esc_html(round($percent_complete)) . '%'; ?></span></div>
 		</div>
 
-		<?php $html = ob_get_clean();
+	<?php $html = ob_get_clean();
 
 		$results = [
 			'tasks' => $user_tasks,
@@ -2972,7 +2972,7 @@ class AjaxHandler extends BaseController {
 	public function get_project_members() {
 		$project_id = isset($_POST['project_id']) ? zpm_sanitize_int($_POST['project_id']) : -1;
 
-        if (!Utillities::canViewProject($project_id)) $this->unauthorized();
+		if (!Utillities::canViewProject($project_id)) $this->unauthorized();
 
 		$members = Projects::get_members($project_id);
 		echo json_encode($members);
@@ -2990,7 +2990,7 @@ class AjaxHandler extends BaseController {
 		}
 
 		foreach ($members as $key => $member) {
-            if (!Members::canViewMember($member['id'])) continue;
+			if (!Members::canViewMember($member['id'])) continue;
 
 			$members[$key]['list_html'] = Members::list_html($member);
 		}
@@ -3021,7 +3021,7 @@ class AjaxHandler extends BaseController {
 		ob_start();
 
 		foreach ($projects as $project) {
-            if (!Utillities::canViewProject($project)) continue;
+			if (!Utillities::canViewProject($project)) continue;
 			echo Projects::new_project_cell($project);
 		}
 
@@ -3058,7 +3058,7 @@ class AjaxHandler extends BaseController {
 		$users = $manager::get_users();
 
 		foreach ($users as $user) {
-            if (!Members::canViewMember($user['id'])) continue;
+			if (!Members::canViewMember($user['id'])) continue;
 
 			$userData[] = [
 				'id' => $user['id'],
@@ -3075,7 +3075,7 @@ class AjaxHandler extends BaseController {
 	public function updateTaskDueDate() {
 		$taskId = isset($_POST['task_id']) ? zpm_sanitize_int($_POST['task_id']) : -1;
 
-        if (!Utillities::canEditTask($taskId)) $this->unauthorized();
+		if (!Utillities::canEditTask($taskId)) $this->unauthorized();
 
 		$dueDate = isset($_POST['date']) ? sanitize_text_field($_POST['date']) : '';
 		$dateTime = new DateTime($dueDate);
@@ -3097,7 +3097,7 @@ class AjaxHandler extends BaseController {
 		$fileId = isset($_POST['file_id']) ? zpm_sanitize_int($_POST['file_id']) : -1;
 		$projectID = isset($_POST['project_id']) ? zpm_sanitize_int($_POST['project_id']) : -1;
 
-        if (!MessageController::canEditMessage($fileId)) $this->unauthorized();
+		if (!MessageController::canEditMessage($fileId)) $this->unauthorized();
 
 		$settings = array(
 			'subject_id' => $projectID
@@ -3149,7 +3149,7 @@ class AjaxHandler extends BaseController {
 		ob_start();
 		$projectId = isset($_POST['id']) ? zpm_sanitize_int($_POST['id']) : -1;
 
-        if (!Utillities::canEditProject($projectId)) $this->unauthorized();
+		if (!Utillities::canEditProject($projectId)) $this->unauthorized();
 
 		require_once(ZPM_PLUGIN_PATH . '/templates/parts/project-edit-modal.php');
 		$html = ob_get_clean();
@@ -3162,43 +3162,43 @@ class AjaxHandler extends BaseController {
 	public function subtaskEditModal() {
 		$id = isset($_POST['id']) ? zpm_sanitize_int($_POST['id']) : -1;
 
-        if (!Utillities::canEditTask($id)) $this->unauthorized();
+		if (!Utillities::canEditTask($id)) $this->unauthorized();
 
 		$subtask = new Task($id);
 		ob_start();
-		?>
-			<h5 class="zpm-modal-header"><?php esc_html_e('Edit Subtask', 'zephyr-project-manager'); ?></h5>
+	?>
+		<h5 class="zpm-modal-header"><?php esc_html_e('Edit Subtask', 'zephyr-project-manager'); ?></h5>
 
-			<input type="hidden" data-ajax-name="parent-id" value="<?php echo esc_attr($subtask->parentId); ?>" />
-			<div class="zpm-form__group">
-				<input type="text" name="zpm-edit-subtask__name" id="zpm-edit-subtask__name" class="zpm-form__field" placeholder="<?php esc_html_e('Subtask Name', 'zephyr-project-manager'); ?>" value="<?php echo esc_html($subtask->name); ?>" data-ajax-name="name" />
-				<label for="zpm-edit-subtask__name" class="zpm-form__label"><?php esc_html_e('Subtask Name', 'zephyr-project-manager'); ?></label>
-			</div>
-			<div class="zpm-form__group">
-				<textarea type="text" name="zpm-edit-subtask__description" id="zpm-edit-subtask__description" class="zpm-form__field" placeholder="<?php esc_html_e('Subtask Description', 'zephyr-project-manager'); ?>" data-ajax-name="description"><?php echo wp_kses_post($subtask->description); ?></textarea>
-				<label for="zpm-edit-subtask__description" class="zpm-form__label"><?php esc_html_e('Subtask Description', 'zephyr-project-manager'); ?></label>
-			</div>
+		<input type="hidden" data-ajax-name="parent-id" value="<?php echo esc_attr($subtask->parentId); ?>" />
+		<div class="zpm-form__group">
+			<input type="text" name="zpm-edit-subtask__name" id="zpm-edit-subtask__name" class="zpm-form__field" placeholder="<?php esc_html_e('Subtask Name', 'zephyr-project-manager'); ?>" value="<?php echo esc_html($subtask->name); ?>" data-ajax-name="name" />
+			<label for="zpm-edit-subtask__name" class="zpm-form__label"><?php esc_html_e('Subtask Name', 'zephyr-project-manager'); ?></label>
+		</div>
+		<div class="zpm-form__group">
+			<textarea type="text" name="zpm-edit-subtask__description" id="zpm-edit-subtask__description" class="zpm-form__field" placeholder="<?php esc_html_e('Subtask Description', 'zephyr-project-manager'); ?>" data-ajax-name="description"><?php echo wp_kses_post($subtask->description); ?></textarea>
+			<label for="zpm-edit-subtask__description" class="zpm-form__label"><?php esc_html_e('Subtask Description', 'zephyr-project-manager'); ?></label>
+		</div>
 
-			<div class="zpm-row">
-				<div class="zpm-col zpm-col-6">
-					<div class="zpm-form__group">
-						<input type="text" name="zpm-edit-subtask__start" id="zpm-edit-subtask__start" class="zpm-form__field zpm-datepicker" placeholder="<?php esc_html_e('Start', 'zephyr-project-manager'); ?>" value="<?php $subtask->getStartDate('Y-m-d'); ?>" data-ajax-name="start-date" />
-						<label for="zpm-edit-subtask__start" class="zpm-form__label"><?php esc_html_e('Start', 'zephyr-project-manager'); ?></label>
-					</div>
-				</div>
-				<div class="zpm-col zpm-col-6">
-					<div class="zpm-form__group">
-						<input type="text" name="zpm-edit-subtask__due" id="zpm-edit-subtask__due" class="zpm-form__field zpm-datepicker" placeholder="<?php esc_html_e('Due', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($subtask->getDueDate('Y-m-d')); ?>" data-ajax-name="due-date" />
-						<label for="zpm-edit-subtask__due" class="zpm-form__label"><?php esc_html_e('Due', 'zephyr-project-manager'); ?></label>
-					</div>
+		<div class="zpm-row">
+			<div class="zpm-col zpm-col-6">
+				<div class="zpm-form__group">
+					<input type="text" name="zpm-edit-subtask__start" id="zpm-edit-subtask__start" class="zpm-form__field zpm-datepicker" placeholder="<?php esc_html_e('Start', 'zephyr-project-manager'); ?>" value="<?php $subtask->getStartDate('Y-m-d'); ?>" data-ajax-name="start-date" />
+					<label for="zpm-edit-subtask__start" class="zpm-form__label"><?php esc_html_e('Start', 'zephyr-project-manager'); ?></label>
 				</div>
 			</div>
-
-			<div class="zpm-modal-buttons__right">
-				<div class="zpm-modal-cancel-btn zpm_button" data-zpm-trigger="remove_modal">Cancel</div>
-				<div class="zpm-modal-accept-btn zpm_button" data-zpm-trigger="remove_modal">Create</div>
+			<div class="zpm-col zpm-col-6">
+				<div class="zpm-form__group">
+					<input type="text" name="zpm-edit-subtask__due" id="zpm-edit-subtask__due" class="zpm-form__field zpm-datepicker" placeholder="<?php esc_html_e('Due', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($subtask->getDueDate('Y-m-d')); ?>" data-ajax-name="due-date" />
+					<label for="zpm-edit-subtask__due" class="zpm-form__label"><?php esc_html_e('Due', 'zephyr-project-manager'); ?></label>
+				</div>
 			</div>
-		<?php
+		</div>
+
+		<div class="zpm-modal-buttons__right">
+			<div class="zpm-modal-cancel-btn zpm_button" data-zpm-trigger="remove_modal">Cancel</div>
+			<div class="zpm-modal-accept-btn zpm_button" data-zpm-trigger="remove_modal">Create</div>
+		</div>
+<?php
 		$html = ob_get_clean();
 		echo $html;
 		die();
@@ -3408,7 +3408,7 @@ class AjaxHandler extends BaseController {
 		$table_name = ZPM_MESSAGES_TABLE;
 		$id = isset($_POST['message_id']) ? zpm_sanitize_int($_POST['message_id']) : -1;
 
-        if (!MessageController::canEditMessage($id)) $this->unauthorized();
+		if (!MessageController::canEditMessage($id)) $this->unauthorized();
 
 		$message = isset($_POST['message']) ? sanitize_text_field($_POST['message']) : '';
 		$where = [
@@ -3494,7 +3494,7 @@ class AjaxHandler extends BaseController {
 	public function updateProjectSetting() {
 		$projectId = isset($_POST['project_id']) ? zpm_sanitize_int($_POST['project_id']) : -1;
 
-        if (!Utillities::canEditProject($projectId)) $this->unauthorized();
+		if (!Utillities::canEditProject($projectId)) $this->unauthorized();
 
 		$key = isset($_POST['key']) ? sanitize_text_field($_POST['key']) : '';
 		$value = isset($_POST['value']) ? sanitize_text_field($_POST['value']) : '';
@@ -3504,10 +3504,28 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function loadProjectsFromCSV() {
-        if (!Utillities::can_create_projects()) $this->unauthorized();
+		if (!Utillities::can_create_projects()) $this->unauthorized();
 
-		$file = isset($_POST['file']) ? sanitize_text_field($_POST['file']) : '';
-		$projects = Projects::loadFromCSV($file);
+		$filename = isset($_POST['file']) ? $_POST['file'] : '';
+		$validated_file = Utillities::validateAndSanitizeFilePath($filename);
+
+		if ($validated_file === false) {
+			echo json_encode([
+				'error' => true,
+				'message' => 'Invalid file path. Only files from the upload directory are allowed.'
+			]);
+			wp_die();
+		}
+
+		if (!file_exists($validated_file)) {
+			echo json_encode([
+				'error' => true,
+				'message' => 'File not found.'
+			]);
+			wp_die();
+		}
+
+		$projects = Projects::loadFromCSV($validated_file);
 		echo json_encode($projects);
 		wp_die();
 	}
@@ -3515,8 +3533,26 @@ class AjaxHandler extends BaseController {
 	public function loadProjectsFromJSON() {
 		if (!Utillities::can_create_projects()) $this->unauthorized();
 
-		$file = isset($_POST['file']) ? sanitize_text_field($_POST['file']) : '';
-		$projects = Projects::loadFromJSON($file);
+		$filename = isset($_POST['file']) ? $_POST['file'] : '';
+		$validated_file = Utillities::validateAndSanitizeFilePath($filename);
+
+		if ($validated_file === false) {
+			echo json_encode([
+				'error' => true,
+				'message' => 'Invalid file path. Only files from the upload directory are allowed.'
+			]);
+			wp_die();
+		}
+
+		if (!file_exists($validated_file)) {
+			echo json_encode([
+				'error' => true,
+				'message' => 'File not found.'
+			]);
+			wp_die();
+		}
+
+		$projects = Projects::loadFromJSON($validated_file);
 		echo json_encode($projects);
 		wp_die();
 	}
@@ -3524,7 +3560,7 @@ class AjaxHandler extends BaseController {
 	public function saveProjects() {
 		$projects = isset($_POST['projects']) ? zpm_sanitize_array($_POST['projects']) : [];
 
-        if (!Utillities::can_create_projects()) $this->unauthorized();
+		if (!Utillities::can_create_projects()) $this->unauthorized();
 
 		foreach ($projects as $project) {
 			$project = (array) $project;
@@ -3597,7 +3633,7 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function saveTasks() {
-        if (!Utillities::can_create_tasks()) $this->unauthorized();
+		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$tasks = isset($_POST['tasks']) ? zpm_sanitize_array($_POST['tasks']) : [];
 
@@ -3682,7 +3718,7 @@ class AjaxHandler extends BaseController {
 		fputcsv($filename, $headers);
 
 		foreach ($projects as $project) {
-            if (!Projects::has_project_access($project)) continue;
+			if (!Projects::has_project_access($project)) continue;
 
 			$completed = Projects::isCompleted($project);
 
@@ -3820,7 +3856,7 @@ class AjaxHandler extends BaseController {
 					}
 
 					$filedata['assignee'] = Members::memberIdStringToNameString($task->assignee);
- 				}
+				}
 			}
 
 			if (Utillities::getSetting('task_duration_enabled')) {
@@ -4005,7 +4041,7 @@ class AjaxHandler extends BaseController {
 	public function updateTaskMeta() {
 		$id = $this->getPostVar('id');
 
-        if (!Utillities::canEditTask($id)) $this->unauthorized();
+		if (!Utillities::canEditTask($id)) $this->unauthorized();
 
 		$key = $this->getPostVar('key');
 		$value = $this->getPostVar('value');
@@ -4014,7 +4050,7 @@ class AjaxHandler extends BaseController {
 	}
 
 	public function createTaskList() {
-        if (!Utillities::can_create_tasks(get_current_user_id())) $this->unauthorized();
+		if (!Utillities::can_create_tasks(get_current_user_id())) $this->unauthorized();
 
 		$list = $this->getPostVar('list', []);
 		$frontend = $this->getPostVar('frontend', false);
@@ -4035,7 +4071,7 @@ class AjaxHandler extends BaseController {
 				'date_completed' => '',
 				'completed' => 0,
 				'priority' => 'priority_none',
-				'name' => $item,
+				'name' => sanitize_text_field($item),
 				'assignee' => $assignees,
 				'team' => '-1',
 			]);
@@ -4054,9 +4090,9 @@ class AjaxHandler extends BaseController {
 
 		if (!Utillities::canDeleteTasks(get_current_user_id())) $this->unauthorized();
 
-        foreach ($tasks as $taskID) {
-            Tasks::delete($taskID);
-        }
+		foreach ($tasks as $taskID) {
+			Tasks::delete($taskID);
+		}
 
 		wp_send_json_success([]);
 	}
@@ -4066,9 +4102,9 @@ class AjaxHandler extends BaseController {
 
 		$tasks = $this->getPostVar('tasks', []);
 
-        foreach ($tasks as $taskID) {
-            Tasks::archive($taskID);
-        }
+		foreach ($tasks as $taskID) {
+			Tasks::archive($taskID);
+		}
 
 		wp_send_json_success([]);
 	}
@@ -4078,38 +4114,38 @@ class AjaxHandler extends BaseController {
 		$values = $this->getPostVar('values', []);
 
 		foreach ($tasks as $taskID) {
-            if (Utillities::canEditTask($taskID)) {
-			    $taskData = [];
+			if (Utillities::canEditTask($taskID)) {
+				$taskData = [];
 
-                if (isset($values['assignees'])) {
-                    $taskData['assignee'] = implode(',', $values['assignees']);
-                }
+				if (isset($values['assignees'])) {
+					$taskData['assignee'] = implode(',', $values['assignees']);
+				}
 
-                if (isset($values['priority'])) {
-                    $taskData['priority'] = $values['priority'];
-                }
+				if (isset($values['priority'])) {
+					$taskData['priority'] = $values['priority'];
+				}
 
-                if (isset($values['status'])) {
-                    $taskData['status'] = $values['status'];
-                }
+				if (isset($values['status'])) {
+					$taskData['status'] = $values['status'];
+				}
 
-                if (isset($values['startDate'])) {
-                    $taskData['date_start'] = $values['startDate'];
-                }
+				if (isset($values['startDate'])) {
+					$taskData['date_start'] = $values['startDate'];
+				}
 
-                if (isset($values['dueDate'])) {
-                    $taskData['date_due'] = $values['dueDate'];
-                }
+				if (isset($values['dueDate'])) {
+					$taskData['date_due'] = $values['dueDate'];
+				}
 
-                Tasks::update($taskID, $taskData);
-            }
+				Tasks::update($taskID, $taskData);
+			}
 		}
 
 		wp_send_json_success([]);
 	}
 
 	public function importIcal() {
-        if (!Utillities::can_create_tasks()) $this->unauthorized();
+		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$url = $this->getParam('url');
 		$tasks = Tasks::importIcal($url);
@@ -4163,11 +4199,13 @@ class AjaxHandler extends BaseController {
 
 		foreach ($tasks as $key => $task) {
 			if (!in_array($project, ['all', '-1'])) {
-				if (intval($task->project) !== intval($project)) unset($tasks[$key]); continue;
+				if (intval($task->project) !== intval($project)) unset($tasks[$key]);
+				continue;
 			}
 
 			if (!in_array($status, ['all', '-1', 'archived', 'active'])) {
-				if (!Tasks::isStatus($task, $status)) unset($tasks[$key]); continue;
+				if (!Tasks::isStatus($task, $status)) unset($tasks[$key]);
+				continue;
 			}
 
 			// if (!in_array($assignee, ['all', '-1'])) {
@@ -4176,7 +4214,8 @@ class AjaxHandler extends BaseController {
 
 			if ($hideCompletedTasks) {
 				if ($assignee == 'my_tasks') {
-					if (Tasks::isCompleted($task)) unset($tasks[$key]); continue;
+					if (Tasks::isCompleted($task)) unset($tasks[$key]);
+					continue;
 				}
 			}
 		}
@@ -4233,7 +4272,7 @@ class AjaxHandler extends BaseController {
 	public function getProjectOverview() {
 		$id = $this->getPostVar('id');
 
-        if (!Projects::has_project_access($id)) $this->unauthorized();
+		if (!Projects::has_project_access($id)) $this->unauthorized();
 
 		$html = zpm_get_template('project/overview', [
 			'project' => Projects::get_project($id)
@@ -4247,7 +4286,7 @@ class AjaxHandler extends BaseController {
 	public function updateSubtaskOrder() {
 		$id = $this->getPostVar('taskID');
 
-        if (!Utillities::canEditTask($id)) $this->unauthorized();
+		if (!Utillities::canEditTask($id)) $this->unauthorized();
 
 		$positions = $this->getPostVar('positions');
 		Tasks::updateMeta($id, 'subtaskOrder', $positions);
@@ -4259,7 +4298,7 @@ class AjaxHandler extends BaseController {
 	public function updateTaskDates() {
 		$taskID = $this->getPostVar('taskID');
 
-        if (!Utillities::canEditTask($taskID)) $this->unauthorized();
+		if (!Utillities::canEditTask($taskID)) $this->unauthorized();
 
 		$start = $this->getPostVar('start');
 		$due = $this->getPostVar('due');
@@ -4293,7 +4332,7 @@ class AjaxHandler extends BaseController {
 			'results' => $sendResults
 		]);
 	}
-	
+
 	public static function deleteTempFiles() {
 		Utillities::deleteTempFiles();
 		wp_send_json_success([]);
