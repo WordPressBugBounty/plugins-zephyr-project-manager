@@ -589,6 +589,7 @@ jQuery(document).ready(function ($) {
 
 	/* Open new task modal on Project editor page */
 	$('body').on('click', '#zpm_add_new_project_task', function () {
+		jQuery.event.trigger({ type: 'zephyr_new_task_modal_opened', data: {} });
 		ZephyrProjects.open_modal('zpm_create_task');
 		$('body').find('#zpm-new-task-template-select').trigger('change');
 	});

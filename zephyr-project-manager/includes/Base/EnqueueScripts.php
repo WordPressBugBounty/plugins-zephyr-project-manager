@@ -16,7 +16,7 @@ use ZephyrProjectManager\Base\BaseController;
 use ZephyrProjectManager\ZephyrProjectManager;
 
 class EnqueueScripts {
-	public static $version = '11.45.0';
+	public static $version = '11.47.0';
 
 	public static function register() {
 		add_action('admin_enqueue_scripts', array('ZephyrProjectManager\Base\EnqueueScripts', 'enqueue_admin_scripts'));

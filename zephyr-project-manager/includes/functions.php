@@ -64,7 +64,6 @@ function zpm_daily_scheduled_tasks() {
 			// 	Emails::sendTaskStartEmail($task);
 			// }
 		}
-	
 	}
 }
 
@@ -272,7 +271,7 @@ Some features include:
 }
 
 function zpm_get_version() {
-    return ZPM_PLUGIN_VERSION;
+	return ZPM_PLUGIN_VERSION;
 	$version = Zephyr::getPluginVersion();
 	return $version;
 }
@@ -489,17 +488,19 @@ function zpm_log($key, $message) {
 }
 
 function zpm_dump($var, $title = null) {
-	?>
+?>
 	<div class="zpm-dump">
 		<?php if (!is_null($title)): ?>
-			<div><h6><?php echo $title; ?></h6></div>
+			<div>
+				<h6><?php echo $title; ?></h6>
+			</div>
 		<?php endif; ?>
 		<?php if (is_array($var)): ?>
 			<div>Size: <?php echo count($var); ?></div>
 		<?php endif; ?>
 		<pre><?php print_r($var); ?></pre>
 	</div>
-	<?php
+<?php
 }
 
 function zpm_is_dev() {
