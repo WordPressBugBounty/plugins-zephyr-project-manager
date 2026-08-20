@@ -88,8 +88,29 @@ class Projects {
 
 	public static function new_project($args = null) {
 		global $wpdb;
-		$table_name = ZPM_PROJECTS_TABLE;
-		$defaults = array(
+		$tableName = ZPM_PROJECTS_TABLE;
+		$defaultStatusSlug = Utillities::getSetting('default_status');
+		$defaultStatus = '';
+
+		if (!empty($defaultStatusSlug)) {
+			$statusDetails = Utillities::get_status($defaultStatusSlug);
+			$statusName = isset($statusDetails['name']) ? $statusDetails['name'] : '';
+			$defaultStatus = serialize([
+				'status' => esc_html($statusName),
+				'color' => $defaultStatusSlug
+			]);
+		}
+
+		if (isset($args['status']) && !empty($args['status']) && !is_serialized($args['status']) && !is_array($args['status'])) {
+			$statusDetails = Utillities::get_status($args['status']);
+			$statusName = isset($statusDetails['name']) ? $statusDetails['name'] : '';
+			$args['status'] = serialize([
+				'status' => esc_html($statusName),
+				'color' => $args['status']
+			]);
+		}
+
+		$defaults = [
 			'user_id' => get_current_user_id(),
 			'name' => 'Untitled Project',
 			'description' => '',
@@ -100,14 +121,15 @@ class Projects {
 			'date_due' => '',
 			'date_created' => date('Y-m-d H:i:s'),
 			'date_completed' => '',
-			'priority' => 'priority_none'
-		);
+			'priority' => 'priority_none',
+			'status' => $defaultStatus
+		];
 		$data = wp_parse_args($args, $defaults);
-		$wpdb->insert($table_name, $data);
-		$new_project_id = $wpdb->insert_id;
-		Activity::log_activity($data['user_id'], $wpdb->insert_id, '', esc_html($data['name']), 'project', 'project_added');
+		$wpdb->insert($tableName, $data);
+		$newProjectId = $wpdb->insert_id;
+		Activity::log_activity($data['user_id'], $newProjectId, '', esc_html($data['name']), 'project', 'project_added');
 
-		return $new_project_id;
+		return $newProjectId;
 	}
 
 	public static function get_projects($limit = null, $args = null, $filters = null, $public = false, $userId = null) {
@@ -142,16 +164,8 @@ class Projects {
 		}
 		$projects = $wpdb->get_results(!empty($prepare) ? $wpdb->prepare($query, $prepare) : $query);
 		foreach ($projects as $project) {
-			$project->status = !empty($project->status) ? maybe_unserialize($project->status) : [
-				'status' => __('None', 'zephyr-project-manager'),
-				'color' => 'priority_none'
-			];
-			if (is_string($project->status)) {
-				$project->status = [
-					'color' => $project->status
-				];
-			}
-			$project->team = maybe_unserialize($project->team) ? maybe_unserialize($project->team) : array();
+			$project = Projects::format($project);
+			$project->team = maybe_unserialize($project->team) ? maybe_unserialize($project->team) : [];
 			$project->assignees = !is_null($project->assignees) ? $project->assignees : '';
 		}
 		if (!is_null($filters)) {
@@ -266,13 +280,8 @@ class Projects {
 		$table_name = ZPM_PROJECTS_TABLE;
 		$projects = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$table_name} WHERE completed = %d ORDER BY id DESC", 1));
 		foreach ($projects as $project) {
-			$project->status = $project->status == "" ? maybe_unserialize($project->status) : array();
-			if (is_string($project->status)) {
-				$project->status = [
-					'color' => $project->status
-				];
-			}
-			$project->team = maybe_unserialize($project->team) ? maybe_unserialize($project->team) : array();
+			$project = Projects::format($project);
+			$project->team = maybe_unserialize($project->team) ? maybe_unserialize($project->team) : [];
 		}
 
 		return $projects;
@@ -291,9 +300,21 @@ class Projects {
 	}
 
 	public static function format($project) {
+		$defaultStatusSlug = Utillities::getSetting('default_status');
+		$defaultStatusName = __('None', 'zephyr-project-manager');
+		$defaultStatusColor = 'priority_none';
+
+		if (!empty($defaultStatusSlug)) {
+			$statusDetails = Utillities::get_status($defaultStatusSlug);
+			if (isset($statusDetails['name'])) {
+				$defaultStatusName = $statusDetails['name'];
+			}
+			$defaultStatusColor = $defaultStatusSlug;
+		}
+
 		$project->status = !empty($project->status) ? maybe_unserialize($project->status) : [
-			'status' => __('None', 'zephyr-project-manager'),
-			'color' => 'priority_none'
+			'status' => $defaultStatusName,
+			'color' => $defaultStatusColor
 		];
 		if (is_string($project->status)) {
 			$project->status = [
@@ -550,6 +571,7 @@ class Projects {
 									<li id="zpm_copy_project"><?php esc_html_e('Copy Project', 'zephyr-project-manager'); ?></li>
 								<?php endif; ?>
 								<li data-print-project-pdf-button="<?php echo esc_attr($project->id); ?>"><?php esc_html_e('Download PDF', 'zephyr-project-manager'); ?></li>
+								<li class="zpm-import-tasks__btn zpm_import_project_tasks" data-project-id="<?php echo esc_attr($project->id); ?>"><?php esc_html_e('Import Tasks', 'zephyr-project-manager'); ?></li>
 								<li id="zpm_export_project"
 									class="zpm_dropdown_subdropdown"><?php esc_html_e('Export Project', 'zephyr-project-manager'); ?>
 									<div class="zpm_export_dropdown zpm_submenu_item">
@@ -698,10 +720,13 @@ class Projects {
 
 					public static function is_project_member($project, $user_id) {
 						$project = is_object($project) ? $project : Projects::get_project((int) $project);
+
 						if (!is_object($project)) {
 							return;
 						}
+
 						$project_members = property_exists($project, 'team') && maybe_unserialize($project->team) ? maybe_unserialize($project->team) : array();
+
 						if (is_array($project_members)) {
 							foreach ($project_members as $member) {
 								if (strpos($member, 'team') !== false) {
@@ -713,7 +738,12 @@ class Projects {
 								}
 							}
 						}
+
 						if (in_array((int) $user_id, (array) $project_members) || (int) $user_id == (int) $project->user_id) {
+							return true;
+						}
+
+						if (in_array($user_id, explode(',', $project->assignees))) {
 							return true;
 						}
 
@@ -1049,7 +1079,7 @@ class Projects {
 							$new_comment .= '<span class="zpm_comment_user_text">
 		<span class="zpm_comment_from">' . $this_user['name'] . '</span>
 		<span class="zpm_comment_time_diff">' . $time_sent . '</span>
-		<div class="zpm_comment_content">' . stripslashes_deep(unserialize($comment->message)) . '</div>';
+		<div class="zpm_comment_content">' . wp_kses_post(stripslashes_deep(unserialize($comment->message))) . '</div>';
 							if (!empty($comment_attachments)) {
 								$new_comment .= '<ul class="zpm_comment_attachments"><p>Attachments:</p>';
 								foreach ($comment_attachments as $attachment) {
@@ -1862,6 +1892,7 @@ class Projects {
 
 					public static function getAdditionalEmails($projectId) {
 						$emails = Projects::getSetting($projectId, 'additional_emails');
+
 						if (is_null($emails)) {
 							$emails = [];
 						}

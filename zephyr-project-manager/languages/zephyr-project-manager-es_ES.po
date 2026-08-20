@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-12-11 13:01+0200\n"
-"PO-Revision-Date: 2025-12-11 13:01+0200\n"
+"POT-Creation-Date: 2026-07-16 11:55+0200\n"
+"PO-Revision-Date: 2026-07-16 11:55+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: zephyr-project-manager-pro/includes/Ajax.php:234
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:49
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:50
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:648
 #: zephyr-project-manager/includes/Base/AjaxHandler.php:649
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:2034
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:2035
-#: zephyr-project-manager/includes/Core/Projects.php:1824
-#: zephyr-project-manager/includes/Core/Projects.php:1825
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:650
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:2081
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:2082
+#: zephyr-project-manager/includes/Core/Projects.php:1835
+#: zephyr-project-manager/includes/Core/Projects.php:1836
 #: zephyr-project-manager/includes/Core/Tasks.php:183
 #: zephyr-project-manager/includes/Core/Tasks.php:184
 msgid "Not set"
@@ -43,7 +43,7 @@ msgstr "Reporte"
 
 #: zephyr-project-manager-pro/includes/Ajax.php:260
 #: zephyr-project-manager-pro/includes/Core.php:734
-#: zephyr-project-manager/includes/Api/Emails.php:337
+#: zephyr-project-manager/includes/Api/Emails.php:350
 #: zephyr-project-manager/includes/strings.php:39
 #: zephyr-project-manager/templates/parts/project-single.php:182
 #: zephyr-project-manager/templates/parts/project-single.php:183
@@ -51,7 +51,7 @@ msgid "Project Name"
 msgstr "Nombre del proyecto"
 
 #: zephyr-project-manager-pro/includes/Ajax.php:267
-#: zephyr-project-manager/includes/Api/Emails.php:339
+#: zephyr-project-manager/includes/Api/Emails.php:352
 #: zephyr-project-manager/templates/parts/project-single.php:187
 #: zephyr-project-manager/templates/parts/project-single.php:188
 msgid "Project Description"
@@ -153,7 +153,7 @@ msgstr "Todavía no hay tareas"
 #: zephyr-project-manager-pro/includes/Ajax.php:342
 #: zephyr-project-manager-pro/templates/project-page-template.php:303
 #: zephyr-project-manager-pro/views/reports.php:86
-#: zephyr-project-manager/includes/Api/Emails.php:279
+#: zephyr-project-manager/includes/Api/Emails.php:288
 msgid "Tasks due this week"
 msgstr "Tareas pendientes esta semana"
 
@@ -223,14 +223,14 @@ msgstr "en equipo"
 #: zephyr-project-manager-pro/templates/project-page-template.php:297
 #: zephyr-project-manager-pro/templates/themes/default.php:84
 #: zephyr-project-manager-pro/templates/themes/modern.php:31
-#: zephyr-project-manager-pro/templates/themes/plain.php:15
+#: zephyr-project-manager-pro/templates/themes/plain.php:17
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:128
 #: zephyr-project-manager-pro/views/asana-project.php:27
 #: zephyr-project-manager-pro/views/reports.php:80
 #: zephyr-project-manager-pro/views/settings-frontend.php:258
-#: zephyr-project-manager/includes/Core/Projects.php:2208
+#: zephyr-project-manager/includes/Core/Projects.php:2220
 #: zephyr-project-manager/includes/Pages/Admin.php:968
-#: zephyr-project-manager/includes/functions.php:536
+#: zephyr-project-manager/includes/functions.php:537
 #: zephyr-project-manager/includes/strings.php:46
 #: zephyr-project-manager/includes/strings.php:90
 #: zephyr-project-manager/templates/parts/project-single.php:164
@@ -246,11 +246,11 @@ msgstr "Tareas"
 #: zephyr-project-manager-pro/templates/frontend/projects.php:54
 #: zephyr-project-manager-pro/templates/themes/default.php:75
 #: zephyr-project-manager-pro/templates/themes/modern.php:24
-#: zephyr-project-manager-pro/templates/themes/plain.php:14
+#: zephyr-project-manager-pro/templates/themes/plain.php:16
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:119
 #: zephyr-project-manager-pro/views/settings-frontend.php:254
 #: zephyr-project-manager/includes/Pages/Admin.php:969
-#: zephyr-project-manager/includes/functions.php:534
+#: zephyr-project-manager/includes/functions.php:535
 #: zephyr-project-manager/includes/strings.php:93
 msgid "Projects"
 msgstr "Proyectos"
@@ -302,8 +302,8 @@ msgstr "eliminada la columna"
 #: zephyr-project-manager-pro/includes/CustomFields.php:910
 #: zephyr-project-manager-pro/includes/CustomFields.php:952
 #: zephyr-project-manager-pro/includes/CustomFields.php:1114
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:3646
-#: zephyr-project-manager/includes/Core/Projects.php:2187
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:3694
+#: zephyr-project-manager/includes/Core/Projects.php:2199
 #: zephyr-project-manager/includes/Core/Utillities.php:2279
 #: zephyr-project-manager/includes/Core/Utillities.php:2335
 #: zephyr-project-manager/includes/Core/Utillities.php:2433
@@ -402,10 +402,10 @@ msgstr "Tipo"
 #: zephyr-project-manager-pro/templates/project-page-template.php:286
 #: zephyr-project-manager-pro/templates/themes/default.php:295
 #: zephyr-project-manager-pro/templates/themes/modern.php:154
-#: zephyr-project-manager-pro/templates/themes/plain.php:194
+#: zephyr-project-manager-pro/templates/themes/plain.php:195
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:358
 #: zephyr-project-manager-pro/views/reports.php:69
-#: zephyr-project-manager/includes/functions.php:533
+#: zephyr-project-manager/includes/functions.php:534
 #: zephyr-project-manager/includes/strings.php:47
 #: zephyr-project-manager/templates/parts/new_task.php:72
 msgid "Project"
@@ -415,7 +415,7 @@ msgstr "Proyecto"
 #: zephyr-project-manager-pro/includes/Core.php:720
 #: zephyr-project-manager-pro/includes/Report.php:419
 #: zephyr-project-manager-pro/templates/project-page-template.php:253
-#: zephyr-project-manager/includes/functions.php:535
+#: zephyr-project-manager/includes/functions.php:536
 #: zephyr-project-manager/includes/strings.php:25
 msgid "Task"
 msgstr "Tarea"
@@ -442,17 +442,17 @@ msgstr "Tarea"
 #: zephyr-project-manager-pro/templates/frontend/users.php:105
 #: zephyr-project-manager-pro/templates/project-page-template.php:150
 #: zephyr-project-manager-pro/templates/project-page-template.php:255
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:1060
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:1061
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:2060
-#: zephyr-project-manager/includes/Core/Projects.php:145
-#: zephyr-project-manager/includes/Core/Projects.php:294
-#: zephyr-project-manager/includes/Core/Projects.php:765
-#: zephyr-project-manager/includes/Core/Projects.php:766
-#: zephyr-project-manager/includes/Core/Projects.php:767
-#: zephyr-project-manager/includes/Core/Projects.php:825
-#: zephyr-project-manager/includes/Core/Projects.php:1698
-#: zephyr-project-manager/includes/Core/Projects.php:2131
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:1098
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:1099
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:2107
+#: zephyr-project-manager/includes/Core/Projects.php:146
+#: zephyr-project-manager/includes/Core/Projects.php:295
+#: zephyr-project-manager/includes/Core/Projects.php:775
+#: zephyr-project-manager/includes/Core/Projects.php:776
+#: zephyr-project-manager/includes/Core/Projects.php:777
+#: zephyr-project-manager/includes/Core/Projects.php:835
+#: zephyr-project-manager/includes/Core/Projects.php:1709
+#: zephyr-project-manager/includes/Core/Projects.php:2143
 #: zephyr-project-manager/includes/Core/Tasks.php:2335
 #: zephyr-project-manager/includes/Core/Tasks.php:3166
 #: zephyr-project-manager/includes/Core/Utillities.php:619
@@ -462,8 +462,8 @@ msgstr "Tarea"
 #: zephyr-project-manager/includes/Helpers/Html.php:131
 #: zephyr-project-manager/includes/Helpers/Html.php:164
 #: zephyr-project-manager/includes/Pages/Admin.php:194
-#: zephyr-project-manager/includes/functions.php:426
-#: zephyr-project-manager/includes/functions.php:459
+#: zephyr-project-manager/includes/functions.php:425
+#: zephyr-project-manager/includes/functions.php:458
 #: zephyr-project-manager/includes/strings.php:183
 #: zephyr-project-manager/templates/parts/project-single.php:299
 #: zephyr-project-manager/templates/parts/project-view.php:35
@@ -517,12 +517,12 @@ msgstr "Exportar información a Asana"
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:191
 #: zephyr-project-manager-pro/templates/themes/default.php:138
 #: zephyr-project-manager-pro/templates/themes/modern.php:45
-#: zephyr-project-manager-pro/templates/themes/plain.php:17
+#: zephyr-project-manager-pro/templates/themes/plain.php:19
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:184
 #: zephyr-project-manager-pro/views/custom_fields.php:215
 #: zephyr-project-manager-pro/views/custom_fields.php:267
 #: zephyr-project-manager-pro/views/settings-frontend.php:282
-#: zephyr-project-manager/includes/Core/Projects.php:2212
+#: zephyr-project-manager/includes/Core/Projects.php:2224
 #: zephyr-project-manager/includes/Pages/Admin.php:1057
 #: zephyr-project-manager/includes/Pages/Admin.php:1058
 msgid "Settings"
@@ -540,9 +540,9 @@ msgstr "Selecciona una Plantilla"
 #: zephyr-project-manager-pro/includes/Core.php:224
 #: zephyr-project-manager-pro/templates/themes/modern.php:111
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:42
-#: zephyr-project-manager/includes/Api/Emails.php:333
-#: zephyr-project-manager/includes/Api/Emails.php:334
-#: zephyr-project-manager/includes/Core/Projects.php:1152
+#: zephyr-project-manager/includes/Api/Emails.php:346
+#: zephyr-project-manager/includes/Api/Emails.php:347
+#: zephyr-project-manager/includes/Core/Projects.php:1162
 msgid "New Project"
 msgstr "Nuevo Proyecto"
 
@@ -572,7 +572,7 @@ msgstr "Nuevo Equipo"
 #: zephyr-project-manager-pro/templates/themes/default.php:289
 #: zephyr-project-manager-pro/templates/themes/modern.php:120
 #: zephyr-project-manager-pro/templates/themes/modern.php:148
-#: zephyr-project-manager-pro/templates/themes/plain.php:188
+#: zephyr-project-manager-pro/templates/themes/plain.php:189
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:56
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:352
 msgid "New File"
@@ -610,7 +610,7 @@ msgstr "Ordenar Hitos por"
 
 #: zephyr-project-manager-pro/includes/Core.php:538
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: zephyr-project-manager-pro/includes/Core.php:540
 msgid "Date Due (Newest to Oldest)"
@@ -637,10 +637,8 @@ msgid "Custom Field Settings"
 msgstr "Ajuste de Campos Personalizados"
 
 #: zephyr-project-manager-pro/includes/Core.php:560
-#, fuzzy
-#| msgid "Custom Fields"
 msgid "Disable Custom Fields"
-msgstr "Campos Personalizados"
+msgstr "Desactivar Campos Personalizados"
 
 #: zephyr-project-manager-pro/includes/Core.php:567
 msgid "Hide Default Fields in New Task Popup"
@@ -789,7 +787,7 @@ msgstr "Archivo Eliminado"
 
 #: zephyr-project-manager-pro/includes/Core.php:724
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:543
-#: zephyr-project-manager/includes/Api/Emails.php:384
+#: zephyr-project-manager/includes/Api/Emails.php:446
 #: zephyr-project-manager/includes/strings.php:29
 msgid "New Subtask"
 msgstr "Nueva Subtarea"
@@ -800,8 +798,8 @@ msgid "Create New Task"
 msgstr "Crear Nueva Tarea"
 
 #: zephyr-project-manager-pro/includes/Core.php:726
-#: zephyr-project-manager/includes/Api/Emails.php:649
-#: zephyr-project-manager/includes/Api/Emails.php:731
+#: zephyr-project-manager/includes/Api/Emails.php:711
+#: zephyr-project-manager/includes/Api/Emails.php:793
 #: zephyr-project-manager/includes/strings.php:31
 #: zephyr-project-manager/templates/parts/new_task.php:66
 #: zephyr-project-manager/templates/parts/new_task.php:67
@@ -823,7 +821,7 @@ msgstr "Responsable"
 #: zephyr-project-manager-pro/includes/Core.php:728
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:174
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:540
-#: zephyr-project-manager/includes/functions.php:538
+#: zephyr-project-manager/includes/functions.php:539
 #: zephyr-project-manager/includes/strings.php:33
 msgid "Subtasks"
 msgstr "Subtareas"
@@ -847,8 +845,8 @@ msgstr "Incluir"
 #: zephyr-project-manager-pro/includes/Kanban.php:786
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:603
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:199
-#: zephyr-project-manager/includes/Api/Emails.php:647
-#: zephyr-project-manager/includes/Api/Emails.php:729
+#: zephyr-project-manager/includes/Api/Emails.php:709
+#: zephyr-project-manager/includes/Api/Emails.php:791
 #: zephyr-project-manager/includes/strings.php:38
 #: zephyr-project-manager/templates/parts/new_task.php:61
 #: zephyr-project-manager/templates/parts/new_task.php:62
@@ -922,7 +920,7 @@ msgstr "Cerrar"
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:176
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:618
 #: zephyr-project-manager-pro/templates/themes/default.php:102
-#: zephyr-project-manager-pro/templates/themes/plain.php:21
+#: zephyr-project-manager-pro/templates/themes/plain.php:23
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:146
 #: zephyr-project-manager-pro/views/settings-frontend.php:266
 #: zephyr-project-manager/includes/Pages/Admin.php:1011
@@ -934,7 +932,7 @@ msgstr "Archivos"
 #: zephyr-project-manager-pro/includes/Kanban.php:552
 #: zephyr-project-manager-pro/templates/themes/default.php:301
 #: zephyr-project-manager-pro/templates/themes/modern.php:160
-#: zephyr-project-manager-pro/templates/themes/plain.php:200
+#: zephyr-project-manager-pro/templates/themes/plain.php:201
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:366
 #: zephyr-project-manager/includes/strings.php:56
 msgid "Upload File"
@@ -1052,7 +1050,7 @@ msgstr "Creando Categoría…"
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:197
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:173
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:185
-#: zephyr-project-manager/includes/Core/Projects.php:2207
+#: zephyr-project-manager/includes/Core/Projects.php:2219
 #: zephyr-project-manager/includes/strings.php:89
 msgid "Overview"
 msgstr "Visión general"
@@ -1062,7 +1060,7 @@ msgstr "Visión general"
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:447
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:175
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:578
-#: zephyr-project-manager/includes/Core/Projects.php:2209
+#: zephyr-project-manager/includes/Core/Projects.php:2221
 #: zephyr-project-manager/includes/strings.php:91
 msgid "Discussion"
 msgstr "Discusión"
@@ -1242,7 +1240,7 @@ msgid "Go to Project"
 msgstr "Ir al Proyecto"
 
 #: zephyr-project-manager-pro/includes/Core.php:811
-#: zephyr-project-manager/includes/Api/Emails.php:288
+#: zephyr-project-manager/includes/Api/Emails.php:297
 #: zephyr-project-manager/includes/strings.php:139
 msgid "No date set"
 msgstr "Sin fecha establecida"
@@ -1390,7 +1388,7 @@ msgstr "Añadir nueva tarea"
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:450
 #: zephyr-project-manager-pro/templates/frontend/tasks.php:79
 #: zephyr-project-manager-pro/views/kanban.php:123
-#: zephyr-project-manager/includes/Core/Projects.php:1969
+#: zephyr-project-manager/includes/Core/Projects.php:1981
 #: zephyr-project-manager/includes/strings.php:186
 #: zephyr-project-manager/templates/parts/project-single.php:267
 #: zephyr-project-manager/templates/parts/task-single.php:524
@@ -1446,7 +1444,7 @@ msgstr ""
 "Por favor ingrese una dirección de correo electrónico para este usuario."
 
 #: zephyr-project-manager-pro/includes/Core.php:850
-#: zephyr-project-manager/includes/functions.php:539
+#: zephyr-project-manager/includes/functions.php:540
 #: zephyr-project-manager/includes/strings.php:192
 msgid "Milestone"
 msgstr "Hito"
@@ -1727,10 +1725,8 @@ msgid "Checkbox (True / False)"
 msgstr "Checkbox (Verdadero / Falso)"
 
 #: zephyr-project-manager-pro/includes/CustomFields.php:150
-#, fuzzy
-#| msgid "Date Field"
 msgid "Rating Field"
-msgstr "Campo de Fecha"
+msgstr "Campo de Valoración"
 
 #: zephyr-project-manager-pro/includes/CustomFields.php:179
 #: zephyr-project-manager-pro/includes/CustomFields.php:185
@@ -1770,7 +1766,7 @@ msgstr "Selecciona un campo personalizado"
 #: zephyr-project-manager-pro/includes/CustomFields.php:466
 #, php-format
 msgid "You can create custom fields from %1$shere%2$s."
-msgstr ""
+msgstr "Puede crear campos personalizados desde %1$saquí%2$s."
 
 #: zephyr-project-manager-pro/includes/CustomFields.php:483
 msgid "Text"
@@ -1853,10 +1849,8 @@ msgstr "No Asignado"
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:223
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:224
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:512
-#, fuzzy
-#| msgid "Documentation"
 msgid "Duration"
-msgstr "Documentación"
+msgstr "Duración"
 
 #: zephyr-project-manager-pro/includes/Kanban.php:545
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:166
@@ -1866,18 +1860,14 @@ msgstr "Eliminar Tarea"
 #: zephyr-project-manager-pro/includes/Kanban.php:546
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:165
 #: zephyr-project-manager/includes/Core/Tasks.php:2587
-#, fuzzy
-#| msgid "Save Task"
 msgid "Unarchive Task"
-msgstr "Guardar Tarea"
+msgstr "Desarchivar Tarea"
 
 #: zephyr-project-manager-pro/includes/Kanban.php:546
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:165
 #: zephyr-project-manager/includes/Core/Tasks.php:2587
-#, fuzzy
-#| msgid "Active Tasks"
 msgid "Archive Task"
-msgstr "Tareas Activas"
+msgstr "Archivar Tarea"
 
 #: zephyr-project-manager-pro/includes/Kanban.php:550
 #: zephyr-project-manager-pro/templates/project-page-template.php:117
@@ -1886,10 +1876,10 @@ msgstr "Copiar al Proyecto"
 
 #: zephyr-project-manager-pro/includes/Kanban.php:553
 #: zephyr-project-manager/includes/Api/Emails.php:183
-#: zephyr-project-manager/includes/Api/Emails.php:229
-#: zephyr-project-manager/includes/Api/Emails.php:392
-#: zephyr-project-manager/includes/Api/Emails.php:657
-#: zephyr-project-manager/includes/Api/Emails.php:739
+#: zephyr-project-manager/includes/Api/Emails.php:231
+#: zephyr-project-manager/includes/Api/Emails.php:454
+#: zephyr-project-manager/includes/Api/Emails.php:719
+#: zephyr-project-manager/includes/Api/Emails.php:801
 msgid "View Task"
 msgstr "Ver Tarea"
 
@@ -1904,16 +1894,12 @@ msgstr "Copiar Columna al Proyecto"
 #: zephyr-project-manager-pro/includes/Milestones.php:290
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:304
 #: zephyr-project-manager/templates/parts/new_task.php:154
-#, fuzzy
-#| msgid "Pending Tasks"
 msgid "Blocking Tasks"
-msgstr "Tareas Pendientes"
+msgstr "Tareas de Bloqueo"
 
 #: zephyr-project-manager-pro/includes/Milestones.php:205
-#, fuzzy
-#| msgid "Select Status"
 msgid "Select tasks"
-msgstr "Seleccionar Estado"
+msgstr "Seleccionar tareas"
 
 #: zephyr-project-manager-pro/includes/Milestones.php:206
 #: zephyr-project-manager-pro/includes/Milestones.php:291
@@ -1924,11 +1910,11 @@ msgstr "Seleccionar Estado"
 #: zephyr-project-manager-pro/includes/Pages.php:1593
 #: zephyr-project-manager-pro/templates/frontend/milestones.php:20
 #: zephyr-project-manager-pro/templates/themes/default.php:93
-#: zephyr-project-manager-pro/templates/themes/plain.php:16
+#: zephyr-project-manager-pro/templates/themes/plain.php:18
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:137
 #: zephyr-project-manager-pro/views/milestones.php:27
 #: zephyr-project-manager-pro/views/settings-frontend.php:262
-#: zephyr-project-manager/includes/functions.php:540
+#: zephyr-project-manager/includes/functions.php:541
 msgid "Milestones"
 msgstr "Hitos"
 
@@ -1945,10 +1931,8 @@ msgstr "Crear Nuevo Hito"
 
 #: zephyr-project-manager-pro/includes/Milestones.php:290
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:305
-#, fuzzy
-#| msgid "Select Project or Task"
 msgid "Select Blocking Tasks"
-msgstr "Seleccione Proyecto"
+msgstr "Seleccionar Tareas de Bloqueo"
 
 #: zephyr-project-manager-pro/includes/Milestones.php:331
 msgid "Edit Milestone"
@@ -1965,17 +1949,15 @@ msgstr "Vence hoy."
 
 #: zephyr-project-manager-pro/includes/Milestones.php:536
 #: zephyr-project-manager-pro/includes/Milestones.php:548
-#, fuzzy, php-format
-#| msgid "Due %s months and %s days ago."
+#, php-format
 msgid "Due %s day ago."
-msgstr "Vencido hace %s meses y %s días."
+msgstr "Vencido hace %s día."
 
 #: zephyr-project-manager-pro/includes/Milestones.php:537
 #: zephyr-project-manager-pro/includes/Milestones.php:549
-#, fuzzy, php-format
-#| msgid "Due %s months and %s days ago."
+#, php-format
 msgid "Due %s days ago."
-msgstr "Vencido hace %s meses y %s días."
+msgstr "Vencido hace %s días."
 
 #: zephyr-project-manager-pro/includes/Milestones.php:540
 #, php-format
@@ -1983,16 +1965,14 @@ msgid "Due %s months and %s days ago."
 msgstr "Vencido hace %s meses y %s días."
 
 #: zephyr-project-manager-pro/includes/Milestones.php:552
-#, fuzzy, php-format
-#| msgid "%s months and %s days from now."
+#, php-format
 msgid "Due %s day from now."
-msgstr "%s meses y %s días desde ahora."
+msgstr "Vence dentro de %s día."
 
 #: zephyr-project-manager-pro/includes/Milestones.php:553
-#, fuzzy, php-format
-#| msgid "%s months and %s days from now."
+#, php-format
 msgid "Due %s days from now."
-msgstr "%s meses y %s días desde ahora."
+msgstr "Vence dentro de %s días."
 
 #: zephyr-project-manager-pro/includes/Milestones.php:560
 #, php-format
@@ -2001,7 +1981,7 @@ msgstr "%s meses y %s días desde ahora."
 
 #: zephyr-project-manager-pro/includes/NotesManager.php:34
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #: zephyr-project-manager-pro/includes/Pages.php:249
 #: zephyr-project-manager-pro/includes/Pages.php:250
@@ -2018,7 +1998,7 @@ msgstr "Plantillas y Campos Personalizados"
 #: zephyr-project-manager-pro/includes/Pages.php:281
 #: zephyr-project-manager-pro/includes/Pages.php:282
 #: zephyr-project-manager-pro/templates/frontend/reports.php:19
-#: zephyr-project-manager-pro/templates/themes/plain.php:18
+#: zephyr-project-manager-pro/templates/themes/plain.php:20
 msgid "Reports"
 msgstr "Reportes"
 
@@ -2056,7 +2036,7 @@ msgstr "Ajustes de Asana"
 
 #: zephyr-project-manager-pro/includes/Pages.php:673
 msgid "Click to change to the Kanban or board view"
-msgstr ""
+msgstr "Haga clic para cambiar a la vista de Kanban o de tablero"
 
 #: zephyr-project-manager-pro/includes/Pages.php:676
 msgid "Board (Kanban)"
@@ -2079,7 +2059,7 @@ msgstr "Organiza tu trabajo en un Diagrama de Gantt."
 #: zephyr-project-manager-pro/includes/Pages.php:698
 #: zephyr-project-manager-pro/templates/themes/default.php:280
 #: zephyr-project-manager-pro/templates/themes/modern.php:140
-#: zephyr-project-manager-pro/templates/themes/plain.php:179
+#: zephyr-project-manager-pro/templates/themes/plain.php:180
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:87
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:214
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:343
@@ -2136,11 +2116,11 @@ msgstr "Nueva Línea"
 
 #: zephyr-project-manager-pro/includes/Report.php:456
 msgid "Shortcode"
-msgstr ""
+msgstr "Shortcode"
 
 #: zephyr-project-manager-pro/templates/frontend/calendar.php:22
 #: zephyr-project-manager-pro/templates/themes/default.php:111
-#: zephyr-project-manager-pro/templates/themes/plain.php:20
+#: zephyr-project-manager-pro/templates/themes/plain.php:22
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:155
 #: zephyr-project-manager-pro/views/settings-frontend.php:270
 #: zephyr-project-manager/includes/Pages/Admin.php:1028
@@ -2187,7 +2167,7 @@ msgstr "Incompleto"
 #: zephyr-project-manager-pro/templates/frontend/dashboard.php:50
 #: zephyr-project-manager-pro/templates/themes/default.php:66
 #: zephyr-project-manager-pro/templates/themes/modern.php:17
-#: zephyr-project-manager-pro/templates/themes/plain.php:13
+#: zephyr-project-manager-pro/templates/themes/plain.php:15
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:110
 #: zephyr-project-manager-pro/views/settings-frontend.php:250
 #: zephyr-project-manager/includes/Pages/Admin.php:983
@@ -2408,7 +2388,7 @@ msgstr "Eliminar Proyecto"
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:185
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:484
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:489
-#: zephyr-project-manager/includes/Core/Projects.php:2210
+#: zephyr-project-manager/includes/Core/Projects.php:2222
 msgid "Members"
 msgstr "Miembros"
 
@@ -2416,7 +2396,7 @@ msgstr "Miembros"
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:245
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:548
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:656
-#: zephyr-project-manager/includes/Core/Projects.php:2211
+#: zephyr-project-manager/includes/Core/Projects.php:2223
 msgid "Progress"
 msgstr "Progreso"
 
@@ -2425,15 +2405,13 @@ msgstr "Progreso"
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:235
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:524
 msgid "Estimated Date of Completion"
-msgstr ""
+msgstr "Fecha Estimada de Finalización"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:250
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:328
 #: zephyr-project-manager/templates/parts/project-single.php:222
-#, fuzzy
-#| msgid "Zephyr File Manager"
 msgid "Project Managers"
-msgstr "Zephyr Administrador de archivos"
+msgstr "Gestores del Proyecto"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:259
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:339
@@ -2452,10 +2430,8 @@ msgstr "Seleccionar Estado"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:330
 #: zephyr-project-manager/templates/parts/project-single.php:224
-#, fuzzy
-#| msgid "Zephyr File Manager"
 msgid "Select Project Managers"
-msgstr "Zephyr Administrador de archivos"
+msgstr "Seleccionar Gestores del Proyecto"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:346
 #, php-format
@@ -2475,10 +2451,8 @@ msgid "Back to Projects"
 msgstr "Volver a Proyectos"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:410
-#, fuzzy
-#| msgid "Anyone"
 msgid "Any"
-msgstr "Nadie"
+msgstr "Cualquiera"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:428
 msgid "There are no tasks yet."
@@ -2492,20 +2466,16 @@ msgid "Write comment..."
 msgstr "Escribir comentario …"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:488
-#, fuzzy
-#| msgid "Project Members"
 msgid "Select Project Members"
-msgstr "Miembros del Proyecto"
+msgstr "Seleccionar Miembros del Proyecto"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:495
 msgid "Teams"
 msgstr "Equipos"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:498
-#, fuzzy
-#| msgid " in team"
 msgid "team_"
-msgstr "en equipo"
+msgstr "equipo_"
 
 #: zephyr-project-manager-pro/templates/frontend/project-single.php:505
 msgid "Save Members"
@@ -2586,17 +2556,13 @@ msgstr "Todos los proyectos"
 
 #: zephyr-project-manager-pro/templates/frontend/projects.php:33
 #: zephyr-project-manager/templates/projects.php:35
-#, fuzzy
-#| msgid "Projects"
 msgid "My Projects"
-msgstr "Proyectos"
+msgstr "Mis Proyectos"
 
 #: zephyr-project-manager-pro/templates/frontend/projects.php:34
 #: zephyr-project-manager/templates/projects.php:36
-#, fuzzy
-#| msgid "New task assigned to you"
 msgid "Projects assigned to you."
-msgstr "Nueva Tarea Asignada a ti"
+msgstr "Proyectos asignados a usted."
 
 #: zephyr-project-manager-pro/templates/frontend/projects.php:77
 msgid "View Archived Projects"
@@ -2619,7 +2585,7 @@ msgid "pages"
 msgstr "páginas"
 
 #: zephyr-project-manager-pro/templates/frontend/projects.php:109
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:2461
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:2508
 msgid "No projects found..."
 msgstr "No se han encontrado resultados…"
 
@@ -2636,10 +2602,8 @@ msgid "Choose a category"
 msgstr "Elija una Categoría"
 
 #: zephyr-project-manager-pro/templates/frontend/projects.php:144
-#, fuzzy
-#| msgid "No categories assigned"
 msgid "No categories available."
-msgstr "No se han asignado categorías"
+msgstr "No hay categorías disponibles."
 
 #: zephyr-project-manager-pro/templates/frontend/reports.php:21
 #: zephyr-project-manager-pro/views/reports.php:26
@@ -2702,8 +2666,6 @@ msgstr "Esta tarea no existe o ha sido borrada"
 #: zephyr-project-manager/templates/parts/task-single.php:55
 #: zephyr-project-manager/templates/parts/task-single.php:444
 #: zephyr-project-manager/templates/parts/task-single.php:450
-#, fuzzy
-#| msgid "Not set"
 msgid "Not Set"
 msgstr "No establecido"
 
@@ -2725,10 +2687,8 @@ msgstr "Seleccione Proyecto"
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:289
 #: zephyr-project-manager/templates/parts/new_task.php:166
-#, fuzzy
-#| msgid "Create Task"
 msgid "Parent Task"
-msgstr "Crear Tarea"
+msgstr "Tarea Principal"
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:316
 msgid "Recurring/Daily Task"
@@ -2785,7 +2745,7 @@ msgstr "Expira en (dejar vacío si no expira)"
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:381
 msgid "week"
-msgstr ""
+msgstr "semana"
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:405
 msgid "month"
@@ -2793,7 +2753,7 @@ msgstr "Mes"
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:429
 msgid "year"
-msgstr ""
+msgstr "año"
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:446
 msgid "Add Files"
@@ -2815,10 +2775,8 @@ msgstr "No hay subtareas. Crea una subtarea desde la opción Nueva Subtarea."
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:620
 #: zephyr-project-manager/templates/parts/task-single.php:618
-#, fuzzy
-#| msgid "Loading..."
 msgid "Uploading..."
-msgstr "Cargando…"
+msgstr "Subiendo..."
 
 #: zephyr-project-manager-pro/templates/frontend/task-single.php:635
 msgid "There are no files yet."
@@ -2843,20 +2801,18 @@ msgstr "Pendiente"
 
 #: zephyr-project-manager-pro/templates/frontend/tasks.php:44
 msgid "Next 7 Days"
-msgstr ""
+msgstr "Siguientes 7 Días"
 
 #: zephyr-project-manager-pro/templates/frontend/tasks.php:45
 msgid "Overdue"
 msgstr "Tareas atrasadas"
 
 #: zephyr-project-manager-pro/templates/frontend/tasks.php:46
-#, fuzzy
-#| msgid "Project Archived"
 msgid "Archived"
-msgstr "Proyecto Archivado"
+msgstr "Archivado"
 
 #: zephyr-project-manager-pro/templates/frontend/tasks.php:55
-#: zephyr-project-manager/includes/Core/Projects.php:1965
+#: zephyr-project-manager/includes/Core/Projects.php:1977
 #: zephyr-project-manager/templates/tasks.php:31
 msgid "Date Created"
 msgstr "Categoría creada."
@@ -2879,7 +2835,7 @@ msgstr "Alfabético"
 #: zephyr-project-manager-pro/templates/frontend/tasks.php:100
 #: zephyr-project-manager-pro/views/kanban.php:116
 msgid "Sort By"
-msgstr ""
+msgstr "Ordenar por"
 
 #: zephyr-project-manager-pro/templates/frontend/users.php:43
 #: zephyr-project-manager-pro/templates/themes/default.php:120
@@ -2916,7 +2872,7 @@ msgstr "Ir al Proyecto"
 #: zephyr-project-manager-pro/templates/project-page-template.php:180
 #: zephyr-project-manager-pro/templates/project-page-template.php:181
 msgid "Email"
-msgstr ""
+msgstr "Correo electrónico"
 
 #: zephyr-project-manager-pro/templates/project-page-template.php:223
 #: zephyr-project-manager/templates/parts/page_footer.php:77
@@ -2961,7 +2917,7 @@ msgstr "Información Extra"
 #: zephyr-project-manager-pro/templates/themes/default.php:40
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:97
 msgid "Home"
-msgstr ""
+msgstr "Inicio"
 
 #: zephyr-project-manager-pro/templates/themes/default.php:129
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:175
@@ -2971,21 +2927,23 @@ msgstr "Crear Reporte"
 
 #: zephyr-project-manager-pro/templates/themes/default.php:266
 #: zephyr-project-manager-pro/templates/themes/modern.php:102
-#: zephyr-project-manager-pro/templates/themes/plain.php:165
+#: zephyr-project-manager-pro/templates/themes/plain.php:166
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:326
 msgid "Page not found"
-msgstr ""
+msgstr "Página no encontrada"
 
 #: zephyr-project-manager-pro/templates/themes/default.php:283
 #: zephyr-project-manager-pro/templates/themes/modern.php:143
-#: zephyr-project-manager-pro/templates/themes/plain.php:182
+#: zephyr-project-manager-pro/templates/themes/plain.php:183
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:346
 msgid "Enter a search term above to search for related projects and tasks."
 msgstr ""
+"Ingrese un término de búsqueda arriba para buscar proyectos y tareas "
+"relacionados."
 
 #: zephyr-project-manager-pro/templates/themes/default.php:300
 #: zephyr-project-manager-pro/templates/themes/modern.php:159
-#: zephyr-project-manager-pro/templates/themes/plain.php:199
+#: zephyr-project-manager-pro/templates/themes/plain.php:200
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:365
 msgid "Select File"
 msgstr "Seleccione Archivo"
@@ -3004,15 +2962,13 @@ msgstr "Ir a la tarea"
 msgid "Create Subtask"
 msgstr "Crear subtarea"
 
-#: zephyr-project-manager-pro/templates/themes/plain.php:19
-#, fuzzy
-#| msgid "New User"
+#: zephyr-project-manager-pro/templates/themes/plain.php:21
 msgid "Users"
-msgstr "Nuevo Usuario"
+msgstr "Usuarios"
 
 #: zephyr-project-manager-pro/templates/themes/ultimate.php:201
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: zephyr-project-manager-pro/views/asana-main.php:28
 #, php-format
@@ -3032,6 +2988,8 @@ msgid ""
 "The Personal Access Token provided does not seem to be correct. Please make "
 "sure that you have entered the token correctly %s here. %s"
 msgstr ""
+"El token de acceso personal proporcionado no parece ser correcto. Por favor, "
+"asegúrese de haber ingresado el token correctamente %saquí. %s"
 
 #: zephyr-project-manager-pro/views/asana-main.php:47
 msgid "Asana Workspaces"
@@ -3082,6 +3040,8 @@ msgid ""
 "Allows you to create custom fields to provide more information for your "
 "tasks and suite your projects needs"
 msgstr ""
+"Le permite crear campos personalizados para proporcionar más información "
+"para sus tareas y adaptarse a las necesidades de sus proyectos"
 
 #: zephyr-project-manager-pro/views/custom_fields.php:37
 #: zephyr-project-manager-pro/views/custom_fields.php:63
@@ -3097,6 +3057,8 @@ msgid ""
 "Allows you to create reusable templates with custom field configurations for "
 "your tasks"
 msgstr ""
+"Le permite crear plantillas reutilizables con configuraciones de campos "
+"personalizados para sus tareas"
 
 #: zephyr-project-manager-pro/views/custom_fields.php:65
 #: zephyr-project-manager-pro/views/custom_fields.php:116
@@ -3126,7 +3088,7 @@ msgstr "Plantillas de tareas"
 #: zephyr-project-manager-pro/views/custom_fields.php:95
 #: zephyr-project-manager-pro/views/custom_fields.php:146
 msgid "Drag fields up or down to change the order"
-msgstr ""
+msgstr "Arrastre los campos hacia arriba o hacia abajo para cambiar el orden"
 
 #: zephyr-project-manager-pro/views/custom_fields.php:97
 #: zephyr-project-manager-pro/views/custom_fields.php:151
@@ -3146,6 +3108,8 @@ msgid ""
 "This is the default task template and has no additional custom fields and "
 "cannot be edited."
 msgstr ""
+"Esta es la plantilla de tarea predeterminada, no tiene campos personalizados "
+"adicionales y no se puede editar."
 
 #: zephyr-project-manager-pro/views/custom_fields.php:168
 msgid "Edit Custom Field"
@@ -3160,12 +3124,12 @@ msgstr "Seleccione Archivo"
 #: zephyr-project-manager-pro/views/custom_fields.php:256
 #: zephyr-project-manager/includes/strings.php:174
 msgid "Add Option"
-msgstr ""
+msgstr "Añadir Opción"
 
 #: zephyr-project-manager-pro/views/custom_fields.php:206
 #: zephyr-project-manager-pro/views/custom_fields.php:259
 msgid "Only Visible To"
-msgstr ""
+msgstr "Solo Visible Para"
 
 #: zephyr-project-manager-pro/views/custom_fields.php:224
 msgid "Update Custom Field"
@@ -3183,29 +3147,28 @@ msgstr "Tableros kanban"
 #: zephyr-project-manager-pro/views/kanban.php:90
 #: zephyr-project-manager-pro/views/kanban.php:176
 msgid "Add Column"
-msgstr ""
+msgstr "Añadir Columna"
 
 #: zephyr-project-manager-pro/views/kanban.php:96
-#, fuzzy
-#| msgid "Assignee"
 msgid "Assignees"
-msgstr "Responsable"
+msgstr "Asignados"
 
 #: zephyr-project-manager-pro/views/kanban.php:108
 msgid "active"
-msgstr ""
+msgstr "activo"
 
 #: zephyr-project-manager-pro/views/kanban.php:112
-#, fuzzy
-#| msgid "Project Archived"
 msgid "archived"
-msgstr "Proyecto Archivado"
+msgstr "archivado"
 
 #: zephyr-project-manager-pro/views/milestones.php:27
 msgid ""
 "Use milestones to mark specific points along a project timeline or group "
 "multiple projects into a larger, long-term project."
 msgstr ""
+"Use los hitos para marcar puntos específicos a lo largo de la línea de "
+"tiempo de un proyecto o agrupar múltiples proyectos en un proyecto más "
+"grande a largo plazo."
 
 #: zephyr-project-manager-pro/views/reports.php:46
 msgid "Download PDF Report"
@@ -3251,7 +3214,7 @@ msgstr "Reiniciar"
 #: zephyr-project-manager-pro/views/settings-frontend.php:159
 #: zephyr-project-manager-pro/views/settings-frontend.php:160
 msgid "Logo Link"
-msgstr ""
+msgstr "Enlace del Logo"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:164
 #: zephyr-project-manager-pro/views/settings-frontend.php:165
@@ -3276,7 +3239,7 @@ msgstr "Normal"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:185
 msgid "WordPress Login"
-msgstr ""
+msgstr "Inicio de Sesión de WordPress"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:191
 msgid "Zephyr Features"
@@ -3296,11 +3259,11 @@ msgstr "Último"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:225
 msgid "Plain"
-msgstr ""
+msgstr "Simple"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:231
 msgid "Modern"
-msgstr ""
+msgstr "Moderno"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:240
 msgid "Default Frontend Page"
@@ -3320,45 +3283,46 @@ msgstr "Zephyr Ajustes"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:289
 msgid "Show Admin Bar"
-msgstr ""
+msgstr "Mostrar Barra de Administración"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:294
 msgid "Allow users to apply for tasks that require approval"
 msgstr ""
+"Permitir a los usuarios postularse para tareas que requieren aprobación"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:299
 msgid "Do not show tasks that have already been applied for"
-msgstr ""
+msgstr "No mostrar tareas para las que ya se ha postulado"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:304
 msgid "Hide Avatar"
-msgstr ""
+msgstr "Ocultar Avatar"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:309
 msgid "Hide Like Button"
-msgstr ""
+msgstr "Ocultar Botón de Me Gusta"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:314
 msgid ""
 "Automatically redirect users without admin access to the frontend project "
 "manager"
 msgstr ""
+"Redirigir automáticamente a los usuarios sin acceso de administrador al "
+"gestor de proyectos del frontend"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:318
 #: zephyr-project-manager-pro/views/settings-frontend.php:319
 msgid "Task Application User Message"
-msgstr ""
+msgstr "Mensaje de Usuario de Postulación a Tarea"
 
 #: zephyr-project-manager-pro/views/settings-frontend.php:323
 #: zephyr-project-manager-pro/views/settings-frontend.php:324
 msgid "Approval Notifications Email Address"
-msgstr ""
+msgstr "Dirección de Correo para Notificaciones de Aprobación"
 
 #: zephyr-project-manager-pro/views/welcome.php:8
-#, fuzzy
-#| msgid "Welcome to Zephyr Project Manager"
 msgid "Welcome to Zephyr Project Manager Pro"
-msgstr "Bienvenido a Zephyr Project Manager"
+msgstr "Bienvenido a Zephyr Project Manager Pro"
 
 #: zephyr-project-manager-pro/views/welcome.php:16
 msgid ""
@@ -3369,16 +3333,10 @@ msgstr ""
 "administrar todos sus proyectos y tareas en un solo lugar."
 
 #: zephyr-project-manager-pro/views/welcome.php:18
-#, fuzzy
-#| msgid "Asana Integration"
 msgid "Set up the Asana Integration"
-msgstr "Integración de Asana"
+msgstr "Configurar la Integración con Asana"
 
 #: zephyr-project-manager-pro/views/welcome.php:28
-#, fuzzy
-#| msgid ""
-#| "Create more detailed and personalized tasks by creating your own custom "
-#| "fields and assigning them to any tasks."
 msgid ""
 "Create more detailed and personalized tasks by creating your own custom "
 "fields and assiging them to any tasks."
@@ -3387,16 +3345,12 @@ msgstr ""
 "personalizados y asignándolos a cualquier tarea."
 
 #: zephyr-project-manager-pro/views/welcome.php:30
-#, fuzzy
-#| msgid "Create Custom Field"
 msgid "Create custom fields"
-msgstr "Nuevo campo personalizado"
+msgstr "Crear campos personalizados"
 
 #: zephyr-project-manager-pro/views/welcome.php:40
-#, fuzzy
-#| msgid "Beautiful & Customizable Frontend"
 msgid "Beautiful Frontend"
-msgstr "Frontend hermoso y personalizable"
+msgstr "Frontend Hermoso"
 
 #: zephyr-project-manager-pro/views/welcome.php:41
 msgid ""
@@ -3409,10 +3363,8 @@ msgstr ""
 "proyectos desde la interfaz con la interfaz de usuario dedicada."
 
 #: zephyr-project-manager-pro/views/welcome.php:43
-#, fuzzy
-#| msgid "Default Frontend Page"
 msgid "Set up the Frontend Manager"
-msgstr "Guardar ajustes"
+msgstr "Configurar el Gestor de Frontend"
 
 #: zephyr-project-manager-pro/views/welcome.php:54
 msgid ""
@@ -3423,24 +3375,17 @@ msgstr ""
 "diferentes columnas para mantenerlas organizadas."
 
 #: zephyr-project-manager-pro/views/welcome.php:64
-#, fuzzy
-#| msgid "Reporting and Advanced Search"
 msgid "Reporting & Advanced Search"
-msgstr "Informes y búsqueda avanzada"
+msgstr "Informes y Búsqueda Avanzada"
 
 #: zephyr-project-manager-pro/views/welcome.php:65
-#, fuzzy
-#| msgid ""
-#| "Create detailed project progress reports for any project and customize "
-#| "which data should be shown in the report. You can then print or save the "
-#| "reports."
 msgid ""
 "Create details project progress reports for any project and customize which "
 "data should be shown in the report. You can then print or save the reports."
 msgstr ""
-"Cree informes detallados sobre el progreso del proyecto para cualquier "
-"proyecto y personalice qué datos deben mostrarse en el informe. A "
-"continuación, puede imprimir o guardar los informes."
+"Cree informes de progreso detallados para cualquier proyecto y personalice "
+"qué datos se deben mostrar en el informe. Luego puede imprimir o guardar los "
+"informes."
 
 #: zephyr-project-manager-pro/views/welcome.php:73
 msgid "Coming Soon..."
@@ -3451,17 +3396,17 @@ msgid ""
 "Many more features coming soon as well as an iOS mobile app to stay updated "
 "on the go."
 msgstr ""
+"Muchas más características llegarán pronto, así como una aplicación móvil "
+"para iOS para mantenerse actualizado sobre la marcha."
 
 #: zephyr-project-manager-pro/views/welcome.php:80
-#, fuzzy
-#| msgid "Get started with Zephyr Project Manager now from %s here %s"
 msgid "Get started with Zephyr Pro"
-msgstr "Comience ahora con Zephyr Project Manager desde %s aquí %s"
+msgstr "Comience con Zephyr Pro"
 
 #: zephyr-project-manager-pro/zephyr-project-manager-pro.php:126
 #: zephyr-project-manager/includes/Pages/Admin.php:124
 msgid "logged in"
-msgstr ""
+msgstr "sesión iniciada"
 
 #: zephyr-project-manager-pro/zephyr-project-manager-pro.php:155
 msgid ""
@@ -3477,6 +3422,10 @@ msgid ""
 "installed and it seems like you are currently using a slightly outdated "
 "version. Please update the basic version to use the pro features."
 msgstr ""
+"Zephyr Project Manager Pro requiere que tenga instalada la versión básica "
+"más reciente y parece que actualmente está usando una versión un poco "
+"desactualizada. Por favor, actualice la versión básica para usar las "
+"funciones pro."
 
 #: zephyr-project-manager-pro/zephyr-project-manager-pro.php:227
 #, php-format
@@ -3485,6 +3434,10 @@ msgid ""
 "all the Pro features and avoid any incompatibility, please update it by "
 "going to Plugins > Zephyr Project Manager and clicking the Update button."
 msgstr ""
+"Se requiere la versión de Zephyr Project Manager %s o superior. Para "
+"continuar usando todas las funciones Pro y evitar incompatibilidades, "
+"actualícela yendo a Plugins > Zephyr Project Manager y haciendo clic en el "
+"botón Actualizar."
 
 #: zephyr-project-manager/includes/Api/Emails.php:159
 msgid "View in WordPress"
@@ -3495,127 +3448,121 @@ msgstr "Ver en WordPress"
 msgid "The task %s has been completed."
 msgstr "Tareas %s completadas"
 
-#: zephyr-project-manager/includes/Api/Emails.php:219
-#: zephyr-project-manager/includes/Api/Emails.php:220
+#: zephyr-project-manager/includes/Api/Emails.php:221
+#: zephyr-project-manager/includes/Api/Emails.php:222
 msgid "Task Status Changed"
-msgstr ""
+msgstr "Estado de la Tarea Cambiado"
 
-#: zephyr-project-manager/includes/Api/Emails.php:280
+#: zephyr-project-manager/includes/Api/Emails.php:289
 msgid "You have the following due tasks this week"
 msgstr "Tienes las siguientes tareas pendientes esta semana"
 
-#: zephyr-project-manager/includes/Api/Emails.php:304
+#: zephyr-project-manager/includes/Api/Emails.php:313
 msgid "View Tasks in WordPress"
 msgstr "Ver las tareas en WordPress"
 
-#: zephyr-project-manager/includes/Api/Emails.php:341
-#: zephyr-project-manager/includes/Api/Emails.php:651
-#: zephyr-project-manager/includes/Api/Emails.php:733
+#: zephyr-project-manager/includes/Api/Emails.php:354
+#: zephyr-project-manager/includes/Api/Emails.php:388
+#: zephyr-project-manager/includes/Api/Emails.php:713
+#: zephyr-project-manager/includes/Api/Emails.php:795
 msgid "Please login to view the details"
 msgstr "Por favor, inicia sesión para ver esta página."
 
-#: zephyr-project-manager/includes/Api/Emails.php:347
-#, fuzzy
-#| msgid "View Projects"
+#: zephyr-project-manager/includes/Api/Emails.php:360
+#: zephyr-project-manager/includes/Api/Emails.php:397
 msgid "View Project"
-msgstr "Ver Proyectos"
+msgstr "Ver Proyecto"
 
-#: zephyr-project-manager/includes/Api/Emails.php:398
+#: zephyr-project-manager/includes/Api/Emails.php:380
+#: zephyr-project-manager/includes/Api/Emails.php:381
+msgid "Project Assigned"
+msgstr "Proyecto Asignado"
+
+#: zephyr-project-manager/includes/Api/Emails.php:386
+#, php-format
+msgid "You have been assigned to the project: %s"
+msgstr "Ha sido asignado al proyecto: %s"
+
+#: zephyr-project-manager/includes/Api/Emails.php:460
 msgid "Assigned to Team:"
 msgstr "Equipo asignado"
 
-#: zephyr-project-manager/includes/Api/Emails.php:463
-#: zephyr-project-manager/includes/Api/Emails.php:464
-#: zephyr-project-manager/includes/Api/Emails.php:469
-#: zephyr-project-manager/includes/Api/Emails.php:480
+#: zephyr-project-manager/includes/Api/Emails.php:525
+#: zephyr-project-manager/includes/Api/Emails.php:526
+#: zephyr-project-manager/includes/Api/Emails.php:531
+#: zephyr-project-manager/includes/Api/Emails.php:542
 msgid "New Comment"
 msgstr "Comentario"
 
-#: zephyr-project-manager/includes/Api/Emails.php:470
+#: zephyr-project-manager/includes/Api/Emails.php:532
 msgid "New Task Comment"
 msgstr "Plantillas de tareas"
 
-#: zephyr-project-manager/includes/Api/Emails.php:481
+#: zephyr-project-manager/includes/Api/Emails.php:543
 msgid "New Project Comment"
 msgstr "Nuevo Proyecto"
 
-#: zephyr-project-manager/includes/Api/Emails.php:643
-#: zephyr-project-manager/includes/Api/Emails.php:644
+#: zephyr-project-manager/includes/Api/Emails.php:705
+#: zephyr-project-manager/includes/Api/Emails.php:706
 msgid "New task assigned to you"
 msgstr "Nueva Tarea Asignada a ti"
 
-#: zephyr-project-manager/includes/Api/Emails.php:675
-#: zephyr-project-manager/includes/Api/Emails.php:676
-#: zephyr-project-manager/includes/Api/Emails.php:754
-#: zephyr-project-manager/includes/Api/Emails.php:755
+#: zephyr-project-manager/includes/Api/Emails.php:737
+#: zephyr-project-manager/includes/Api/Emails.php:738
+#: zephyr-project-manager/includes/Api/Emails.php:816
+#: zephyr-project-manager/includes/Api/Emails.php:817
 msgid "New task has been created"
 msgstr "Nueva tarea creada por"
 
-#: zephyr-project-manager/includes/Api/Emails.php:725
-#: zephyr-project-manager/includes/Api/Emails.php:726
-#, fuzzy
-#| msgid "Set Recurrence"
+#: zephyr-project-manager/includes/Api/Emails.php:787
+#: zephyr-project-manager/includes/Api/Emails.php:788
 msgid "New recurrence of task"
-msgstr "Establecer Recurrencia"
+msgstr "Nueva recurrencia de tarea"
 
-#: zephyr-project-manager/includes/Api/Emails.php:784
-#, fuzzy
-#| msgid "Task Name"
+#: zephyr-project-manager/includes/Api/Emails.php:846
 msgid "Task Due"
-msgstr "Nombre de la Tarea"
+msgstr "Tarea Vencida"
 
-#: zephyr-project-manager/includes/Api/Emails.php:824
-#, fuzzy
-#| msgid "Tasks Overview"
+#: zephyr-project-manager/includes/Api/Emails.php:886
 msgid "Task Overdue"
-msgstr "Descripción general de las tareas"
+msgstr "Tarea Atrasada"
 
 #: zephyr-project-manager/includes/Api/SettingsApi.php:80
 #: zephyr-project-manager/includes/Api/SettingsApi.php:84
-#, fuzzy
-#| msgid "Zephyr Project Manager Pro"
 msgid "Zephyr Project Manager"
-msgstr "Zephyr Project Manager Pro"
+msgstr "Zephyr Project Manager"
 
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:2333
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:2414
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:4030
-#: zephyr-project-manager/includes/Base/AjaxHandler.php:4261
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:2380
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:2461
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:4080
+#: zephyr-project-manager/includes/Base/AjaxHandler.php:4315
 #: zephyr-project-manager/includes/strings.php:169
 msgid "No results found..."
 msgstr "No se han encontrado resultados…"
 
 #: zephyr-project-manager/includes/Core/Categories.php:255
-#, fuzzy
-#| msgid "Select File"
 msgid "Select Option"
-msgstr "Seleccione Archivo"
+msgstr "Seleccionar Opción"
 
 #: zephyr-project-manager/includes/Core/Core.php:53
 #: zephyr-project-manager/includes/Core/Core.php:54
-#, fuzzy
-#| msgid "Project Comments"
 msgid "Project Completed"
-msgstr "Comentarios del Proyecto"
+msgstr "Proyecto Completado"
 
 #: zephyr-project-manager/includes/Core/Core.php:57
-#, fuzzy, php-format
-#| msgid "The task %s has been completed."
+#, php-format
 msgid "Project \"%s\" has been completed."
-msgstr "Tareas %s completadas"
+msgstr "El proyecto \"%s\" ha sido completado."
 
 #: zephyr-project-manager/includes/Core/Core.php:69
 #: zephyr-project-manager/includes/Core/Core.php:70
-#, fuzzy
-#| msgid "Project Assignees"
 msgid "Project Assigned to You"
-msgstr "Responsables del Proyecto"
+msgstr "Proyecto Asignado a Usted"
 
 #: zephyr-project-manager/includes/Core/Core.php:73
-#, fuzzy, php-format
-#| msgid "New task assigned to you"
+#, php-format
 msgid "Project \"%s\" has been assigned to you."
-msgstr "Nueva Tarea Asignada a ti"
+msgstr "El proyecto \"%s\" le ha sido asignado."
 
 #: zephyr-project-manager/includes/Core/Core.php:101
 msgid "Export Projects"
@@ -3626,16 +3573,12 @@ msgid "Import Projects"
 msgstr "Exportar Proyecto"
 
 #: zephyr-project-manager/includes/Core/Core.php:113
-#, fuzzy
-#| msgid "Importing via CSV"
 msgid "Import iCal File"
-msgstr "Importando vía CSV"
+msgstr "Importar Archivo iCal"
 
 #: zephyr-project-manager/includes/Core/Members.php:239
-#, fuzzy
-#| msgid "No description added"
 msgid "No description added."
-msgstr "Sin descripción"
+msgstr "No se ha añadido descripción."
 
 #: zephyr-project-manager/includes/Core/Message.php:93
 msgid "You have been mentioned in a comment"
@@ -3650,35 +3593,29 @@ msgstr "Has Sido mencionado en un comentario: %s"
 msgid "Untitled Project"
 msgstr "Proyecto Sin Título"
 
-#: zephyr-project-manager/includes/Core/Projects.php:838
+#: zephyr-project-manager/includes/Core/Projects.php:848
 msgid "There are no projects yet."
 msgstr "Aún no hay proyectos."
 
-#: zephyr-project-manager/includes/Core/Projects.php:1205
+#: zephyr-project-manager/includes/Core/Projects.php:1215
 msgid "Click to change to the list view"
-msgstr ""
+msgstr "Haga clic para cambiar a la vista de lista"
 
-#: zephyr-project-manager/includes/Core/Projects.php:1699
+#: zephyr-project-manager/includes/Core/Projects.php:1710
 msgid "zpm-default-color"
-msgstr ""
+msgstr "zpm-default-color"
 
-#: zephyr-project-manager/includes/Core/Projects.php:1966
-#, fuzzy
-#| msgid "Date Field"
+#: zephyr-project-manager/includes/Core/Projects.php:1978
 msgid "Date Due"
-msgstr "Campo de Fecha"
+msgstr "Fecha de Vencimiento"
 
-#: zephyr-project-manager/includes/Core/Projects.php:1967
-#, fuzzy
-#| msgid "Alphabetical"
+#: zephyr-project-manager/includes/Core/Projects.php:1979
 msgid "Alphabetically"
-msgstr "Alfabético"
+msgstr "Alfabéticamente"
 
-#: zephyr-project-manager/includes/Core/Projects.php:1968
-#, fuzzy
-#| msgid "Alphabetical"
+#: zephyr-project-manager/includes/Core/Projects.php:1980
 msgid "Alphabetically (Descending)"
-msgstr "Alfabético"
+msgstr "Alfabéticamente (Descendente)"
 
 #: zephyr-project-manager/includes/Core/Task.php:36
 msgid "Untitled Task"
@@ -3688,10 +3625,8 @@ msgstr "Tarea sin título"
 #: zephyr-project-manager/templates/dashboard.php:189
 #: zephyr-project-manager/templates/parts/task-single.php:139
 #: zephyr-project-manager/templates/parts/task_view.php:83
-#, fuzzy
-#| msgid "Task Completed"
 msgid "Toggle task completion"
-msgstr "Tareas completadas"
+msgstr "Alternar finalización de tarea"
 
 #: zephyr-project-manager/includes/Core/Tasks.php:1350
 msgid "results found in comments"
@@ -3743,19 +3678,19 @@ msgstr "Crítico"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:856
 msgid "Set specific hours and minutes for tasks"
-msgstr ""
+msgstr "Establecer horas y minutos específicos para las tareas"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:857
 msgid ""
 "You can now set the start and end minutes and hours for a task as well as "
 "the date."
 msgstr ""
+"Ahora puede establecer los minutos y horas de inicio y fin para una tarea, "
+"así como la fecha."
 
 #: zephyr-project-manager/includes/Core/Utillities.php:861
-#, fuzzy
-#| msgid "Asana Integration"
 msgid "WooCommerce Integration"
-msgstr "Integración con Asana"
+msgstr "Integración con WooCommerce"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:862
 msgid ""
@@ -3763,26 +3698,34 @@ msgid ""
 "integrate with WooCommerce and create tasks and projects when orders are "
 "placed or payments are made and lots more."
 msgstr ""
+"Próximamente habrá una nueva integración con WooCommerce que le permitirá "
+"integrarse con WooCommerce y crear tareas y proyectos cuando se realicen "
+"pedidos o pagos, y mucho más."
 
 #: zephyr-project-manager/includes/Core/Utillities.php:864
 msgid "Google Calendar and Drive integration"
-msgstr ""
+msgstr "Integración con Google Calendar y Drive"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:865
 msgid ""
 "New Google Calendar and Drive integrations are coming soon to sync your "
 "tasks with your Google Calendar and upload files from Google Drive."
 msgstr ""
+"Próximamente habrá nuevas integraciones con Google Calendar y Drive para "
+"sincronizar sus tareas con su Google Calendar y cargar archivos desde Google "
+"Drive."
 
 #: zephyr-project-manager/includes/Core/Utillities.php:867
 msgid "Even more custom fields and custom field templates"
-msgstr ""
+msgstr "Aún más campos personalizados y plantillas de campos personalizados"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:868
 msgid ""
 "More custom fields and predefined templates are also being developed to be "
 "released soon"
 msgstr ""
+"También se están desarrollando más campos personalizados y plantillas "
+"predefinidas que se lanzarán pronto"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:1031
 #: zephyr-project-manager/includes/Core/Utillities.php:1291
@@ -3796,24 +3739,24 @@ msgstr "En Progreso"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:1294
 msgid "25&#37; finished"
-msgstr ""
+msgstr "25&#37; terminado"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:1295
 msgid "50&#37; finished"
-msgstr ""
+msgstr "50&#37; terminado"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:1296
 msgid "75&#37; finished"
-msgstr ""
+msgstr "75&#37; terminado"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:1297
 msgid "100&#37; finished"
-msgstr ""
+msgstr "100&#37; terminado"
 
 #: zephyr-project-manager/includes/Core/Utillities.php:2004
 #: zephyr-project-manager/templates/parts/page_header.php:53
 msgid "Show Actions..."
-msgstr ""
+msgstr "Mostrar Acciones..."
 
 #: zephyr-project-manager/includes/Pages/Admin.php:129
 msgid "logged out"
@@ -3821,14 +3764,12 @@ msgstr "Sesión Cerrada"
 
 #: zephyr-project-manager/includes/Pages/Admin.php:975
 #: zephyr-project-manager/templates/parts/project-single.php:164
-#, fuzzy
-#| msgid "User Overview"
 msgid "User Stories"
-msgstr "Visión general"
+msgstr "Historias de Usuario"
 
 #: zephyr-project-manager/includes/Pages/Admin.php:976
 msgid "Products"
-msgstr ""
+msgstr "Productos"
 
 #: zephyr-project-manager/includes/Pages/Admin.php:1020
 #: zephyr-project-manager/includes/Pages/Admin.php:1021
@@ -3871,11 +3812,9 @@ msgstr "Zephyr Últimos Proyectos"
 msgid "Zephyr Tasks"
 msgstr "Zephyr Tareas"
 
-#: zephyr-project-manager/includes/functions.php:537
-#, fuzzy
-#| msgid "Subtasks"
+#: zephyr-project-manager/includes/functions.php:538
 msgid "Subtask"
-msgstr "Subtareas"
+msgstr "Subtarea"
 
 #: zephyr-project-manager/includes/strings.php:5
 msgid ""
@@ -3886,13 +3825,11 @@ msgstr ""
 
 #: zephyr-project-manager/includes/strings.php:62
 msgid "Sent"
-msgstr ""
+msgstr "Enviado"
 
 #: zephyr-project-manager/includes/strings.php:64
-#, fuzzy
-#| msgid "Select File"
 msgid "Select Multiple"
-msgstr "Seleccione Archivo"
+msgstr "Seleccionar Múltiples"
 
 #: zephyr-project-manager/includes/strings.php:65
 #: zephyr-project-manager/includes/strings.php:101
@@ -3901,38 +3838,28 @@ msgid "Deselect All"
 msgstr "Deseleccionar Todo"
 
 #: zephyr-project-manager/includes/strings.php:68
-#, fuzzy
-#| msgid "Archive Project"
 msgid "Archive"
-msgstr "Proyectos Activos"
+msgstr "Archivar"
 
 #: zephyr-project-manager/includes/strings.php:69
-#, fuzzy
-#| msgid "Unarchive Project"
 msgid "Unarchive"
-msgstr "Proyectos Activos"
+msgstr "Desarchivar"
 
 #: zephyr-project-manager/includes/strings.php:70
 msgid "Nothing selected"
-msgstr ""
+msgstr "Nada seleccionado"
 
 #: zephyr-project-manager/includes/strings.php:71
-#, fuzzy
-#| msgid "Create New Task"
 msgid "Create New Task or Select Existing"
-msgstr "Crear Nueva Tarea"
+msgstr "Crear Nueva Tarea o Seleccionar Existente"
 
 #: zephyr-project-manager/includes/strings.php:72
-#, fuzzy
-#| msgid "Active Tasks"
 msgid "Archive Tasks"
-msgstr "Tareas Activas"
+msgstr "Archivar Tareas"
 
 #: zephyr-project-manager/includes/strings.php:73
-#, fuzzy
-#| msgid "Delete Task"
 msgid "Delete Tasks"
-msgstr "Eliminar Tarea"
+msgstr "Eliminar Tareas"
 
 #: zephyr-project-manager/includes/strings.php:75
 #: zephyr-project-manager/templates/parts/new_task.php:272
@@ -3940,16 +3867,12 @@ msgid "Create Task"
 msgstr "Crear Tarea"
 
 #: zephyr-project-manager/includes/strings.php:78
-#, fuzzy
-#| msgid "Creating task..."
 msgid "Creating..."
-msgstr "Creando tarea …"
+msgstr "Creando..."
 
 #: zephyr-project-manager/includes/strings.php:79
-#, fuzzy
-#| msgid "Create"
 msgid "Created"
-msgstr "Crear"
+msgstr "Creado"
 
 #: zephyr-project-manager/includes/strings.php:95
 msgid "Archived Projects"
@@ -3960,10 +3883,8 @@ msgid "Access updated"
 msgstr "Acceso actualizado"
 
 #: zephyr-project-manager/includes/strings.php:108
-#, fuzzy
-#| msgid "New project created"
 msgid "No projects created yet."
-msgstr "Nuevo proyecto creado"
+msgstr "Aún no se han creado proyectos."
 
 #: zephyr-project-manager/includes/strings.php:151
 msgid "Project Archived"
@@ -3974,16 +3895,12 @@ msgid "Project Unarchived"
 msgstr "Proyecto Desarchivado"
 
 #: zephyr-project-manager/includes/strings.php:153
-#, fuzzy
-#| msgid "Task Assigned"
 msgid "Task Archived"
-msgstr "Tarea asignada"
+msgstr "Tarea Archivada"
 
 #: zephyr-project-manager/includes/strings.php:154
-#, fuzzy
-#| msgid "Project Unarchived"
 msgid "Task Unarchived"
-msgstr "Proyecto Desarchivado"
+msgstr "Tarea Desarchivada"
 
 #: zephyr-project-manager/includes/strings.php:170
 msgid "No templates found..."
@@ -4021,10 +3938,8 @@ msgid "Category"
 msgstr "Categoría"
 
 #: zephyr-project-manager/includes/strings.php:198
-#, fuzzy
-#| msgid "Please select a file."
 msgid "Please select a project first."
-msgstr "Por favor seleccione un archivo"
+msgstr "Por favor, seleccione un proyecto primero."
 
 #: zephyr-project-manager/includes/strings.php:199
 msgid "Are you sure you want to delete this message?"
@@ -4039,151 +3954,113 @@ msgstr ""
 "no se puede deshacer."
 
 #: zephyr-project-manager/includes/strings.php:202
-#, fuzzy
-#| msgid "Messages"
 msgid "Message sent"
-msgstr "Mensajes"
+msgstr "Mensaje enviado"
 
 #: zephyr-project-manager/includes/strings.php:203
-#, fuzzy
-#| msgid "Loading..."
 msgid "Downloading..."
-msgstr "Cargando…"
+msgstr "Descargando..."
 
 #: zephyr-project-manager/includes/strings.php:204
-#, fuzzy
-#| msgid "Task Name"
 msgid "Enter Text"
-msgstr "Nombre de la Tarea"
+msgstr "Ingrese Texto"
 
 #: zephyr-project-manager/includes/strings.php:205
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: zephyr-project-manager/includes/strings.php:207
-#, fuzzy, php-format
-#| msgid "Are you sure that you want to delete this task?"
+#, php-format
 msgid "Are you sure that you would like to delete %s tasks?"
-msgstr "¿Estás seguro de que quieres eliminar esta tarea?"
+msgstr "¿Está seguro de que desea eliminar %s tareas?"
 
 #: zephyr-project-manager/includes/strings.php:208
 msgid "Automatically update start and due dates"
-msgstr ""
+msgstr "Actualizar automáticamente las fechas de inicio y vencimiento"
 
 #: zephyr-project-manager/includes/strings.php:209
-#, fuzzy
-#| msgid "Shortcode copied to clipboard"
 msgid "Link copied to clipboard."
-msgstr "Shortcode copiado al porta papeles"
+msgstr "Enlace copiado al portapapeles."
 
 #: zephyr-project-manager/templates/devices.php:26
-#, fuzzy, php-format
-#| msgid ""
-#| "There are no devices linked to your website. You can download the Android "
-#| "app from the Play Store %s here to start managing your projects from your "
-#| "device and get more done. %s"
+#, php-format
 msgid ""
 "There are no devices linked to your website. You can download the Android "
 "app from the Play Store %1$s here to start managing your projects from your "
 "device and get more done. %2$s"
 msgstr ""
-"No hay dispositivos conectados a su sitio. Puede Descargar la aplicación de "
-"Android desde el Play Store %s para comenzar a manejar sus proyectos desde "
-"el móvil y obtener mucho más. %s"
+"No hay dispositivos vinculados a su sitio web. Puede descargar la aplicación "
+"de Android desde Play Store %1$saquí para comenzar a administrar sus "
+"proyectos desde su dispositivo y hacer más cosas. %2$s"
 
 #: zephyr-project-manager/templates/email_templates/task_email.php:129
-#, fuzzy, php-format
-#| msgid "Created by %s on %s at %s"
+#, php-format
 msgid "Created by %s on $s"
-msgstr "Creado por %s el %s a las %s"
+msgstr "Creado por %s el $s"
 
 #: zephyr-project-manager/templates/email_templates/task_email.php:168
-#, fuzzy, php-format
-#| msgid "Reply with %s to mark as complete | %s to comment"
+#, php-format
 msgid "Reply with %1$s to mark as complete | %2$s to comment"
-msgstr "Responde con %s para marcar como completo | %s para comentar"
+msgstr "Responda con %1$s para marcar como completado | %2$s para comentar"
 
 #: zephyr-project-manager/templates/parts/edit-multiple-tasks.php:38
 #: zephyr-project-manager/templates/parts/edit-multiple-tasks.php:59
 #: zephyr-project-manager/templates/parts/edit-multiple-tasks.php:73
 #: zephyr-project-manager/templates/parts/edit-multiple-tasks.php:87
 #: zephyr-project-manager/templates/parts/edit-multiple-tasks.php:105
-#, fuzzy
-#| msgid "Profile Settings"
+#: zephyr-project-manager/templates/parts/edit-multiple-tasks.php:123
 msgid "Toggle setting"
-msgstr "Ajustes de Perfil"
+msgstr "Alternar ajuste"
 
 #: zephyr-project-manager/templates/parts/new_task.php:56
 #: zephyr-project-manager/templates/parts/new_task.php:58
 #: zephyr-project-manager/templates/parts/project-single.php:379
-#, fuzzy
-#| msgid "New User"
 msgid "New User Story"
-msgstr "Nuevo Usuario"
+msgstr "Nueva Historia de Usuario"
 
 #: zephyr-project-manager/templates/parts/new_task.php:61
 #: zephyr-project-manager/templates/parts/new_task.php:62
-#, fuzzy
-#| msgid "User Overview"
 msgid "User Story Name"
-msgstr "Visión general"
+msgstr "Nombre de la Historia de Usuario"
 
 #: zephyr-project-manager/templates/parts/new_task.php:66
 #: zephyr-project-manager/templates/parts/new_task.php:67
-#, fuzzy
-#| msgid "Task Description"
 msgid "User Story Description"
-msgstr "Descripción de la Tarea"
+msgstr "Descripción de la Historia de Usuario"
 
 #: zephyr-project-manager/templates/parts/new_task.php:72
-#, fuzzy
-#| msgid "Print"
 msgid "Sprint"
-msgstr "Imprimir"
+msgstr "Sprint"
 
 #: zephyr-project-manager/templates/parts/new_task.php:154
-#, fuzzy
-#| msgid "User Overview"
 msgid "Blocking User Stories"
-msgstr "Visión general"
+msgstr "Historias de Usuario Bloqueantes"
 
 #: zephyr-project-manager/templates/parts/new_task.php:166
-#, fuzzy
-#| msgid "User Overview"
 msgid "Parent User Story"
-msgstr "Visión general"
+msgstr "Historia de Usuario Principal"
 
 #: zephyr-project-manager/templates/parts/new_task.php:272
-#, fuzzy
-#| msgid "Create New User"
 msgid "Create User Story"
-msgstr "Crear Nuevo Usuario"
+msgstr "Crear Historia de Usuario"
 
 #: zephyr-project-manager/templates/parts/project-single.php:182
 #: zephyr-project-manager/templates/parts/project-single.php:183
-#, fuzzy
-#| msgid "Project Name"
 msgid "Product Name"
-msgstr "Nombre del proyecto"
+msgstr "Nombre del Producto"
 
 #: zephyr-project-manager/templates/parts/project-single.php:187
 #: zephyr-project-manager/templates/parts/project-single.php:188
-#, fuzzy
-#| msgid "Pro Version"
 msgid "Product Vision"
-msgstr "Versión Pro"
+msgstr "Visión del Producto"
 
 #: zephyr-project-manager/templates/parts/project-single.php:222
-#, fuzzy
-#| msgid "Project Manager"
 msgid "Product Master"
-msgstr "Gerente de Proyecto"
+msgstr "Product Owner"
 
 #: zephyr-project-manager/templates/parts/project-single.php:224
-#, fuzzy
-#| msgid "Zephyr File Manager"
 msgid "Select Product Master"
-msgstr "Zephyr Administrador de archivos"
+msgstr "Seleccionar Product Owner"
 
 #: zephyr-project-manager/templates/parts/project-single.php:267
 #: zephyr-project-manager/templates/parts/task-single.php:524
@@ -4191,38 +4068,28 @@ msgid "Set Priority"
 msgstr "Seleccione Prioridad"
 
 #: zephyr-project-manager/templates/parts/project-single.php:378
-#, fuzzy
-#| msgid "Add Task"
 msgid "Add Task List"
-msgstr "Agregar tarea"
+msgstr "Añadir Lista de Tareas"
 
 #: zephyr-project-manager/templates/parts/project-single.php:378
-#, fuzzy
-#| msgid "User Overview"
 msgid "Add User Story List"
-msgstr "Visión general"
+msgstr "Añadir Lista de Historias de Usuario"
 
 #: zephyr-project-manager/templates/parts/task_view.php:157
 msgid "No description added"
 msgstr "Sin descripción"
 
 #: zephyr-project-manager/templates/settings.php:107
-#, fuzzy
-#| msgid "New Category"
 msgid "Use Category Color"
-msgstr "Nueva Categoría"
+msgstr "Usar Color de Categoría"
 
 #: zephyr-project-manager/templates/settings.php:108
-#, fuzzy
-#| msgid "Update Status"
 msgid "Use Status Color"
-msgstr "Actualizar Estado"
+msgstr "Usar Color de Estado"
 
 #: zephyr-project-manager/templates/settings.php:109
-#, fuzzy
-#| msgid "Primary Color"
 msgid "Use Priority Color"
-msgstr "Color Primario"
+msgstr "Usar Color de Prioridad"
 
 #, fuzzy
 #~| msgid "No milestones found"

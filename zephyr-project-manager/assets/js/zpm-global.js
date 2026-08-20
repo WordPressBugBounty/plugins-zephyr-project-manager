@@ -267,9 +267,14 @@ jQuery(document).ready(function () {
 			assignees: $assignees.val(),
 			project: $project.val()
 		}, function (res) {
-			jQuery('body').find('#zpm-task-list__tasks').prepend(res.data.html);
+			const $container = jQuery('body').find('#zpm-task-list__tasks, #zpm-task-list__project, .zpm_task_list').first();
+			$container.find('.zpm_error_message, .zpm_no_tasks').remove();
+			$container.prepend(res.data.html);
 			$assignees.val('').trigger('chosen:updated');
 			$project.val('-1').trigger('chosen:updated');
+			if (typeof window.zpmRefreshProjectProgress === 'function') {
+				window.zpmRefreshProjectProgress();
+			}
 		});
 	});
 
@@ -429,149 +434,156 @@ jQuery(document).ready(function () {
 		});
 	}
 
-	jQuery('body').on('input', '#zpm-edit-task--duration', function() {
-		let duration = jQuery(this).val();
-		const start = jQuery('body').find('#zpm_edit_task_start_date').val();
+	let isSelfUpdatingDuration = false;
 
-		if (start !== '') {
-			if (duration == 0) duration = 1;
-			const newDate = moment(start).add(duration - 1, 'days').format('YYYY-MM-DD');
-			console.log('zpm/duration/new_due_date', newDate);
-			jQuery('body').find('#zpm_edit_task_due_date').val(newDate).trigger('change');
-		}
-
-	  console.log('zpm/duration/changed', duration, start);
-	});
-
-	jQuery('body').on('change', '#zpm_edit_task_due_date', function() {
-		const $due = jQuery(this);
-		const $start = jQuery('body').find('#zpm_edit_task_start_date');
-		let due = jQuery(this).val();
-		let start = $start.val();
-		const $duration = jQuery('body').find('#zpm-edit-task--duration');
-
-		if (due !== '') {
-			start = moment(start);
-			due = moment(due);
-			let duration = due.diff(start, 'days');
-			duration += 1;
-
-			if (duration <= 0) {
-				if ($duration.val() !== '') {
-					duration = $duration.val();
-
-					if (isNaN(duration)) duration = 0;
-
-					$start.val(due.subtract(duration, 'days').format('YYYY-MM-DD'));
-				}
-			}
-
-			if (isNaN(duration)) duration = 0;
-
-			$duration.val(duration);
-			// $start.val(due.add(duration, 'days').format('YYYY-MM-DD'));
-			console.log('zpm/due_date/changed', duration, start);
-		}
-	});
-
-	jQuery('body').on('change', '#zpm_edit_task_start_date', function () {
-		const $start = jQuery(this);
-		const $due = jQuery('body').find('#zpm_edit_task_due_date');
-		let due = $due.val();
-		let start = jQuery(this).val();
-		const $duration = jQuery('body').find('#zpm-edit-task--duration');
-
-		if (start !== '') {
-			start = moment(start);
-			due = moment(due);
-			let duration = due.diff(start, 'days');
-			duration += 1;
-
-			if (duration <= 0) {
-				if ($duration.val() !== '') {
-					duration = $duration.val();
-
-					if (isNaN(duration)) duration = 0;
-
-					$due.val(start.add(duration, 'days').format('YYYY-MM-DD'));
-				}
-			}
-
-			if (isNaN(duration)) duration = 0;
-
-			$duration.val(duration);
-
-			console.log('zpm/due_date/changed', duration, start);
-		}
-	});
-
-	jQuery('body').on('change', '#zpm_edit_task_due_date', function() {
-		const today = moment();
-		const val = jQuery(this).val();
-		const $estimated = jQuery('body').find('[data-task-estimated-end]');
-
-		if (val === '' || $estimated.length === 0) return;
-
-		const date = moment(val);
-
-		if (date.isBefore(today)) {
-			$estimated.addClass('zpm-overdue-text');
+	function updateDateField($field, mDate) {
+		isSelfUpdatingDuration = true;
+		if ($field.hasClass('hasDatepicker') && jQuery.fn.datepicker) {
+			$field.datepicker('setDate', mDate.toDate());
 		} else {
-			$estimated.removeClass('zpm-overdue-text');
+			const dateFormat = (typeof ZephyrProjects !== 'undefined' && ZephyrProjects.getMomentDateFormat) ? ZephyrProjects.getMomentDateFormat() : 'YYYY-MM-DD';
+			$field.val(mDate.format(dateFormat));
 		}
+		isSelfUpdatingDuration = false;
+	}
 
-		$estimated.text(date.format('D MMM YYYY'));
-	});
+	jQuery('body').on('input change', '#zpm-edit-task--duration-days, #zpm-edit-task--duration-hours, #zpm-edit-task--duration-minutes', function() {
+		const $days = jQuery('#zpm-edit-task--duration-days');
+		const $hours = jQuery('#zpm-edit-task--duration-hours');
+		const $minutes = jQuery('#zpm-edit-task--duration-minutes');
+		const days = parseInt($days.val()) || 0;
+		const hours = parseInt($hours.val()) || 0;
+		const minutes = parseInt($minutes.val()) || 0;
+		const startVal = jQuery('#zpm_edit_task_start_date').val();
 
-	jQuery('body').on('input', '#zpm-new-task-duration', function () {
-		let duration = jQuery(this).val();
-		const start = jQuery('body').find('#zpm_new_task_start_date').val();
-
-		if (start !== '') {
-			if (duration == 0) duration = 1;
-			const newDate = moment(start).add(duration - 1, 'days').format(ZephyrProjects.getMomentDateFormat());
-			console.log('zpm/duration/new_due_date', newDate);
-			jQuery('body').find('#zpm_new_task_due_date').val(newDate).trigger('change');
-		}
-
-		console.log('zpm/duration/changed', duration, start);
-	});
-
-	jQuery('body').on('change', '#zpm_new_task_due_date', function () {
-		let due = jQuery(this).val();
-		let start = jQuery('body').find('#zpm_new_task_start_date').val();
-
-		if (due !== '') {
-			start = moment(start);
-			due = moment(due);
-			let duration = due.diff(start, 'days');
-			duration += 1;
-
-			if (duration < 0) return;
-
-			if (isNaN(duration)) duration = 0;
-
-			jQuery('body').find('#zpm-new-task-duration').val(duration).trigger('change');
-			console.log('zpm/due_date/changed', duration, start);
+		if (startVal && startVal !== '') {
+			const daysAdd = days > 0 ? (hours === 0 && minutes === 0 ? days - 1 : days - 1) : 0;
+			const newDate = moment(startVal).add(daysAdd, 'days').add(hours, 'hours').add(minutes, 'minutes');
+			updateDateField(jQuery('#zpm_edit_task_due_date'), newDate);
 		}
 	});
 
-	jQuery('body').on('change', '#zpm_new_task_start_date', function () {
-		let due = jQuery('body').find('#zpm_edit_task_due_date').val();
-		let start = jQuery(this).val();
+	jQuery('body').on('change', '#zpm_edit_task_due_date', function() {
+		if (isSelfUpdatingDuration) return;
+		const dueVal = jQuery(this).val();
+		const startVal = jQuery('#zpm_edit_task_start_date').val();
+		const $days = jQuery('#zpm-edit-task--duration-days');
+		const $hours = jQuery('#zpm-edit-task--duration-hours');
+		const $minutes = jQuery('#zpm-edit-task--duration-minutes');
 
-		if (due !== '') {
-			start = moment(start);
-			due = moment(due);
-			let duration = due.diff(start, 'days');
-			duration += 1;
+		if (dueVal && startVal) {
+			const diff = moment(dueVal).diff(moment(startVal), 'days') + 1;
+			if (diff >= 0) {
+				$days.val(diff);
+				$hours.val(0);
+				$minutes.val(0);
+			}
+		}
 
-			if (duration < 0) return;
+		const today = moment();
+		const $estimated = jQuery('body').find('[data-task-estimated-end]');
+		if (dueVal && $estimated.length > 0) {
+			const date = moment(dueVal);
+			if (date.isBefore(today)) {
+				$estimated.addClass('zpm-overdue-text');
+			} else {
+				$estimated.removeClass('zpm-overdue-text');
+			}
+			$estimated.text(date.format('D MMM YYYY'));
+		}
+	});
 
-			if (isNaN(duration)) duration = 0;
+	jQuery('body').on('change', '#zpm_edit_task_start_date', function() {
+		if (isSelfUpdatingDuration) return;
+		const startVal = jQuery(this).val();
+		const dueVal = jQuery('#zpm_edit_task_due_date').val();
+		const $days = jQuery('#zpm-edit-task--duration-days');
+		const $hours = jQuery('#zpm-edit-task--duration-hours');
+		const $minutes = jQuery('#zpm-edit-task--duration-minutes');
 
-			jQuery('body').find('#zpm-new-task-duration').val(duration).trigger('change');
-			console.log('zpm/due_date/changed', duration, start);
+		if (dueVal && startVal) {
+			const diff = moment(dueVal).diff(moment(startVal), 'days') + 1;
+			if (diff >= 0) {
+				$days.val(diff);
+				$hours.val(0);
+				$minutes.val(0);
+			}
+		}
+	});
+
+	jQuery('body').on('input change', '#zpm-new-task-duration-days, #zpm-new-task-duration-hours, #zpm-new-task-duration-minutes', function() {
+		const days = parseInt(jQuery('#zpm-new-task-duration-days').val()) || 0;
+		const hours = parseInt(jQuery('#zpm-new-task-duration-hours').val()) || 0;
+		const minutes = parseInt(jQuery('#zpm-new-task-duration-minutes').val()) || 0;
+		const startVal = jQuery('#zpm_new_task_start_date').val();
+
+		if (startVal && startVal !== '') {
+			const daysAdd = days > 0 ? (hours === 0 && minutes === 0 ? days - 1 : days - 1) : 0;
+			const newDate = moment(startVal).add(daysAdd, 'days').add(hours, 'hours').add(minutes, 'minutes');
+			updateDateField(jQuery('#zpm_new_task_due_date'), newDate);
+		}
+	});
+
+	jQuery('body').on('change', '#zpm_new_task_due_date', function() {
+		if (isSelfUpdatingDuration) return;
+		const dueVal = jQuery(this).val();
+		const startVal = jQuery('#zpm_new_task_start_date').val();
+
+		if (dueVal && startVal) {
+			const diff = moment(dueVal).diff(moment(startVal), 'days') + 1;
+			if (diff >= 0) {
+				jQuery('#zpm-new-task-duration-days').val(diff);
+				jQuery('#zpm-new-task-duration-hours').val(0);
+				jQuery('#zpm-new-task-duration-minutes').val(0);
+			}
+		}
+	});
+
+	jQuery('body').on('change', '#zpm_new_task_start_date', function() {
+		if (isSelfUpdatingDuration) return;
+		const startVal = jQuery(this).val();
+		const dueVal = jQuery('#zpm_new_task_due_date').val();
+
+		if (dueVal && startVal) {
+			const diff = moment(dueVal).diff(moment(startVal), 'days') + 1;
+			if (diff >= 0) {
+				jQuery('#zpm-new-task-duration-days').val(diff);
+				jQuery('#zpm-new-task-duration-hours').val(0);
+				jQuery('#zpm-new-task-duration-minutes').val(0);
+			}
+		}
+	});
+
+	jQuery('body').on('input change', '.zpm-task-preview__duration input', function() {
+		const $container = jQuery(this).closest('.zpm-task-preview');
+		const days = parseInt($container.find('[data-ajax-name="duration_days"]').val()) || 0;
+		const hours = parseInt($container.find('[data-ajax-name="duration_hours"]').val()) || 0;
+		const minutes = parseInt($container.find('[data-ajax-name="duration_minutes"]').val()) || 0;
+		const $start = $container.find('[data-ajax-name="task_start_date"]');
+		const $due = $container.find('[data-ajax-name="task_due_date"]');
+		const startVal = $start.val();
+
+		if (startVal && startVal !== '') {
+			const daysAdd = days > 0 ? (hours === 0 && minutes === 0 ? days - 1 : days - 1) : 0;
+			const newDate = moment(startVal).add(daysAdd, 'days').add(hours, 'hours').add(minutes, 'minutes');
+			updateDateField($due, newDate);
+		}
+	});
+
+	jQuery('body').on('change input', '[data-task-duration-days], [data-task-duration-hours], [data-task-duration-minutes]', function() {
+		const taskID = jQuery(this).data('task-duration-days') || jQuery(this).data('task-duration-hours') || jQuery(this).data('task-duration-minutes');
+		const $picker = jQuery(this).closest('.zpm-kanban--duration-picker');
+		const days = parseInt($picker.find('[data-task-duration-days]').val()) || 0;
+		const hours = parseInt($picker.find('[data-task-duration-hours]').val()) || 0;
+		const minutes = parseInt($picker.find('[data-task-duration-minutes]').val()) || 0;
+
+		if (typeof taskID !== 'undefined') {
+			ZephyrProjects.updateTaskMeta(taskID, 'duration_days', days);
+			ZephyrProjects.updateTaskMeta(taskID, 'duration_hours', hours);
+			ZephyrProjects.updateTaskMeta(taskID, 'duration_minutes_sub', minutes);
+			const totalMins = (days * 1440) + (hours * 60) + minutes;
+			ZephyrProjects.updateTaskMeta(taskID, 'duration_minutes', totalMins);
+			ZephyrProjects.updateTaskMeta(taskID, 'duration', days > 0 ? days : 1);
 		}
 	});
 

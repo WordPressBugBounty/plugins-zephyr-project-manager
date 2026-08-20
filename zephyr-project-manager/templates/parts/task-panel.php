@@ -98,12 +98,14 @@ $dueDate = zpm_date($task->date_due, __('Not Set', 'zephyr-project-manager'), 'Y
 		</p>
 
 		<?php if (Utillities::getSetting('task_duration_enabled')): ?>
-			<?php $duration = Tasks::getDuration($task); ?>
+			<?php $durationDetails = Tasks::getDurationDetails($task); ?>
 
 			<label class="zpm-task-preview__label zpm-task-preview__section-content"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
-		<p class="zpm-task-preview__label-value zpm-task-preview__due-date">
-			<input type="text" data-ajax-name="duration" name="task_due_date"class="zpm-form__field zpm-datepicker zpm_input" placeholder="<?php esc_html_e('Due Date', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($duration); ?>">
-		</p>
+			<p class="zpm-task-preview__label-value zpm-task-preview__duration" style="display: flex; gap: 6px;">
+				<input type="number" min="0" data-ajax-name="duration_days" name="duration_days" class="zpm-form__field zpm_input zpm-duration-field" placeholder="<?php esc_html_e('Days', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($durationDetails['days']); ?>">
+				<input type="number" min="0" max="23" data-ajax-name="duration_hours" name="duration_hours" class="zpm-form__field zpm_input zpm-duration-field" placeholder="<?php esc_html_e('Hours', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($durationDetails['hours']); ?>">
+				<input type="number" min="0" max="59" data-ajax-name="duration_minutes" name="duration_minutes" class="zpm-form__field zpm_input zpm-duration-field" placeholder="<?php esc_html_e('Mins', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($durationDetails['minutes']); ?>">
+			</p>
 		<?php endif; ?>
 
 		<div class="zpm-task-preview__priority">

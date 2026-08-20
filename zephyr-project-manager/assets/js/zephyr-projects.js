@@ -1150,6 +1150,9 @@ var zpmTaskCompleteRequests = {};
         if (typeof ZephyrProjects.Pro !== 'undefined') {
           ZephyrProjects.Pro.milestones_updated(response);
         }
+        if (typeof window.zpmRefreshProjectProgress === 'function') {
+          window.zpmRefreshProjectProgress();
+        }
       },
     });
   };
@@ -3773,7 +3776,7 @@ var zpmTaskCompleteRequests = {};
   };
 
   // Task Importer
-  ZephyrProjects.taskImporter = function (callback) {
+  ZephyrProjects.taskImporter = function (projectId = null, callback = null) {
     var uploader = null;
     ZephyrProjects.readFile(uploader, function (tasks, error = false) {
       var modal = ZephyrProjects.zephyrModal('Tasks to Import', ZephyrProjects.loaderHtml(), 'Import Tasks', function () {}, 'zpm-task-importer');
@@ -3819,11 +3822,17 @@ var zpmTaskCompleteRequests = {};
       jQuery(modal).on('click', '#zpm-task-importer__submit-btn', function () {
         jQuery(this).text('Importing...');
         //ZephyrProjects.remove_modal('.zpm-project-importer');
+        var data = {
+          action: 'zpm_saveTasks',
+          tasks: results,
+        };
+        
+        if (projectId) {
+          data.project_id = projectId;
+        }
+
         ZephyrProjects.ajax(
-          {
-            action: 'zpm_saveTasks',
-            tasks: results,
-          },
+          data,
           function (res) {
             window.location.reload();
           },
@@ -4104,8 +4113,8 @@ var zpmTaskCompleteRequests = {};
       'Y. F j.': 'YYYY. MMM D.',
       'd M Y': 'DD MMM YYYY',
       'D M j': 'ddd MMM D',
-      'M/D/Y': 'MMM/ddd/YYYY',
-      'j, n, Y': 'ddd, MM, YYYY',
+      'M/D/Y': 'MM/DD/YYYY',
+      'j, n, Y': 'D, M, YYYY',
       'm.d.y': 'MM.DD.YY',
       'j-m-y': 'D-MM-YY',
       'd-m-Y': 'DD-MM-YYYY',

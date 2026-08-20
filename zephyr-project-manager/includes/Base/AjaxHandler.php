@@ -149,6 +149,7 @@ class AjaxHandler extends BaseController {
 			'sendTestEmails',
 			'updateStatusOrders',
 			'updatePriorityOrders',
+			'getProjectProgressTab',
 			'deleteTempFiles'
 		];
 
@@ -302,7 +303,7 @@ class AjaxHandler extends BaseController {
 		$date =  date('Y-m-d H:i:s');
 		$user_id = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : $this->get_user_id();
 		$subject_id = isset($_POST['subject_id']) ? sanitize_text_field($_POST['subject_id']) : '';
-		$message = isset($_POST['message']) ? serialize(stripslashes($_POST['message'])) : '';
+		$message = isset($_POST['message']) ? serialize(wp_kses_post(stripslashes($_POST['message']))) : '';
 		$type = isset($_POST['type']) ? serialize(sanitize_text_field($_POST['type'])) : '';
 		$parent_id = isset($_POST['parent_id']) ? intval(sanitize_text_field($_POST['parent_id'])) : 0;
 		$attachments = isset($_POST['attachments']) && !empty($_POST['attachments']) ? $_POST['attachments'] : false;
@@ -511,11 +512,18 @@ class AjaxHandler extends BaseController {
 			$data['categories'] = serialize(zpm_sanitize_array($_POST['categories']));
 		}
 
+		if (isset($_POST['status'])) {
+			$data['status'] = sanitize_text_field($_POST['status']);
+		} else if (isset($_POST['project_status'])) {
+			$data['status'] = sanitize_text_field($_POST['project_status']);
+		}
+
 		$managers = isset($_POST['managers']) ? $_POST['managers'] : [];
 		$data['type'] = isset($_POST['type']) ? sanitize_text_field($_POST['type']) : 'list';
 		$data['completed'] = '0';
 		$data['priority'] = isset($_POST['priority']) ? sanitize_text_field($_POST['priority']) : 'priority_none';
 		$data['assignees'] = implode(',', (array) $managers);
+		$data['team'] = serialize((array) $managers);
 		$data = apply_filters('zpm_new_project_data', $data);
 		$last_id = Projects::new_project($data);
 		$project = Projects::get_project($last_id);
@@ -664,6 +672,20 @@ class AjaxHandler extends BaseController {
 		}
 
 		if (isset($settings['assignees']) && $settings['assignees'] !== $project->assignees) {
+			$oldAssignees = explode(',', (string) $project->assignees);
+			$newAssignees = explode(',', (string) $settings['assignees']);
+			$addedAssignees = array_diff($newAssignees, $oldAssignees);
+			$finalAdded = [];
+			foreach ($addedAssignees as $uid) {
+				if (!empty($uid) && !Projects::is_project_member($project, $uid)) {
+					$finalAdded[] = $uid;
+				}
+			}
+
+			if (!empty($finalAdded)) {
+				Emails::project_assigned_notification($project, $finalAdded);
+			}
+
 			$assignees = Projects::getAssignees($project);
 			$assignees = array_unique($assignees);
 			do_action('zpm_project_assigned', $project, $assignees);
@@ -845,6 +867,29 @@ class AjaxHandler extends BaseController {
 		}
 
 		do_action('zpm/project/members/removed', $project, $removedMembers);
+
+		$addedMembers = [];
+		foreach ($members as $member) {
+			if (!in_array($member, $previousMembers)) {
+				// Also check if they are already an assignee or the project creator
+				if (strpos($member, 'team_') === false) {
+					if (!Projects::is_project_member($project, $member)) {
+						$addedMembers[] = $member;
+					}
+				} else {
+					// It's a team, we should probably notify the team? 
+					// The request says "members/team or assignees", so if a whole team is added, it should probably notify them.
+					// Emails::project_assigned_notification handles numeric IDs and member arrays.
+					// Let's see if we should expand teams.
+					$addedMembers[] = $member;
+				}
+			}
+		}
+
+		if (!empty($addedMembers)) {
+			Emails::project_assigned_notification($project, $addedMembers);
+		}
+
 		Projects::update_members($projectID, $members);
 		echo json_encode($members);
 		die();
@@ -1246,15 +1291,23 @@ class AjaxHandler extends BaseController {
 
 		if (empty($parentId)) $parentId = '-1';
 
-		$duration = $this->getPostVar('duration');
+		$durationDays = isset($_POST['duration_days']) ? intval($_POST['duration_days']) : 0;
+		$durationHours = isset($_POST['duration_hours']) ? intval($_POST['duration_hours']) : 0;
+		$durationMinutes = isset($_POST['duration_minutes']) ? intval($_POST['duration_minutes']) : 0;
+		$rawDuration = $this->getPostVar('duration');
 		$blockingTasks = (array) $this->getPostVar('blockingTasks', []);
 		$categories = (array) $this->getPostVar('categories', []);
+
+		if (!isset($_POST['duration_days']) && !isset($_POST['duration_hours']) && !isset($_POST['duration_minutes']) && !empty($rawDuration) && is_numeric($rawDuration)) {
+			$durationDays = intval($rawDuration);
+		}
+
+		$totalDurationMinutes = ($durationDays * 1440) + ($durationHours * 60) + $durationMinutes;
 
 		if (empty($status)) {
 			$status = Utillities::getSetting('default_status');
 		}
 
-		// Format start and end dates
 		if (!empty($date_due)) {
 			$date_due = date("Y-m-d H:i:s", strtotime($date_due));
 		}
@@ -1272,9 +1325,8 @@ class AjaxHandler extends BaseController {
 			$assignee = $assignee_string;
 		}
 
-		if ($duration) {
-			$days = $duration - 1;
-			$date_due = date('Y-m-d H:i:s', strtotime($date_start . " +{$days} days"));
+		if ($totalDurationMinutes > 0 && !empty($date_start)) {
+			$date_due = date('Y-m-d H:i:s', strtotime($date_start . " +{$totalDurationMinutes} minutes"));
 		}
 
 		$settings = array(
@@ -1317,8 +1369,12 @@ class AjaxHandler extends BaseController {
 		$wpdb->insert($table_name, $settings);
 		$last_id = $wpdb->insert_id;
 
-		if ($duration) {
-			Tasks::updateMeta($last_id, 'duration', $duration);
+		if ($totalDurationMinutes > 0) {
+			Tasks::updateMeta($last_id, 'duration_minutes', $totalDurationMinutes);
+			Tasks::updateMeta($last_id, 'duration_days', $durationDays);
+			Tasks::updateMeta($last_id, 'duration_hours', $durationHours);
+			Tasks::updateMeta($last_id, 'duration_minutes_sub', $durationMinutes);
+			Tasks::updateMeta($last_id, 'duration', $durationDays > 0 ? $durationDays : 1);
 		}
 
 		if ($this->hasParam('blockingTasks')) {
@@ -1616,6 +1672,7 @@ class AjaxHandler extends BaseController {
 		$filename = sanitize_text_field($_POST['zpm_file']);
 		$file_type = sanitize_text_field($_POST['zpm_import_via']);
 		$table_name = ZPM_TASKS_TABLE;
+		$target_project_id = isset($_POST['zpm_import_project_id']) ? intval($_POST['zpm_import_project_id']) : -1;
 
 		if ($file_type == 'csv') {
 			$row = 1;
@@ -1647,6 +1704,10 @@ class AjaxHandler extends BaseController {
 					$task['date_start'] = date('Y-m-d', $task['date_start']);
 					$task['date_due'] = date('Y-m-d', $task['date_due']);
 					$task['date_completed'] = date('Y-m-d', $task['date_completed']);
+
+					if ($target_project_id > 0) {
+						$task['project'] = $target_project_id;
+					}
 
 					if (!Tasks::task_exists($data[0])) {
 						$wpdb->insert($table_name, $task);
@@ -1697,6 +1758,10 @@ class AjaxHandler extends BaseController {
 					'priority' 	 	 => $task['priority'],
 					'other_data' 	 => $task['other_data']
 				);
+
+				if ($target_project_id > 0) {
+					$task['project'] = $target_project_id;
+				}
 
 				if (!Tasks::task_exists($task['id'])) {
 					$wpdb->insert($table_name, $task);
@@ -1935,9 +2000,18 @@ class AjaxHandler extends BaseController {
 			$settings['parent_id'] = $parentID;
 		}
 
-		$duration = (int) $this->getPostVar('duration');
+		$durationDays = isset($_POST['duration_days']) ? intval($_POST['duration_days']) : 0;
+		$durationHours = isset($_POST['duration_hours']) ? intval($_POST['duration_hours']) : 0;
+		$durationMinutes = isset($_POST['duration_minutes']) ? intval($_POST['duration_minutes']) : 0;
+		$rawDuration = $this->getPostVar('duration');
 		$type = (isset($_POST['type'])) ? sanitize_text_field($_POST['type']) : 'default';
 		$categories = (array) $this->getPostVar('categories', []);
+
+		if (!isset($_POST['duration_days']) && !isset($_POST['duration_hours']) && !isset($_POST['duration_minutes']) && !empty($rawDuration) && is_numeric($rawDuration)) {
+			$durationDays = intval($rawDuration);
+		}
+
+		$totalDurationMinutes = ($durationDays * 1440) + ($durationHours * 60) + $durationMinutes;
 
 		if (is_array($settings['assignee'])) {
 			$assignee_string = '';
@@ -1962,24 +2036,11 @@ class AjaxHandler extends BaseController {
 		}
 
 		$shouldUpdateDuration = false;
-		Tasks::updateMeta($task_id, 'duration', $duration);
-
-		if (!empty($duration)) {
-			// $currentDuration = (int) Tasks::getMeta($task_id, 'duration', 0);
-			// $currentDueDate = $old_task->date_due;
-
-			// if (intval($currentDuration) !== intval($duration)) {
-			// 	$updatedTask = Tasks::get_task($task_id);
-			// 	$updatedTask->date_due = '';
-			// 	$newDueDate = Tasks::getEndDate($updatedTask);
-			// 	$settings['date_due'] = date('Y-m-d H:i:s', strtotime($newDueDate));
-			// } else if (date('Y-m-d', strtotime($currentDueDate)) !== date('Y-m-d', strtotime($settings['date_due']))) {
-			// 	$shouldUpdateDuration = true;
-			// }
-
-			// if (!$isDueDateValid) {
-			// }
-		}
+		Tasks::updateMeta($task_id, 'duration_minutes', $totalDurationMinutes);
+		Tasks::updateMeta($task_id, 'duration_days', $durationDays);
+		Tasks::updateMeta($task_id, 'duration_hours', $durationHours);
+		Tasks::updateMeta($task_id, 'duration_minutes_sub', $durationMinutes);
+		Tasks::updateMeta($task_id, 'duration', $durationDays > 0 ? $durationDays : 1);
 
 		$settings['categories'] = serialize($categories);
 		$settings = apply_filters('zpm_update_task_data', $settings);
@@ -3636,6 +3697,7 @@ class AjaxHandler extends BaseController {
 		if (!Utillities::can_create_tasks()) $this->unauthorized();
 
 		$tasks = isset($_POST['tasks']) ? zpm_sanitize_array($_POST['tasks']) : [];
+		$targetProjectID = isset($_POST['project_id']) ? (int) $_POST['project_id'] : null;
 
 		foreach ($tasks as $task) {
 			$task = (array) $task;
@@ -3655,7 +3717,9 @@ class AjaxHandler extends BaseController {
 				'status'       	 => isset($task['status']) && !empty($task['status']) ? str_replace(' ', '_', strtolower($task['status'])) : '',
 			];
 
-			if (isset($task['project'])) {
+			if (!empty($targetProjectID)) {
+				$args['project'] = $targetProjectID;
+			} else if (isset($task['project'])) {
 				if (is_numeric($task['project'])) {
 					// [ADD TO UPDATE]
 					$args['project'] = (int) get_option('zpm_import_id_' . $task['project'], $task['project']);
@@ -4137,6 +4201,10 @@ class AjaxHandler extends BaseController {
 					$taskData['date_due'] = $values['dueDate'];
 				}
 
+				if (isset($values['project'])) {
+					$taskData['project'] = $values['project'];
+				}
+
 				Tasks::update($taskID, $taskData);
 			}
 		}
@@ -4312,12 +4380,21 @@ class AjaxHandler extends BaseController {
 		if (Utillities::getSetting('task_duration_enabled')) {
 			$diff = strtotime($data['date_due']) - strtotime($data['date_start']);
 
-			if ($diff == 0) return 1;
+			if ($diff > 0) {
+				$totalMinutes = round($diff / 60);
+				$durationDays = floor($totalMinutes / 1440);
+				$remainingMins = $totalMinutes % 1440;
+				$durationHours = floor($remainingMins / 60);
+				$durationMinutesSub = $remainingMins % 60;
 
-			$days = abs(round($diff / 86400));
-			$duration = $days + 1;
-			Tasks::updateMeta($taskID, 'duration', $duration);
-			$data['duration'] = $duration;
+				Tasks::updateMeta($taskID, 'duration_minutes', $totalMinutes);
+				Tasks::updateMeta($taskID, 'duration_days', $durationDays);
+				Tasks::updateMeta($taskID, 'duration_hours', $durationHours);
+				Tasks::updateMeta($taskID, 'duration_minutes_sub', $durationMinutesSub);
+				Tasks::updateMeta($taskID, 'duration', $durationDays > 0 ? $durationDays : 1);
+				$data['duration'] = Tasks::getDurationDetails($taskID);
+				$data['duration_formatted'] = Tasks::formatDuration($taskID);
+			}
 		}
 
 		wp_send_json_success([
@@ -4330,6 +4407,157 @@ class AjaxHandler extends BaseController {
 		$sendResults = Emails::sendTest($email);
 		wp_send_json_success([
 			'results' => $sendResults
+		]);
+	}
+
+	public function getProjectProgressTab() {
+		$projectId = intval($this->getPostVar('project_id', -1));
+
+		if ($projectId <= 0) {
+			wp_send_json_error();
+		}
+
+		$project = Projects::get_project($projectId);
+
+		if (!is_object($project) || !Projects::has_project_access($project)) {
+			$this->unauthorized();
+		}
+
+		$taskCount = Tasks::get_project_task_count($projectId);
+		$completedTasks = ZephyrProjectManager()::get_tasks([
+			'project' => $projectId,
+			'completed' => '1'
+		]);
+		$completedTasksCount = count($completedTasks);
+		$activeTasks = ZephyrProjectManager()::get_tasks([
+			'project' => $projectId,
+			'completed' => '0'
+		]);
+		$completedPercentageCount = $completedTasksCount;
+
+		foreach ($activeTasks as $activeTask) {
+			$taskPercentage = Tasks::getPercentage($activeTask);
+
+			if ($taskPercentage > 0) {
+				$percentageRelative = $taskPercentage / 100;
+				$completedPercentageCount += $percentageRelative;
+
+				if ($percentageRelative == 1) {
+					$completedTasksCount += 1;
+				}
+			}
+		}
+
+		$overdueTasksCount = count(Tasks::get_overdue_tasks(['project_id' => $projectId]));
+		$pendingTasksCount = $taskCount - $completedTasksCount;
+
+		if ($pendingTasksCount < 0) {
+			$pendingTasksCount = 0;
+		}
+
+		$percentComplete = ($taskCount !== 0) ? round(($completedPercentageCount / $taskCount) * 100) : 100;
+
+		ob_start();
+		?>
+		<div class="zpm-table__header">
+			<span class="zpm-table__th"><?php esc_html_e('Task Name', 'zephyr-project-manager'); ?></span>
+			<span class="zpm-table__th"><?php esc_html_e('Assignee', 'zephyr-project-manager'); ?></span>
+			<span class="zpm-table__th"><?php esc_html_e('Status', 'zephyr-project-manager'); ?></span>
+			<span class="zpm-table__th"><?php esc_html_e('Date Completed', 'zephyr-project-manager'); ?></span>
+		</div>
+		<?php foreach ($completedTasks as $task) : ?>
+			<?php
+			$completedDate = new DateTime($task->date_completed);
+			$completedDateString = ($completedDate->format('Y') !== '-0001') ? $completedDate->format('d M Y') : '';
+			$members = Tasks::get_assignees($task, true);
+			$memberCount = 0;
+			$statusName = Tasks::getStatusName($task);
+			?>
+			<div class="zpm-project-progress__task zpm-list-item zpm-table__row">
+				<span class="zpm-progress__task-name zpm-table__cell"><?php echo esc_html($task->name); ?></span>
+				<span class="zpm-progress__task-assignee zpm-table__cell">
+					<?php foreach ($members as $member) : ?>
+						<span class="zpm-progress__task-assignee-item"><?php echo esc_html($member['name']); ?><?php echo $memberCount < count($members) - 1 ? ', ' : ''; ?></span>
+						<?php $memberCount++; ?>
+					<?php endforeach; ?>
+
+					<?php if (empty($members)) : ?>
+						<?php esc_html_e('None', 'zephyr-project-manager'); ?>
+					<?php endif; ?>
+				</span>
+				<span class="zpm-progress__task-completed zpm-table__cell completed"><?php echo $statusName; ?></span>
+				<span class="zpm-progress__task-completed-date zpm-table__cell"><?php echo esc_html($completedDateString); ?></span>
+			</div>
+		<?php endforeach; ?>
+
+		<?php foreach ($activeTasks as $task) : ?>
+			<?php
+			$members = Tasks::get_assignees($task, true);
+			$memberCount = 0;
+			$statusName = Tasks::getStatusName($task);
+			?>
+			<div class="zpm-project-progress__task zpm-list-item zpm-table__row">
+				<span class="zpm-progress__task-name zpm-table__cell"><?php echo esc_html($task->name); ?></span>
+				<span class="zpm-progress__task-assignee zpm-table__cell">
+					<?php foreach ($members as $member) : ?>
+						<span class="zpm-progress__task-assignee-item"><?php echo esc_html($member['name']); ?><?php echo $memberCount < count($members) - 1 ? ', ' : ''; ?></span>
+						<?php $memberCount++; ?>
+					<?php endforeach; ?>
+
+					<?php if (empty($members)) : ?>
+						<?php esc_html_e('None', 'zephyr-project-manager'); ?>
+					<?php endif; ?>
+				</span>
+				<span class="zpm-progress__task-completed zpm-table__cell"><?php echo $statusName; ?></span>
+				<span class="zpm-progress__task-completed-date zpm-table__cell"></span>
+			</div>
+		<?php endforeach; ?>
+		<?php
+		$tableHtml = ob_get_clean();
+
+		$projectMembers = maybe_unserialize($project->team) ? (array) maybe_unserialize($project->team) : [];
+		$memberProgress = [];
+
+		foreach ($projectMembers as $memberId) {
+			$userProgress = Utillities::get_user_progress($memberId, $projectId);
+			$memberProgress[$memberId] = [
+				'percent' => isset($userProgress['percent_complete']) ? round($userProgress['percent_complete']) : 0,
+				'html' => isset($userProgress['html']) ? $userProgress['html'] : '',
+				'tasks_total' => isset($userProgress['tasks_total']) ? $userProgress['tasks_total'] : 0
+			];
+		}
+
+		$statuses = Utillities::get_statuses('status');
+		$labels = [
+			Utillities::getSetting('pending_tasks_string', __('Pending Tasks', 'zephyr-project-manager')),
+			Utillities::getSetting('overdue_tasks_string', __('Overdue Tasks', 'zephyr-project-manager'))
+		];
+		$colors = ['#6500d8', '#e8005c'];
+		$chartData = [$pendingTasksCount, $overdueTasksCount];
+
+		foreach ($statuses as $slug => $st) {
+			$stTasksCount = count(Tasks::get_tasks([
+				'project' => $projectId,
+				'status' => $slug,
+				'completed' => '0'
+			]));
+			$labels[] = $st['name'];
+			$colors[] = $st['color'];
+			$chartData[] = $stTasksCount;
+		}
+
+		wp_send_json_success([
+			'completed' => $completedTasksCount,
+			'pending' => $pendingTasksCount,
+			'overdue' => $overdueTasksCount,
+			'percent_complete' => $percentComplete,
+			'table_html' => $tableHtml,
+			'member_progress' => $memberProgress,
+			'chart' => [
+				'labels' => $labels,
+				'colors' => $colors,
+				'data' => $chartData
+			]
 		]);
 	}
 

@@ -115,6 +115,25 @@ $defaultAssignee = isset($general_settings['default_assignee']) ? $general_setti
                     </select>
                 </div>
             </div>
+
+            <!-- Project -->
+            <div class="zpm-bulk-task-edit--toggle-container" data-edit-multiple-task-container>
+                <div class="zpm-edit-multiple-task--header" data-edit-multiple-task-header>
+                    <label for="zpm-bulk-task-edit--project-toggle" class="zpm-material-checkbox">
+                        <input type="checkbox" id="zpm-bulk-task-edit--project-toggle" class="zpm_toggle invisible" value="1" aria-label="<?php esc_attr_e('Toggle setting', 'zephyr-project-manager'); ?>" data-edit-multiple-task-toggle>
+                        <span class="zpm-material-checkbox-label"></span>
+                    </label>
+                    <label class="zpm_label" for="zpm-task-list-project"><?php esc_html_e('Project', 'zephyr-project-manager'); ?></label>
+                </div>
+                <div class="zpm-edit-multiple-task--setting" data-edit-multiple-task-setting>
+                    <select data-edit-multiple-task-input="project" id="zpm-task-list-project" class="zpm-chosen zpm-chosen-input" data-placeholder="<?php esc_html_e('Select Project', 'zephyr-project-manager'); ?>">
+                        <option value="-1"><?php esc_html_e('None', 'zephyr-project-manager'); ?></option>
+                        <?php foreach ($projects as $project) : ?>
+                            <option value="<?php echo esc_attr($project->id); ?>" <?php echo $defaultProject == $project->id ? 'selected' : ''; ?>><?php echo esc_html($project->name); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="zpm_modal_buttons">

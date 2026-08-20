@@ -118,9 +118,20 @@ if ($general_settings['use_current_dates_as_default']) {
 
 				<?php if ($general_settings['task_duration_enabled']) : ?>
 					<span class="zpm_options_col zpm-new-task-field__duration">
-						<div class="zpm-form__group">
-							<input type="number" autocomplete="off" name="zpm-new-task-duration" id="zpm-new-task-duration" class="zpm-form__field" placeholder="<?php esc_html_e('Duration', 'zephyr-project-manager'); ?>" data-ajax-name="duration">
-							<label for="zpm-new-task-duration" class="zpm-form__label"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
+						<label class="zpm_label" style="display: block; margin-bottom: 4px;"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
+						<div style="display: flex; gap: 8px;">
+							<div class="zpm-form__group" style="flex: 1;">
+								<input type="number" min="0" autocomplete="off" name="zpm-new-task-duration-days" id="zpm-new-task-duration-days" class="zpm-form__field zpm-duration-field" placeholder="<?php esc_html_e('Days', 'zephyr-project-manager'); ?>" data-ajax-name="duration_days">
+								<label for="zpm-new-task-duration-days" class="zpm-form__label"><?php esc_html_e('Days', 'zephyr-project-manager'); ?></label>
+							</div>
+							<div class="zpm-form__group" style="flex: 1;">
+								<input type="number" min="0" max="23" autocomplete="off" name="zpm-new-task-duration-hours" id="zpm-new-task-duration-hours" class="zpm-form__field zpm-duration-field" placeholder="<?php esc_html_e('Hours', 'zephyr-project-manager'); ?>" data-ajax-name="duration_hours">
+								<label for="zpm-new-task-duration-hours" class="zpm-form__label"><?php esc_html_e('Hours', 'zephyr-project-manager'); ?></label>
+							</div>
+							<div class="zpm-form__group" style="flex: 1;">
+								<input type="number" min="0" max="59" autocomplete="off" name="zpm-new-task-duration-minutes" id="zpm-new-task-duration-minutes" class="zpm-form__field zpm-duration-field" placeholder="<?php esc_html_e('Mins', 'zephyr-project-manager'); ?>" data-ajax-name="duration_minutes">
+								<label for="zpm-new-task-duration-minutes" class="zpm-form__label"><?php esc_html_e('Mins', 'zephyr-project-manager'); ?></label>
+							</div>
 						</div>
 					</span>
 				<?php endif; ?>

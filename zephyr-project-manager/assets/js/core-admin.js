@@ -176,36 +176,7 @@ jQuery(document).ready(function ($) {
 		mediaUploader.open();
 	});
 
-	// Import tasks via CSV
-	var csvFileUploader;
-
-	$('#zpm_import_tasks_from_csv').on('click', function () {
-		if (csvFileUploader) {
-			csvFileUploader.open();
-			return;
-		}
-
-		var args = {
-			title: zpm_localized.strings.select_csv,
-			button: {
-				text: zpm_localized.strings.choose_file
-			}, multiple: false
-		};
-
-		if (zpm_localized.settings.view_own_files) {
-			args.library = {};
-			args.library.user = zpm_localized.user_id;
-		}
-
-		csvFileUploader = wp.media.frames.file_frame = wp.media(args);
-
-		csvFileUploader.on('select', function () {
-			var attachment = csvFileUploader.state().get('selection').first().toJSON();
-			zpm_import_tasks(attachment);
-		});
-		// Open the uploader dialog
-		csvFileUploader.open();
-	});
+	// Legacy CSV import removed
 
 	// Import tasks via JSON
 	var jsonFileUploader;
@@ -1073,7 +1044,11 @@ jQuery(document).ready(function ($) {
 				completed: 1
 			};
 
-			ZephyrProjects.complete_task(data, function (response) { });
+			ZephyrProjects.complete_task(data, function (response) {
+				if (typeof zpmRefreshProjectProgress === 'function') {
+					zpmRefreshProjectProgress();
+				}
+			});
 			$('body').find('.zpm_task_list_row[data-task-id="' + task_id + '"]').addClass('zpm_task_complete');
 			$('body').find('.zpm_task_mark_complete[data-task-id="' + task_id + '"]').attr('checked', 'checked');
 		} else {
@@ -1084,7 +1059,11 @@ jQuery(document).ready(function ($) {
 				completed: 0
 			};
 
-			ZephyrProjects.complete_task(data, function (response) { });
+			ZephyrProjects.complete_task(data, function (response) {
+				if (typeof zpmRefreshProjectProgress === 'function') {
+					zpmRefreshProjectProgress();
+				}
+			});
 		}
 	});
 
@@ -1993,7 +1972,7 @@ jQuery(document).ready(function ($) {
 	});
 
 	// Import tasks via CSV or JSON
-	function zpm_import_tasks(attachment) {
+	function zpm_import_tasks(attachment, targetProjectId = null) {
 		if (attachment.mime == 'text/csv') {
 			ZephyrProjects.close_modal();
 			zpmNewModal(zpm_localized.strings.import_tasks, zpm_localized.strings.importing_via_csv, '<div id="zpm_csv_task_import_data"></div>', '<button data-zpm-trigger="close_modal" class="zpm_button zpm_button_borderless" id="zpm_import_csv_data_btn">' + zpm_localized.strings.close + '</button>', 'zpm_import_csv_data_modal');
@@ -2003,6 +1982,10 @@ jQuery(document).ready(function ($) {
 				zpm_file: attachment.url,
 				zpm_import_via: 'csv'
 			};
+
+			if (targetProjectId) {
+				data.zpm_import_project_id = targetProjectId;
+			}
 
 			ZephyrProjects.upload_tasks(data, function (response) {
 				var length = (response.tasks.length - 1);
@@ -2026,6 +2009,10 @@ jQuery(document).ready(function ($) {
 				zpm_file: attachment.url,
 				zpm_import_via: 'json'
 			};
+
+			if (targetProjectId) {
+				data.zpm_import_project_id = targetProjectId;
+			}
 
 			ZephyrProjects.upload_tasks(data, function (response) {
 				var length = (response.tasks.length - 1);
@@ -2897,8 +2884,87 @@ jQuery(document).ready(function ($) {
 		zpm_update_project_progress();
 	});
 
+	function zpmRefreshProjectProgress(projectId) {
+		if (typeof projectId === 'undefined' || !projectId || projectId === '-1') {
+			if (typeof zpm_localized !== 'undefined' && zpm_localized.current_project) {
+				projectId = zpm_localized.current_project;
+			}
+		}
+
+		if (typeof projectId === 'undefined' || !projectId || projectId === '-1') {
+			return;
+		}
+
+		ZephyrProjects.ajax({
+			action: 'zpm_getProjectProgressTab',
+			project_id: projectId
+		}, function (res) {
+			if (!res || !res.success || !res.data) {
+				return;
+			}
+
+			const data = res.data;
+
+			if (data.table_html) {
+				$('#zpm-project-progress__task-table').html(data.table_html);
+			}
+
+			if (data.member_progress) {
+				$.each(data.member_progress, function (memberId, memberData) {
+					const $member = $('.zpm-project-progress__member[data-user-id="' + memberId + '"]');
+					if ($member.length) {
+						$member.find('.zpm-progress-member__percent').text(memberData.percent + '%');
+						$member.removeClass('zpm-green zpm-yellow-green zpm-yellow zpm-yellow-orange zpm-orange zpm-red zpm-no-tasks');
+						if (memberData.percent >= 100) {
+							$member.addClass('zpm-green');
+						} else if (memberData.percent < 100 && memberData.percent >= 75) {
+							$member.addClass('zpm-yellow-green');
+						} else if (memberData.percent < 75 && memberData.percent >= 50) {
+							$member.addClass('zpm-yellow');
+						} else if (memberData.percent < 50 && memberData.percent >= 25) {
+							$member.addClass('zpm-yellow-orange');
+						} else if (memberData.percent < 25 && memberData.percent > 0) {
+							$member.addClass('zpm-orange');
+						} else {
+							$member.addClass('zpm-red');
+						}
+						if (parseInt(memberData.tasks_total) <= 0) {
+							$member.addClass('zpm-no-tasks');
+						}
+						if (memberData.html) {
+							$member.find('.zpm-project-progress__member-details').html(memberData.html);
+						}
+					}
+				});
+			}
+
+			const $stats = $('.zpm_report_task_stats');
+			if ($stats.length) {
+				$stats.find('.zpm_report_stat').each(function () {
+					const text = $(this).text();
+					if (text.indexOf('Completed Tasks') !== -1) {
+						$(this).html('<label class="zpm_label">Completed Tasks</label> ' + data.completed);
+					} else if (text.indexOf('Pending Tasks') !== -1) {
+						$(this).html('<label class="zpm_label">Pending Tasks</label> ' + data.pending);
+					} else if (text.indexOf('Overdue Tasks') !== -1) {
+						$(this).html('<label class="zpm_label">Overdue Tasks</label> ' + data.overdue);
+					} else if (text.indexOf('Percent Complete') !== -1) {
+						$(this).html('<label class="zpm_label">Percent Complete:</label> ' + data.percent_complete + '%');
+					}
+				});
+			}
+
+			if (typeof doughnut_chart !== 'undefined' && doughnut_chart && data.chart) {
+				doughnut_chart.data.labels = data.chart.labels;
+				doughnut_chart.data.datasets[0].data = data.chart.data;
+				doughnut_chart.data.datasets[0].backgroundColor = data.chart.colors;
+				doughnut_chart.update();
+			}
+		});
+	}
+	window.zpmRefreshProjectProgress = zpmRefreshProjectProgress;
+
 	function zpm_update_project_progress(project_id) {
-		// Display a project progress chart
 		if (typeof project_id == 'undefined') {
 			var project_id = $('body').find('#zpm_project_editor').data('project-id');
 		}
@@ -4009,7 +4075,8 @@ jQuery(document).ready(function ($) {
 	});
 
 	jQuery('body').on('click', '.zpm-import-tasks__btn', function () {
-		ZephyrProjects.taskImporter();
+		var projectId = jQuery(this).attr('data-project-id') || null;
+		ZephyrProjects.taskImporter(projectId);
 	});
 
 	jQuery('body').on('click', '#zpm-members__bulk-access-btn', function () {

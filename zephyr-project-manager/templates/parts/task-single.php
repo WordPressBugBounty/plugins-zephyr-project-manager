@@ -206,10 +206,23 @@ $hasProject = Tasks::hasProject($this_task);
 				</div>
 
 				<?php if (Utillities::getSetting('task_duration_enabled')): ?>
-					<?php $duration = Tasks::getDuration($this_task); ?>
+					<?php $durationDetails = Tasks::getDurationDetails($this_task); ?>
 					<div class="zpm-form__group">
-						<input type="text" name="zpm-edit-task--duration" id="zpm-edit-task--duration" data-ajax-name="duration" class="zpm-form__field" placeholder="<?php esc_html_e('Duration', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($duration); ?>" type="number">
-						<label for="zpm-edit-task--duration" class="zpm-form__label"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
+						<label class="zpm_label" style="display: block; margin-bottom: 4px;"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
+						<div style="display: flex; gap: 8px;">
+							<div style="flex: 1;">
+								<input type="number" min="0" name="zpm-edit-task--duration-days" id="zpm-edit-task--duration-days" data-ajax-name="duration_days" class="zpm-form__field zpm-duration-field" placeholder="<?php esc_html_e('Days', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($durationDetails['days']); ?>">
+								<label for="zpm-edit-task--duration-days" class="zpm-form__label"><?php esc_html_e('Days', 'zephyr-project-manager'); ?></label>
+							</div>
+							<div style="flex: 1;">
+								<input type="number" min="0" max="23" name="zpm-edit-task--duration-hours" id="zpm-edit-task--duration-hours" data-ajax-name="duration_hours" class="zpm-form__field zpm-duration-field" placeholder="<?php esc_html_e('Hours', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($durationDetails['hours']); ?>">
+								<label for="zpm-edit-task--duration-hours" class="zpm-form__label"><?php esc_html_e('Hours', 'zephyr-project-manager'); ?></label>
+							</div>
+							<div style="flex: 1;">
+								<input type="number" min="0" max="59" name="zpm-edit-task--duration-minutes" id="zpm-edit-task--duration-minutes" data-ajax-name="duration_minutes" class="zpm-form__field zpm-duration-field" placeholder="<?php esc_html_e('Mins', 'zephyr-project-manager'); ?>" value="<?php echo esc_attr($durationDetails['minutes']); ?>">
+								<label for="zpm-edit-task--duration-minutes" class="zpm-form__label"><?php esc_html_e('Mins', 'zephyr-project-manager'); ?></label>
+							</div>
+						</div>
 					</div>
 				<?php endif; ?>
 
@@ -452,10 +465,10 @@ $hasProject = Tasks::hasProject($this_task);
 				</div>
 
 				<?php if (Utillities::getSetting('task_duration_enabled')): ?>
-					<?php $duration = Tasks::getDuration($this_task); ?>
+					<?php $formattedDuration = Tasks::formatDuration($this_task); ?>
 					<div class="zpm-form__group">
-						<div class="zpm-form-group__value"><?php echo esc_html($duration); ?></div>
-						<label for="zpm_edit_task_due_date" class="zpm-form__label"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
+						<div class="zpm-form-group__value"><?php echo esc_html($formattedDuration); ?></div>
+						<label class="zpm-form__label"><?php esc_html_e('Duration', 'zephyr-project-manager'); ?></label>
 					</div>
 				<?php endif; ?>
 

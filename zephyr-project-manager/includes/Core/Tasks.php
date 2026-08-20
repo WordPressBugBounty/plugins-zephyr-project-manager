@@ -1305,7 +1305,7 @@ class Tasks {
 			$new_comment .= '<span class="zpm_comment_user_text">
 				<span class="zpm_comment_from">' . $this_user['name'] . '</span>
 				<span class="zpm_comment_time_diff">' . $time_sent . '</span>
-				<div class="zpm_comment_content">' . stripslashes_deep(unserialize($comment->message)) . '</div>';
+				<div class="zpm_comment_content">' . wp_kses_post(stripslashes_deep(unserialize($comment->message))) . '</div>';
 			if (!empty($comment_attachments)) {
 				$new_comment .= '<ul class="zpm_comment_attachments"><p>Attachments:</p>';
 				foreach ($comment_attachments as $attachment) {
@@ -2916,35 +2916,81 @@ END:VCALENDAR
 	public static function getTotalDuration($tasks) {
 		$duration = 0;
 		foreach ($tasks as $task) {
-			// $taskDuration = intval(Tasks::getMeta($task->id, 'duration', 0));
-			// $duration += $taskDuration;
-			$duration += Tasks::getDuration($task);
+			$details = Tasks::getDurationDetails($task);
+			$duration += $details['total_minutes'];
 		}
 
 		return $duration;
 	}
 
-	public static function getDuration($task) {
-		$duration = Tasks::getMeta($task->id, 'duration', false);
-		$hasValidDueDate = zpm_is_date_valid($task->date_due);
-		if (!$duration && $hasValidDueDate) {
-			$hasValidStartDate = zpm_is_date_valid($task->date_start);
-			if ($hasValidStartDate) {
-				$diff = strtotime($task->date_due) - strtotime($task->date_start);
-				if ($diff == 0) {
-					return 1;
+	public static function getDurationDetails($task) {
+		$taskId = is_object($task) ? $task->id : intval($task);
+		$totalMinutes = Tasks::getMeta($taskId, 'duration_minutes', false);
+		if ($totalMinutes === false || $totalMinutes === '') {
+			$durationDays = Tasks::getMeta($taskId, 'duration_days', false);
+			$durationHours = Tasks::getMeta($taskId, 'duration_hours', false);
+			$durationMinutesSub = Tasks::getMeta($taskId, 'duration_minutes_sub', false);
+			if ($durationDays !== false || $durationHours !== false || $durationMinutesSub !== false) {
+				$totalMinutes = (intval($durationDays) * 1440) + (intval($durationHours) * 60) + intval($durationMinutesSub);
+			} else {
+				$durationMeta = Tasks::getMeta($taskId, 'duration', false);
+				if ($durationMeta !== false && $durationMeta !== '' && is_numeric($durationMeta)) {
+					$numDays = floatval($durationMeta);
+					$totalMinutes = round($numDays * 1440);
+				} else {
+					$totalMinutes = 0;
 				}
-				$days = abs(round($diff / 86400));
+			}
+		} else {
+			$totalMinutes = intval($totalMinutes);
+		}
 
-				return $days + 1;
+		if ($totalMinutes <= 0 && is_object($task)) {
+			$hasValidDueDate = zpm_is_date_valid($task->date_due);
+			$hasValidStartDate = zpm_is_date_valid($task->date_start);
+			if ($hasValidDueDate && $hasValidStartDate) {
+				$diffSeconds = strtotime($task->date_due) - strtotime($task->date_start);
+				if ($diffSeconds > 0) {
+					$totalMinutes = round($diffSeconds / 60);
+				}
 			}
 		}
-		if (!$duration) {
-			return 0;
-		}
-		$duration = intval($duration);
 
-		return $duration > 0 ? $duration : 1;
+		$days = floor($totalMinutes / 1440);
+		$remainingMinutes = $totalMinutes % 1440;
+		$hours = floor($remainingMinutes / 60);
+		$minutes = $remainingMinutes % 60;
+
+		return [
+			'days' => intval($days),
+			'hours' => intval($hours),
+			'minutes' => intval($minutes),
+			'total_minutes' => intval($totalMinutes)
+		];
+	}
+
+	public static function formatDuration($task) {
+		$details = Tasks::getDurationDetails($task);
+		$parts = [];
+		if ($details['days'] > 0) {
+			$parts[] = $details['days'] . 'd';
+		}
+		if ($details['hours'] > 0) {
+			$parts[] = $details['hours'] . 'h';
+		}
+		if ($details['minutes'] > 0) {
+			$parts[] = $details['minutes'] . 'm';
+		}
+		if (empty($parts)) {
+			return '0d';
+		}
+
+		return implode(' ', $parts);
+	}
+
+	public static function getDuration($task) {
+		$details = Tasks::getDurationDetails($task);
+		return $details['days'] > 0 ? $details['days'] : ($details['total_minutes'] > 0 ? 1 : 0);
 	}
 
 	public static function isSubtask($task) {
@@ -2974,7 +3020,6 @@ END:VCALENDAR
 	}
 
 	public static function updateBlockingTaskDependencyDates($taskID, $depth = 0) {
-		// Update start date of task to be latest blocking task due date
 		$blockedTasks = Tasks::getBlockedTasks($taskID);
 		if (!empty($blockedTasks)) {
 			foreach ($blockedTasks as $blockedTask) {
@@ -2987,14 +3032,14 @@ END:VCALENDAR
 		}, Tasks::getBlockingTasks($taskID));
 		$latest = Tasks::getLatestDate($blockingTasks);
 		$newStart = date('Y-m-d H:i:s', strtotime($latest . ' +1 days'));
-		$duration = (int) Tasks::getMeta($taskID, 'duration', 0);
+		$details = Tasks::getDurationDetails($taskID);
+		$totalMinutes = $details['total_minutes'];
 		if (strtotime($task->date_start) > strtotime($latest)) {
 			return $task->date_start;
 		}
-		$newDue = $newStart;//$task->date_due;
-		if (!empty($duration)) {
-			$days = $duration - 1;
-			$newDue = date('Y-m-d H:i:s', strtotime("$newStart +{$days} days"));
+		$newDue = $newStart;
+		if (!empty($totalMinutes)) {
+			$newDue = date('Y-m-d H:i:s', strtotime("$newStart +{$totalMinutes} minutes"));
 		}
 		if ($depth !== 0) {
 			Tasks::update($taskID, [
@@ -3017,17 +3062,15 @@ END:VCALENDAR
 	}
 
 	public static function getEndDate($task) {
-		$duration = Tasks::getMeta($task->id, 'duration', 0);
+		$details = Tasks::getDurationDetails($task);
+		$totalMinutes = $details['total_minutes'];
 		$isDueValid = zpm_is_date_valid($task->date_due);
 		if ($isDueValid) {
 			return $task->date_due;
 		}
-		if (Utillities::getSetting('task_duration_enabled') && $duration > 0) {
-			if ($duration > 0) {
-				$duration -= 1;
-			}
+		if (Utillities::getSetting('task_duration_enabled') && $totalMinutes > 0) {
 			$startDate = Tasks::getStartDate($task);
-			$endDate = date('Y-m-d H:i:s', strtotime($startDate . " +{$duration} days"));
+			$endDate = date('Y-m-d H:i:s', strtotime($startDate . " +{$totalMinutes} minutes"));
 
 			return $endDate;
 		}

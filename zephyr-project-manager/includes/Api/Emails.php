@@ -202,8 +202,10 @@ class Emails {
             ]);
             $sent_emails[] = $member['email'];
         }
+
         if (Tasks::hasProject($task)) {
             $additionalEmails = Projects::getAdditionalEmails($task->project);
+
             foreach ($additionalEmails as $email) {
                 if (!empty($email)) {
                     Emails::send_email($email, $subject, $html, 'task_completed', [
@@ -230,27 +232,34 @@ class Emails {
         $sent_emails = [];
         $body .= '<div id="zpm-new-task-email__description">' . $task->description . '</div>';
         $html = Emails::email_template($header, $body, $footer);
+
         foreach ($members as $member) {
             if (!Members::isNotificationEnabled($member, 'tasks')) {
                 continue;
             }
+
             if (!Tasks::is_assignee($task, $member['id']) && $task->user_id !== $member['id']) {
                 continue;
             }
+
             if (in_array($member['email'], $sent_emails)) {
                 continue;
             }
+
             if (!Utillities::check_user_project_setting($member['id'], $task->project, 'task_completed_email')) {
                 continue;
             }
+
             Emails::send_email($member['email'], $subject, $html, 'task_status_changed', [
                 'task'   => $task,
                 'status' => $status,
             ]);
             $sent_emails[] = $member['email'];
         }
+
         if (Tasks::hasProject($task)) {
             $additionalEmails = Projects::getAdditionalEmails($task->project);
+
             foreach ($additionalEmails as $email) {
                 if (!empty($email)) {
                     Emails::send_email($email, $subject, $html, 'task_status_changed', [
@@ -319,17 +328,21 @@ class Emails {
         $settings  = Utillities::general_settings();
         $users     = Members::get_members();
         $assignees = [];
+
         foreach ($users as $user) {
             if (!isset($user['email'])) {
                 continue;
             }
+
             if (Projects::is_project_member($project, $user['id'])) {
                 $assignees[] = $user;
             }
         }
+
         if ($settings['override_default_emails']) {
             $assignees = Members::get_zephyr_members();
         }
+
         $header  = __('New Project', 'zephyr-project-manager');
         $subject = __('New Project', 'zephyr-project-manager');
         $message = '';
@@ -358,6 +371,55 @@ class Emails {
                 'project' => $project,
             ]);
             $sent[] = $assignee['email'];
+        }
+
+        return $sent;
+    }
+
+    public static function project_assigned_notification($project, $newMembers) {
+        $header  = __('Project Assigned', 'zephyr-project-manager');
+        $subject = __('Project Assigned', 'zephyr-project-manager');
+
+        $message = '';
+        $message .= '<br/>';
+        /* translators: Project assignment notification message. %s: Project name */
+        $message .= sprintf(__('You have been assigned to the project: %s', 'zephyr-project-manager'), esc_html($project->name));
+        $message .= '<br/>';
+        $message .= __('Please login to view the details', 'zephyr-project-manager');
+
+        $body = '<div><span class="zpm_content">' . $message . '</span></div>';
+        $link = admin_url("/admin.php?page=zephyr_project_manager_projects&action=view_project&project_id=" . $project->id);
+
+        if (zpmIsFrontendEnabled()) {
+            $link = Utillities::get_frontend_url("action=project&id={$project->id}");
+        }
+
+        $footer = '<a id="zpm_action_button" href="' . $link . '" style="color: #fff; padding: 10px; text-decoration: none;">' . __('View Project', 'zephyr-project-manager') . '</a>';
+        $html   = Emails::email_template($header, $body, $footer);
+
+        $sent = [];
+        foreach ($newMembers as $member) {
+            if (is_numeric($member)) {
+                $member = Members::get_member($member);
+            }
+
+            if (!isset($member['email'])) {
+                continue;
+            }
+
+            if (in_array($member['email'], $sent)) {
+                continue;
+            }
+
+            if (!Members::isNotificationEnabled($member, 'activity') && !Members::isNotificationEnabled($member, 'tasks')) {
+                continue;
+            }
+
+            Emails::send_email($member['email'], $subject, $html, 'project_assigned_new', [
+                'project' => $project,
+            ]);
+
+            $sent[] = $member['email'];
         }
 
         return $sent;
