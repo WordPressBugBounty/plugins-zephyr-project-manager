@@ -293,7 +293,7 @@ $hasProject = Tasks::hasProject($this_task);
 					<select id="zpm-new-task--categories" data-position="top" class="zpm_input zpm-input-chosen zpm-multi-select" multiple data-placeholder="<?php esc_html_e('Select Categories', 'zephyr-project-manager'); ?>">
 						<option value="-1"><?php esc_html_e('Select Categories', 'zephyr-project-manager'); ?></option>
 						<?php foreach ($categories as $category) : ?>
-							<option value="<?php echo esc_attr($category->id); ?>" <?php echo in_array($category->id, (array) maybe_unserialize($this_task->categories)) ? 'selected' : ''; ?>><?php echo esc_html($category->name); ?></option>
+							<option value="<?php echo esc_attr($category->id); ?>" <?php echo in_array($category->id, zpm_parse_ids($this_task->categories ?? '')) ? 'selected' : ''; ?>><?php echo esc_html($category->name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>

@@ -554,3 +554,15 @@ function zpm_label_string($string) {
 
 	return $string;
 }
+
+function zpm_parse_ids($raw) {
+	if (empty($raw)) {
+		return [];
+	}
+	return array_values(array_filter(array_map('intval', explode(',', (string) $raw))));
+}
+
+function zpm_sanitize_ids($input) {
+	$ids = array_values(array_filter(array_map('intval', (array) $input)));
+	return implode(',', $ids);
+}

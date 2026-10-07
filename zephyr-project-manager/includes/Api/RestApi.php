@@ -1518,7 +1518,7 @@ class RestApi {
 			$new_task_data['priority'] = $priority;
 		}
 		if (!empty($categories)) {
-			$new_task_data['categories'] = implode(',', $categories);
+			$new_task_data['categories'] = zpm_sanitize_ids($categories);
 		}
 		$new_task = Tasks::create($new_task_data);
 		$task = Tasks::get_task($new_task);

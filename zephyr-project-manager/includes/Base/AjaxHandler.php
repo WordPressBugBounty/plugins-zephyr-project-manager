@@ -301,7 +301,7 @@ class AjaxHandler extends BaseController {
 
 		$table_name = ZPM_MESSAGES_TABLE;
 		$date =  date('Y-m-d H:i:s');
-		$user_id = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : $this->get_user_id();
+		$user_id = get_current_user_id();
 		$subject_id = isset($_POST['subject_id']) ? sanitize_text_field($_POST['subject_id']) : '';
 		$message = isset($_POST['message']) ? serialize(wp_kses_post(stripslashes($_POST['message']))) : '';
 		$type = isset($_POST['type']) ? serialize(sanitize_text_field($_POST['type'])) : '';
@@ -320,6 +320,12 @@ class AjaxHandler extends BaseController {
 		);
 		$args = $settings;
 		$args['attachments'] = $attachments;
+
+		if ($subject === 'task') {
+			if (!Utillities::can_view_task(Tasks::get_task($subject_id), $user_id)) $this->unauthorized();
+		} else if ($subject === 'project') {
+			if (!Projects::has_project_access(Projects::get_project($subject_id), $user_id)) $this->unauthorized();
+		}
 
 		do_action('zpm_new_comment', $args);
 
@@ -981,7 +987,7 @@ class AjaxHandler extends BaseController {
 					'assignee' => Members::memberIdStringToNameString($row->assignee),
 					'name' => $row->name,
 					'description' => $row->description,
-					'categories' => implode(',', (array) maybe_unserialize($row->categories)),
+					'categories' => zpm_sanitize_ids(zpm_parse_ids($row->categories)),
 					'completed' => $completed,
 					'created' => $row->date_created,
 					'start' => $row->date_start,
@@ -1601,7 +1607,7 @@ class AjaxHandler extends BaseController {
 				'assignee' => $task->assignee,
 				'name' => $task->name,
 				'description' => $task->description,
-				'categories' => implode(',', (array) maybe_unserialize($task->categories)),
+				'categories' => zpm_sanitize_ids(zpm_parse_ids($task->categories)),
 				'completed' => $task->completed,
 				'created' => $task->date_created,
 				'start' => $task->date_start,
@@ -3886,7 +3892,7 @@ class AjaxHandler extends BaseController {
 				'name' => $task->name,
 				'description' => $task->description,
 				'completed' => $completed,
-				'categories' => implode(',', (array) maybe_unserialize($task->categories)),
+				'categories' => zpm_sanitize_ids(zpm_parse_ids($task->categories)),
 				'date_created' => $task->date_created,
 				'date_due' => $task->date_due,
 				'date_start' => $task->date_start,

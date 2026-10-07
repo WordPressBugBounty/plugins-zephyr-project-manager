@@ -2519,7 +2519,7 @@ class Tasks {
 
 	public static function getCategories($task, $asString = false) {
 		$cats = $task->categories;
-		$cats = !empty($cats) ? (array) maybe_unserialize($cats) : [];
+		$cats = zpm_parse_ids($cats);
 		if (!$asString) {
 			return $cats;
 		} else {
