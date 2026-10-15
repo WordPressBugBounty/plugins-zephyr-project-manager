@@ -4024,121 +4024,51 @@ var zpmTaskCompleteRequests = {};
     }
 
     const locale = jQuery('html').attr('lang');
-    const dateObject = moment(date, dateFormat, locale);
+    const dateObject = moment(date, dateFormat, true);
 
     if (!dateObject.isValid()) return date;
-    console.log(dateObject);
 
     return dateObject.format(momentFormat);
   };
 
   ZephyrProjects.getDateFormat = function () {
-    return 'yy-mm-dd';
-    // return 'yy-mm-dd';
-    const dateFormats = {
-      'M d': 'M dd',
+    const formats = {
+      'M d':    'M dd',
       'F j, Y': 'MM d, yy',
-      'Y. F j.': 'yy. MM d.',
-      'd M Y': 'dd M yy',
-      'D M j': 'D MM d',
-      'M/D/Y': 'M/D/yy',
-      'j, n, Y': 'd, m, yy',
-      'm.d.y': 'mm.dd.y',
-      'j-m-y': 'd-mm-y',
-      'd-m-Y': 'dd-mm-yy',
-      'Y-m-d': 'yy-mm-dd',
+      'Y. F j.':'yy. MM d.',
+      'd M Y':  'dd M yy',
+      'D M j':  'D MM d',
+      'M/D/Y':  'MM/DD/yy',
+      'j, n, Y':'d, m, yy',
+      'm.d.y':  'mm.dd.y',
+      'j-m-y':  'd-mm-y',
+      'd-m-Y':  'dd-mm-yy',
+      'Y-m-d':  'yy-mm-dd',
     };
-    var selectedFormat = zpm_localized.settings.date_format;
-
-    if (typeof dateFormats[selectedFormat] !== 'undefined') {
-      return dateFormats[selectedFormat];
-    }
-
-    return 'yy-mm-dd';
-
-    // var format = 'yy-mm-dd';
-    // var selectedFormat = zpm_localized.settings.date_format;
-    // if (selectedFormat == 'F j, Y') {
-    // 	format = 'MM dd, yy';
-    // }
-
-    // if (selectedFormat == 'M/D/Y') {
-    // 	format = 'MM/DD/yy';
-    // }
-
-    // return format;
-  };
-
-  // @todo add to v4
-  ZephyrProjects.getMomentFormat = function () {
-    return 'YYYY-MM-DD';
-    const dateFormats = {
-      'M d': 'MMM DD',
-      'F j, Y': 'MMMM D, YYYY',
-      'Y. F j.': 'YYYY. MMMM D.',
-      'd M Y': 'DD MMM YYYY',
-      'D M j': 'ddd MMM D',
-      'M/D/Y': 'M/D/YYYY',
-      'j, n, Y': 'D, M, YYYY',
-      'm.d.y': 'MM.DD.YY',
-      'j-m-y': 'D-MM-YY',
-      'd-m-Y': 'DD-MM-YYYY',
-      'Y-m-d': 'YYYY-MM-DD',
-    };
-    var selectedFormat = zpm_localized.settings.date_format;
-
-    if (typeof dateFormats[selectedFormat] !== 'undefined') {
-      return dateFormats[selectedFormat];
-    }
-
-    return 'YY-MM-DD';
-
-    // var format = 'yy-mm-dd';
-    // var selectedFormat = zpm_localized.settings.date_format;
-    // if (selectedFormat == 'F j, Y') {
-    // 	format = 'MM dd, yy';
-    // }
-
-    // if (selectedFormat == 'M/D/Y') {
-    // 	format = 'MM/DD/yy';
-    // }
-
-    // return format;
+    var selected = zpm_localized.settings.date_format;
+    return formats[selected] || 'yy-mm-dd';
   };
 
   ZephyrProjects.getMomentDateFormat = function () {
-    const dateFormats = {
-      'M d': 'MMM DD',
+    const formats = {
+      'M d':    'MMM DD',
       'F j, Y': 'MMMM D, YYYY',
-      'Y. F j.': 'YYYY. MMM D.',
-      'd M Y': 'DD MMM YYYY',
-      'D M j': 'ddd MMM D',
-      'M/D/Y': 'MM/DD/YYYY',
-      'j, n, Y': 'D, M, YYYY',
-      'm.d.y': 'MM.DD.YY',
-      'j-m-y': 'D-MM-YY',
-      'd-m-Y': 'DD-MM-YYYY',
-      'Y-m-d': 'YYYY-MM-DD',
+      'Y. F j.':'YYYY. MMM D.',
+      'd M Y':  'DD MMM YYYY',
+      'D M j':  'ddd MMM D',
+      'M/D/Y':  'MM/DD/YYYY',
+      'j, n, Y':'D, M, YYYY',
+      'm.d.y':  'MM.DD.YY',
+      'j-m-y':  'D-MM-YY',
+      'd-m-Y':  'DD-MM-YYYY',
+      'Y-m-d':  'YYYY-MM-DD',
     };
-    var selectedFormat = zpm_localized.settings.date_format;
+    var selected = zpm_localized.settings.date_format;
+    return formats[selected] || 'YYYY-MM-DD';
+  };
 
-    if (typeof dateFormats[selectedFormat] !== 'undefined') {
-      return dateFormats[selectedFormat];
-    }
-
-    return 'YYYY-MM-DD';
-
-    // var format = 'yy-mm-dd';
-    // var selectedFormat = zpm_localized.settings.date_format;
-    // if (selectedFormat == 'F j, Y') {
-    // 	format = 'MM dd, yy';
-    // }
-
-    // if (selectedFormat == 'M/D/Y') {
-    // 	format = 'MM/DD/yy';
-    // }
-
-    // return format;
+  ZephyrProjects.getMomentFormat = function () {
+    return ZephyrProjects.getMomentDateFormat();
   };
 
   ZephyrProjects.datetimepicker = function (el, options = {}) {

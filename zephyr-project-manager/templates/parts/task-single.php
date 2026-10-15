@@ -47,14 +47,10 @@ if (isset($_GET['kanban'])) {
 
 $general_settings = Utillities::general_settings();
 $user = $BaseController->get_user_info($this_task->user_id);
-$due_datetime = new DateTime($this_task->date_due);
-$start_datetime = new DateTime($this_task->date_start);
-$start_date = ($start_datetime->format('Y-m-d') !== '-0001-11-30') ? $start_datetime->format('Y-m-d H:i') : '';
-$due_date = ($due_datetime->format('Y-m-d') !== '-0001-11-30') ? $due_datetime->format('Y-m-d H:i') : '';
-$startDate = zpm_date($this_task->date_start, __('Not Set', 'zephyr-project-manager'), 'Y-m-d', true);
-$dueDate = zpm_date($this_task->date_due, __('Not Set', 'zephyr-project-manager'), 'Y-m-d', true);
-// $startDate = zpm_date_i18n($this_task->date_start, __('Not Set', 'zephyr-project-manager'), '', true);
-// $dueDate = zpm_date_i18n($this_task->date_due, __('Not Set', 'zephyr-project-manager'), '', true);
+$start_date = zpm_date_i18n($this_task->date_start);
+$due_date = zpm_date_i18n($this_task->date_due);
+$startDate = zpm_date_i18n($this_task->date_start, __('Not Set', 'zephyr-project-manager'), '', true);
+$dueDate = zpm_date_i18n($this_task->date_due, __('Not Set', 'zephyr-project-manager'), '', true);
 $priority = property_exists($this_task, 'priority') ? $this_task->priority : 'priority_none';
 $priority_label = Utillities::get_priority_label($priority);
 $priorities = Utillities::get_statuses('priority');

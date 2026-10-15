@@ -423,7 +423,7 @@ function zpm_date($date, $default = 'none', $format = '', $includeTime = false) 
 	}
 
 	$default = $default !== 'none' ? $default : __('None', 'zephyr-project-manager');
-	$date = strtotime($date) != '0000-00-00' && date('Y', strtotime($date)) != '-0001' ? date($format, strtotime($date)) : $default;
+	$date = strtotime($date) != '0000-00-00' && date('Y', strtotime($date)) != '-0001' ? date_i18n($format, strtotime($date)) : $default;
 
 	if (strpos($date, '00:00') !== false) {
 		$date = str_replace(' 00:00', '', $date);

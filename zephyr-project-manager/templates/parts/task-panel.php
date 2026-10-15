@@ -16,24 +16,8 @@ use ZephyrProjectManager\Pro\Core;
 $primaryColor = zpm_get_primary_frontend_color();
 $secondaryColor = zpm_get_secondary_frontend_color();
 $task = Tasks::get_task($taskId);
-$generalSettings = Utillities::general_settings();
-//$user = BaseController::get_user_info($task->user_id);
-$due_datetime = new DateTime($task->date_due);
-$start_datetime = new DateTime($task->date_start);
-
-// $dueDateFormatted = '';
-// $startDateFormatted = '';
-
-// if (Tasks::hasDueDate($task)) {
-// 	$dueDateFormatted = date_i18n($generalSettings['date_format'], strtotime($task->date_due));
-// }
-
-// if (Tasks::hasStartDate($task)) {
-// 	$startDateFormatted = date_i18n($generalSettings['date_format'], strtotime($task->date_start));
-// }
-
-$start_date = ($start_datetime->format('Y-m-d') !== '-0001-11-30') ? $start_datetime->format('Y-m-d H:i') : '';
-$due_date = ($due_datetime->format('Y-m-d') !== '-0001-11-30') ? $due_datetime->format('Y-m-d H:i') : '';
+$start_date = zpm_date_i18n($task->date_start);
+$due_date = zpm_date_i18n($task->date_due);
 $priority = property_exists($task, 'priority') ? $task->priority : 'priority_none';
 $priority_label = Utillities::get_priority_label($priority);
 $priorities = Utillities::get_statuses('priority');
@@ -45,7 +29,6 @@ $expires = Tasks::get_expiration_date($task);
 $taskData = Tasks::get_task_data($task);
 $recurrence_start = isset($taskData['start']) ? $taskData['start'] : '';
 $recurrence_frequency = isset($taskData['frequency']) ? $taskData['frequency'] : '';
-//$task = new Task($task);
 $subtasks = Tasks::get_subtasks($task->id);
 $pages = [];
 $pages = apply_filters('zpm_task_pages', $pages, $task);
@@ -56,8 +39,8 @@ $comments = Tasks::get_comments($taskId);
 $project = Projects::get_project($task->project);
 $assignees = Tasks::get_assignees($task, true);
 $filesEnabled = Core::isPageEnabled('files');
-$startDate = zpm_date($task->date_start, __('Not Set', 'zephyr-project-manager'), 'Y-m-d');
-$dueDate = zpm_date($task->date_due, __('Not Set', 'zephyr-project-manager'), 'Y-m-d');
+$startDate = zpm_date_i18n($task->date_start, __('Not Set', 'zephyr-project-manager'));
+$dueDate = zpm_date_i18n($task->date_due, __('Not Set', 'zephyr-project-manager'));
 ?>
 
 <?php if (Utillities::canEditTask($task)) : ?>
